@@ -5,7 +5,9 @@
 criada pelo Apps Script "Votação do logo do PEI (site)"; o login usa o projeto do Google Cloud `votacao-logo-pei`.
 
 **Republicar** depois de mudar alguma coisa (por exemplo, depois do `sh gerar.sh`): dentro desta pasta,
-`git add -A && git commit -m "Atualiza" && git push`. O GitHub Pages atualiza em um ou dois minutos.
+`sh publicar.sh "o que mudou"`. O script põe um número de versão novo nos links dos scripts, para o navegador não
+usar a cópia antiga, e envia ao GitHub; o GitHub Pages atualiza em um ou dois minutos. Quem já abriu a página nos
+últimos 10 minutos pode precisar recarregar (Cmd+Shift+R).
 
 São duas páginas, que gravam na mesma planilha:
 
