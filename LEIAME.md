@@ -1,5 +1,12 @@
 # Site de votação do novo logo do PEI
 
+**No ar:** https://lucaslrodri.github.io/votacao/ (abre o formulário das finalistas). Repositório: `lucaslrodri/votacao`
+(esta pasta é o próprio repositório). Os votos vão para a planilha "Votação do novo logo do PEI (respostas do site)",
+criada pelo Apps Script "Votação do logo do PEI (site)"; o login usa o projeto do Google Cloud `votacao-logo-pei`.
+
+**Republicar** depois de mudar alguma coisa (por exemplo, depois do `sh gerar.sh`): dentro desta pasta,
+`git add -A && git commit -m "Atualiza" && git push`. O GitHub Pages atualiza em um ou dois minutos.
+
 São duas páginas, que gravam na mesma planilha:
 
 - **`formulario.html`, o formulário das finalistas.** Funciona como um Google Forms, mas mostra as opções: as 12
