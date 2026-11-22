@@ -51,7 +51,7 @@ enviar de novo do mesmo navegador, vale o último envio.
 | `formulario.html`, `formulario.js`, `selecao.js`, `etapas.js` | o formulário das finalistas, a lista delas e as etapas (de `etapas.json`) |
 | `completo.html`, `app.js` | o site completo |
 | `config.js` | a URL da planilha (o único arquivo para editar à mão) |
-| `social.png` | o banner que o WhatsApp e as redes mostram ao compartilhar o link (etiquetas Open Graph em `index.html` e `formulario.html`). Feito por `banner-social.typ`, que o `sh gerar.sh` recompila. |
+| `social-quadrado.png`, `social.png` | os banners que o WhatsApp e as redes mostram ao compartilhar o link (etiquetas Open Graph em `index.html` e `formulario.html`): o quadrado, só com o título e os ícones, vem primeiro, porque o WhatsApp no computador mostra a prévia num quadradinho; o largo é para quem mostra a prévia grande. Feitos por `banner-social-quadrado.typ` e `banner-social.typ`, que o `sh gerar.sh` recompila. |
 | `dados.js`, `img/` | a lista e as imagens das candidatas. O `sh gerar.sh` refaz os dois e não mexe no `config.js`. |
 | `apps-script/Codigo.gs` | o código que grava na planilha |
 | `montar.py` | monta `dados.js` e `img/` a partir de `opcoes/` (o `gerar.sh` chama) |
