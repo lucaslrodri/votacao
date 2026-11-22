@@ -11,7 +11,7 @@ São duas páginas, que gravam na mesma planilha:
 
 - **`formulario.html`, o formulário das finalistas.** Funciona como um Google Forms, mas mostra as opções: as 12
   escolhidas da versão filtrada (`filtrada.typ`), em 20 etapas (`etapas.json`). Cada etapa mostra as finalistas num
-  formato ou num uso só, e a pessoa escolhe a que fica melhor (uma por etapa):
+  formato ou num uso só, e a pessoa marca as que ficam melhores, pelo menos uma (pode marcar mais):
   - assinaturas: horizontal e vertical;
   - tela: ícone pequeno (no quadrado arredondado), favicon do navegador, ícone de aplicativo e foto de perfil
     redonda;
