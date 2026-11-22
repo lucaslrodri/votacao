@@ -82,7 +82,8 @@ As abas aparecem no primeiro envio de cada página:
 | **Formulário** | uma linha por e-mail: as finalistas marcadas em cada etapa e o comentário |
 | **Escolhas por formato** | uma linha por e-mail, etapa e finalista marcada |
 | **Apuração por formato** | em cada etapa, quantas marcações cada finalista teve |
-| **Apuração do formulário** | a soma das marcações de cada finalista em todas as etapas |
+| **Apuração do formulário** | a soma das marcações de cada finalista em todas as etapas, com um gráfico de barras |
+| **Apuração por critério** | as marcações nos quatro critérios (identidade, conceito, coerência e simplicidade), uma coluna por critério, com um gráfico de barras empilhadas |
 | **Voto** | (site completo) uma linha por pessoa: data, nome, a candidata escolhida e o comentário |
 | **Apuração** | quantos votos cada candidata teve, da mais votada para a menos |
 | **Melhor por logo** | uma linha por pessoa e logo: a variante que ela achou melhor naquele logo |
@@ -92,6 +93,11 @@ As abas aparecem no primeiro envio de cada página:
 
 Se mudar o `Codigo.gs` depois, publique de novo em **Implantar → Gerenciar implantações → editar → Nova versão**.
 Assim a URL continua a mesma.
+
+As apurações e os gráficos se atualizam sozinhos a cada voto. As fórmulas usam o separador do idioma da planilha
+(ponto e vírgula em português). Até 22/11/2026, o script gravava com vírgula, e as apurações davam `#ERROR!` na
+planilha em português. Se isso acontecer numa planilha antiga, abra o projeto no Apps Script, escolha a função
+`consertarApuracao` e clique em **Executar** (uma vez): ela refaz as fórmulas e põe os gráficos.
 
 ## 1b. Ligar o login com o Google (só para o formulário)
 
