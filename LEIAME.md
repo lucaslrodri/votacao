@@ -1,6 +1,11 @@
 # Site de votação do novo logo do PEI
 
-**No ar:** https://lucaslrodri.github.io/votacao/ (abre o formulário das finalistas). Repositório: `lucaslrodri/votacao`
+**No ar:** https://lucaslrodri.github.io/votacao/ (abre o formulário das finalistas).
+
+**O link oficial para divulgar é https://lucaslrodri.github.io/votacao/?v=3** (é também o `og:url` das páginas). O
+`?v=3` não muda nada no site: serve só para o WhatsApp gerar a prévia nova, com o banner quadrado. O WhatsApp guarda
+a prévia de cada link, e o link sem o `?v=3` já tinha sido compartilhado com a prévia antiga. Se o banner mudar de
+novo, troque para `?v=4` aqui e no `og:url` de `index.html` e `formulario.html`. Repositório: `lucaslrodri/votacao`
 (esta pasta é o próprio repositório). Os votos vão para a planilha "Votação do novo logo do PEI (respostas do site)",
 criada pelo Apps Script "Votação do logo do PEI (site)"; o login usa o projeto do Google Cloud `votacao-logo-pei`.
 
