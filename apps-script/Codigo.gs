@@ -12,7 +12,8 @@
 //   Formulário             uma linha por e-mail: as marcadas em cada formato e o comentário
 //   Escolhas por formato   uma linha por e-mail, formato e finalista marcada (boa para contar)
 //   Apuração por formato   em cada formato, quantas marcações cada finalista teve, da mais marcada para a menos
-//   Apuração do formulário a soma das marcações de cada finalista em todos os formatos
+//   Apuração do formulário a soma das marcações de cada finalista em todos os formatos, com um gráfico de barras
+//   Apuração por critério  as marcações nos quatro critérios, uma coluna por critério, com um gráfico empilhado
 // Abas do site completo:
 //   Voto            uma linha por pessoa: a candidata escolhida e o comentário
 //   Apuração        quantos votos cada candidata teve, da mais votada para a menos
@@ -37,6 +38,7 @@ const ABA_FORM = 'Formulário';
 const ABA_ESCOLHAS = 'Escolhas por formato';
 const ABA_APURACAO_FORMATO = 'Apuração por formato';
 const ABA_APURACAO_FORM = 'Apuração do formulário';
+const ABA_APURACAO_CRIT = 'Apuração por critério';
 const CAB_ESCOLHAS = ['Data e hora', 'Envio', 'E-mail', 'Nº', 'Formato', 'Código', 'Logo'];
 const CAB_MELHOR = ['Data e hora', 'Envio', 'Votante', 'Nome', 'Logo nº', 'Logo', 'Código', 'Variante'];
 const CAB_NOTAS = ['Data e hora', 'Envio', 'Votante', 'Nome', 'Código', 'Logo', 'Variante'].concat(CRITERIOS,
@@ -101,20 +103,8 @@ function formulario_(planilha, d) {
   const nomes = fs.map(function (f) { return String(f.formato); });
   const abaForm = aba_(planilha, ABA_FORM, ['Data e hora', 'Envio', 'E-mail'].concat(nomes, ['Comentário']));
   const abaEsc = aba_(planilha, ABA_ESCOLHAS, CAB_ESCOLHAS);
-  if (!planilha.getSheetByName(ABA_APURACAO_FORMATO)) {
-    const a = planilha.insertSheet(ABA_APURACAO_FORMATO);
-    // colunas de Escolhas por formato: D nº, E formato, F código, G logo
-    a.getRange('A1').setFormula('=QUERY(\'' + ABA_ESCOLHAS + '\'!D:G, "select D, E, F, G, count(F) where F is not null ' +
-      'group by D, E, F, G order by D, count(F) desc label D \'Nº\', E \'Formato\', F \'Código\', G \'Logo\', ' +
-      'count(F) \'Marcações\'", 1)');
-    a.setFrozenRows(1);
-  }
-  if (!planilha.getSheetByName(ABA_APURACAO_FORM)) {
-    const a = planilha.insertSheet(ABA_APURACAO_FORM);
-    a.getRange('A1').setFormula('=QUERY(\'' + ABA_ESCOLHAS + '\'!F:G, "select F, G, count(F) where F is not null ' +
-      'group by F, G order by count(F) desc label F \'Código\', G \'Logo\', count(F) \'Marcações (todos os formatos)\'", 1)');
-    a.setFrozenRows(1);
-  }
+  apuracoesForm_(planilha, false);
+  try { graficos_(planilha); } catch (err) { console.warn('gráficos: ' + err); }  // um gráfico nunca impede o voto
   // as colunas da aba Formulário: as que já existem e, no fim, os formatos novos
   let cab = abaForm.getRange(1, 1, 1, abaForm.getLastColumn()).getValues()[0].map(String);
   nomes.forEach(function (nome) {
@@ -205,32 +195,99 @@ function apagar_(aba, votante) {
   }
 }
 
-// As abas de resumo, com fórmulas (setFormula usa a sintaxe em inglês, com vírgulas, em qualquer idioma)
-function resumos_(planilha) {
-  if (!planilha.getSheetByName(ABA_APURACAO)) {
-    const a = planilha.insertSheet(ABA_APURACAO);
-    a.getRange('A1').setFormula('=QUERY(\'' + ABA_VOTO + '\'!E:G, "select E, F, G, count(E) where E is not null ' +
-      'group by E, F, G order by count(E) desc label E \'Código\', F \'Logo\', G \'Variante\', count(E) \'Votos\'", 1)');
-    a.setFrozenRows(1);
+// As abas de resumo do site completo, com fórmulas
+function resumos_(planilha, refazer) {
+  apuracao_(planilha, ABA_APURACAO, '\'' + ABA_VOTO + '\'!E:G', 'select E, F, G, count(E) where E is not null ' +
+    'group by E, F, G order by count(E) desc label E \'Código\', F \'Logo\', G \'Variante\', count(E) \'Votos\'', refazer);
+  // colunas da aba Melhor por logo: E nº do logo, F logo, G código, H variante
+  apuracao_(planilha, ABA_APURACAO_LOGO, '\'' + ABA_MELHOR + '\'!E:H', 'select E, F, G, H, count(G) where G is not null ' +
+    'group by E, F, G, H order by E, count(G) desc label E \'Nº\', F \'Logo\', G \'Código\', H \'Variante\', ' +
+    'count(G) \'Escolhas\'', refazer);
+  // colunas da aba Notas: E código, F logo, G variante, H–M critérios, N total
+  apuracao_(planilha, ABA_MEDIA, '\'' + ABA_NOTAS + '\'!E:N', 'select E, F, G, avg(H), avg(I), avg(J), ' +
+    'avg(K), avg(L), avg(M), avg(N), count(N) where E is not null group by E, F, G order by avg(N) desc ' +
+    'label E \'Código\', F \'Logo\', G \'Variante\', avg(H) \'Nitidez\', avg(I) \'Identidade\', ' +
+    'avg(J) \'Uma cor\', avg(K) \'Conceito\', avg(L) \'Coerência\', avg(M) \'Simplicidade\', ' +
+    'avg(N) \'Total médio\', count(N) \'Avaliações\'', refazer);
+}
+
+// As apurações do formulário. Colunas de Escolhas por formato: D nº, E formato, F código, G logo.
+function apuracoesForm_(planilha, refazer) {
+  const fonte = '\'' + ABA_ESCOLHAS + '\'!';
+  apuracao_(planilha, ABA_APURACAO_FORMATO, fonte + 'D:G', 'select D, E, F, G, count(F) where F is not null ' +
+    'group by D, E, F, G order by D, count(F) desc label D \'Nº\', E \'Formato\', F \'Código\', G \'Logo\', ' +
+    'count(F) \'Marcações\'', refazer);
+  apuracao_(planilha, ABA_APURACAO_FORM, fonte + 'F:G', 'select F, G, count(F) where F is not null ' +
+    'group by F, G order by count(F) desc label F \'Código\', G \'Logo\', count(F) \'Marcações (todos os formatos)\'',
+    refazer);
+  // só os quatro critérios: uma linha por logo e uma coluna por critério (é a tabela do gráfico empilhado)
+  apuracao_(planilha, ABA_APURACAO_CRIT, fonte + 'E:G', 'select G, count(F) where E starts with \'Critério\' ' +
+    'group by G pivot E label G \'Logo\'', refazer);
+}
+
+// Uma aba de apuração: uma QUERY na A1. Cria a aba se ela não existe; com refazer, reescreve a fórmula.
+function apuracao_(planilha, nome, intervalo, consulta, refazer) {
+  let a = planilha.getSheetByName(nome);
+  if (a && !refazer) return a;
+  if (!a) a = planilha.insertSheet(nome);
+  query_(a.getRange('A1'), intervalo, consulta);
+  a.setFrozenRows(1);
+  return a;
+}
+
+// O separador dos argumentos das fórmulas segue o idioma da planilha: vírgula em inglês, ponto e vírgula em
+// português. O setFormula não traduz (com vírgula, a planilha em português dava #ERROR!), então tenta a vírgula e,
+// se der erro de fórmula, o ponto e vírgula.
+function query_(celula, intervalo, consulta) {
+  [',', ';'].some(function (s) {
+    celula.setFormula('=QUERY(' + intervalo + s + ' "' + consulta + '"' + s + ' 1)');
+    SpreadsheetApp.flush();
+    return !/^#ERRO/.test(celula.getDisplayValue());
+  });
+}
+
+// Os gráficos, que se atualizam sozinhos com as fórmulas: as marcações de cada finalista nas 20 etapas (barras) e as
+// dos quatro critérios (barras empilhadas, uma cor por critério). Só cria o gráfico se a aba ainda não tem um.
+function graficos_(planilha) {
+  const tot = planilha.getSheetByName(ABA_APURACAO_FORM);
+  if (tot && !tot.getCharts().length) {
+    tot.insertChart(tot.newChart().asBarChart()
+      .setTitle('Marcações de cada finalista (as 20 etapas)')
+      .setLegendPosition(Charts.Position.NONE)
+      .setColors(['#083671'])
+      .addRange(tot.getRange('B1:C13'))
+      .setNumHeaders(1)
+      .setPosition(1, 5, 0, 0)
+      .setOption('width', 760)
+      .setOption('height', 440)
+      .build());
   }
-  if (!planilha.getSheetByName(ABA_APURACAO_LOGO)) {
-    const a = planilha.insertSheet(ABA_APURACAO_LOGO);
-    // colunas da aba Melhor por logo: E nº do logo, F logo, G código, H variante
-    a.getRange('A1').setFormula('=QUERY(\'' + ABA_MELHOR + '\'!E:H, "select E, F, G, H, count(G) where G is not null ' +
-      'group by E, F, G, H order by E, count(G) desc label E \'Nº\', F \'Logo\', G \'Código\', H \'Variante\', ' +
-      'count(G) \'Escolhas\'", 1)');
-    a.setFrozenRows(1);
+  const crit = planilha.getSheetByName(ABA_APURACAO_CRIT);
+  if (crit && !crit.getCharts().length) {
+    crit.insertChart(crit.newChart().asBarChart()
+      .setStacked()
+      .setTitle('Marcações nos quatro critérios, por finalista')
+      .setLegendPosition(Charts.Position.TOP)
+      .addRange(crit.getRange('A1:E13'))
+      .setNumHeaders(1)
+      .setPosition(1, 7, 0, 0)
+      .setOption('width', 760)
+      .setOption('height', 440)
+      .build());
   }
-  if (!planilha.getSheetByName(ABA_MEDIA)) {
-    const m = planilha.insertSheet(ABA_MEDIA);
-    // colunas da aba Notas: E código, F logo, G variante, H–M critérios, N total
-    m.getRange('A1').setFormula('=QUERY(\'' + ABA_NOTAS + '\'!E:N, "select E, F, G, avg(H), avg(I), avg(J), ' +
-      'avg(K), avg(L), avg(M), avg(N), count(N) where E is not null group by E, F, G order by avg(N) desc ' +
-      'label E \'Código\', F \'Logo\', G \'Variante\', avg(H) \'Nitidez\', avg(I) \'Identidade\', ' +
-      'avg(J) \'Uma cor\', avg(K) \'Conceito\', avg(L) \'Coerência\', avg(M) \'Simplicidade\', ' +
-      'avg(N) \'Total médio\', count(N) \'Avaliações\'", 1)');
-    m.setFrozenRows(1);
+}
+
+// Conserta as apurações de uma planilha que já existe e põe os gráficos: no editor, escolha consertarApuracao e
+// clique em Executar (uma vez). Foi preciso em 22/11/2026, porque as fórmulas antigas, com vírgula, davam #ERROR! na
+// planilha em português.
+function consertarApuracao() {
+  const planilha = planilha_();
+  if (planilha.getSheetByName(ABA_ESCOLHAS)) apuracoesForm_(planilha, true);
+  if ([ABA_VOTO, ABA_MELHOR, ABA_NOTAS].some(function (n) { return planilha.getSheetByName(n); })) {
+    resumos_(planilha, true);
   }
+  graficos_(planilha);
+  console.log('Pronto: ' + planilha.getUrl());
 }
 
 function resposta_(obj) {
