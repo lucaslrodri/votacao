@@ -1,12 +1,13 @@
 // O formulário de votação (formulario.html), em etapas: primeiro o login com o Google (a pessoa não digita o e-mail;
 // o e-mail verificado da conta é o identificador do voto, um voto por e-mail, e um envio novo substitui o anterior;
 // o Apps Script confere o login com o Google antes de gravar); depois, em cada etapa, as finalistas da versão filtrada (selecao.js,
-// feito a partir de filtrada.typ) num formato só, e a pessoa marca as que ficam melhores naquele formato (pelo menos
-// uma, pode marcar mais); no fim, o resumo e um comentário opcional. O envio vai para a planilha (config.js).
+// feito a partir de filtrada.typ) num formato só, e a pessoa escolhe a que fica melhor naquele formato (uma por etapa;
+// Lucas, 22/11/2026: "pode ser uma única escolha, acho que fica mais fácil da pessoa decidir"); no fim, o resumo e
+// um comentário opcional. O envio vai para a planilha (config.js).
 // As imagens: dados.js e img/<código>/ (mono.svg, negmono.svg e camisa-<cor>.png só das finalistas, pelo gerar.sh).
 (function () {
   "use strict";
-  const CHAVE = "pei-votacao-formulario-v4";
+  const CHAVE = "pei-votacao-formulario-v5";
   // as etapas: os textos vêm de etapas.json (via etapas.js); aqui, como mostrar cada uma: o arquivo da finalista em
   // img/<código>/, o tipo de vista, o fundo e se os cartões são largos
   const VISTAS = {
@@ -179,14 +180,14 @@
       pergunta.append(
         el("h2", {}, [el("span", { class: "n", text: p + "." }), et.pergunta + " ", el("span", { class: "ast",
           text: "*" })]),
-        el("p", { class: "ajuda" }, [et.ajuda + " ", el("b", { text: "Marque pelo menos uma; pode marcar mais." })]));
-      const grade = el("div", { class: "opcoes" + (et.largas ? " largas" : ""), role: "group", "aria-label": et.nome });
+        el("p", { class: "ajuda" }, [et.ajuda + " ", el("b", { text: "Escolha uma." })]));
+      const grade = el("div", { class: "opcoes" + (et.largas ? " largas" : ""), role: "radiogroup",
+        "aria-label": et.nome });
       ORD.forEach(o => {
-        const caixa = el("input", { type: "checkbox", name: et.id, value: o.cod, "aria-label": o.cod + " · " + o.nome });
+        const caixa = el("input", { type: "radio", name: et.id, value: o.cod, "aria-label": o.cod + " · " + o.nome });
         if (marcadas(et.id).includes(o.cod)) caixa.checked = true;
         caixa.addEventListener("change", () => {
-          const atual = marcadas(et.id).filter(c => c !== o.cod);
-          E.respostas[et.id] = caixa.checked ? atual.concat(o.cod) : atual;
+          E.respostas[et.id] = [o.cod];
           guardar();
           pergunta.classList.remove("erro");
         });
@@ -197,11 +198,11 @@
             el("span", { class: "nome", text: o.nome })]),
           vista(o, et), ver]));
       });
-      pergunta.append(grade, el("p", { class: "msg", text: "Marque pelo menos uma opção para continuar." }));
+      pergunta.append(grade, el("p", { class: "msg", text: "Escolha uma opção para continuar." }));
     } else {
       pergunta.append(el("h2", { text: "Confira seus votos" }),
         el("p", { class: "ajuda", text: (previa ? "Prévia, sem login." : "Votando como " + (login ? login.email : "?") +
-          ".") + " Clique num formato para mudar as escolhas." }));
+          ".") + " Clique num formato para mudar a escolha." }));
       const resumo = el("div", { class: "resumo" });
       ETAPAS.forEach((et, i) => {
         const cods = ORD.filter(o => marcadas(et.id).includes(o.cod)).map(o => o.cod);
