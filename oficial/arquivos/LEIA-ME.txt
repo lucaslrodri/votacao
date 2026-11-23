@@ -1,0 +1,22 @@
+Logo do PEI - Grupo de Pesquisa em Aplicações Industriais (Engenharia Elétrica, Ufac)
+O logo oficial: MOSFET com raio, versão Alt. Como usar: manual-de-identidade-pei.pdf.
+
+Versões (no nome de cada arquivo):
+  horizontal  a sigla com o nome ao lado (a versão principal)
+  vertical    a sigla com o nome embaixo
+  simbolo     só a sigla PEI
+  icone       só o E (o MOSFET com o raio): perfil, favicon, aplicativo, espaços pequenos
+Cores:
+  (sem sufixo)    colorida, para fundo claro
+  -negativa       para fundo azul ou escuro
+  -mono           tudo em preto (grafite), para impressão numa cor só
+  -mono-azul      tudo no azul PEI (#083671), para fundo claro e numa cor só
+  -negativa-mono  tudo em branco, para fundo escuro
+Formatos:
+  svg/                 vetor, de qualquer tamanho: site, Inkscape, Illustrator, Canva
+  pdf/                 vetor, para a gráfica e para o LaTeX/Typst
+  png/web/             150 ppi, fundo transparente: site, e-mail, apresentações
+  png/impressao/       300 ppi, fundo transparente: Word, PowerPoint, impressão
+  png/grande/          600 ppi, fundo transparente: banners e cartazes
+  png/fundo-branco/    300 ppi, com fundo branco: onde não há transparência (WhatsApp, formulários)
+  icones/              o ícone de 16 a 1024 px, o ícone de aplicativo e a foto de perfil
