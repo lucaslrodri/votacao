@@ -1,6 +1,19 @@
 # Site de votação do novo logo do PEI
 
-**No ar:** https://lucaslrodri.github.io/votacao/ (abre o formulário das finalistas).
+**No ar:** https://lucaslrodri.github.io/votacao/ (abre o resultado).
+
+**A votação foi encerrada em 23/11/2026, às 11h50**, com 14 votos e 528 marcações. A implantação do Apps Script foi
+arquivada, e o endereço que gravava os votos passou a responder 404: nenhum envio chega mais à planilha. O site mostra
+só o resultado, em `resultado.html`. `index.html`, `formulario.html` e `completo.html` levam a ele, e o formulário e o
+site completo continuam no histórico do git. O link para divulgar o resultado é
+https://lucaslrodri.github.io/votacao/?v=4, para o WhatsApp gerar a prévia nova.
+
+O resultado vem de `../apuracao.json`, o mesmo do `grafico-votacao.typ`, que faz a imagem `resultado.png`. Nele, a
+vencedora (12A, "MOSFET com raio", 84 marcações) aparece com a letra J, e a Alt (12J, 62) com a letra A, a pedido do
+Lucas. O nome, o desenho e o número de cada uma são os da planilha. Para reabrir a votação, seria preciso uma
+implantação nova (Implantar → Nova implantação), com a URL nova em `config.js`, e voltar as páginas pelo git.
+
+O texto abaixo descreve o site durante a votação.
 
 **O link oficial para divulgar é https://lucaslrodri.github.io/votacao/?v=3** (é também o `og:url` das páginas). O
 `?v=3` não muda nada no site: serve só para o WhatsApp gerar a prévia nova, com o banner quadrado. O WhatsApp guarda
@@ -53,6 +66,7 @@ enviar de novo do mesmo navegador, vale o último envio.
 
 | Arquivo | O que é |
 |---|---|
+| `resultado.html`, `resultado.png` | o resultado (desde o encerramento, a página de entrada) e a imagem do gráfico, feita por `../grafico-votacao.typ` |
 | `formulario.html`, `formulario.js`, `selecao.js`, `etapas.js` | o formulário das finalistas, a lista delas e as etapas (de `etapas.json`) |
 | `completo.html`, `app.js` | o site completo |
 | `config.js` | a URL da planilha (o único arquivo para editar à mão) |

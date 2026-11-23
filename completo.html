@@ -3,157 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Votação do novo logo do PEI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --azul: #083671; --ufac: #0C4DA2; --ouro: #FFBF14; --ouro-escuro: #D99A00; --grafite: #1E1E1E;
-    --nevoa: #DBE4F1; --cinza: #5B6678; --linha: #E1E5EC; --fundo: #F5F7FA; --cartao: #FFFFFF;
-    --estrela-vazia: #D5DAE2;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
-  body { margin: 0; font-family: Montserrat, system-ui, sans-serif; color: var(--grafite); background: var(--fundo);
-    padding-bottom: 96px; }
-  .faixa { display: grid; grid-template-columns: 60% 30% 10%; height: 8px; }
-  .faixa span:nth-child(1) { background: var(--azul); } .faixa span:nth-child(2) { background: var(--ufac); }
-  .faixa span:nth-child(3) { background: var(--ouro); }
-  header { max-width: 1200px; margin: 0 auto; padding: 28px 16px 8px; }
-  header h1 { color: var(--azul); font-size: clamp(26px, 5vw, 40px); font-weight: 800; margin: 0 0 4px; }
-  header .sub { color: var(--ufac); font-weight: 600; margin: 0 0 14px; }
-  .filete { width: 48px; height: 4px; background: var(--ouro); margin: 12px 0 16px; }
-  .instr { max-width: 760px; color: var(--cinza); line-height: 1.55; font-size: 15px; margin: 0; }
-  .instr b { color: var(--grafite); }
-  nav { position: sticky; top: 0; z-index: 5; background: rgba(245, 247, 250, .96); backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--linha); }
-  nav .dentro { max-width: 1200px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto;
-    scrollbar-width: thin; }
-  nav a { flex: none; text-decoration: none; color: var(--azul); background: #fff; border: 1px solid var(--linha);
-    border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; }
-  nav a:hover { border-color: var(--ufac); }
-  nav a .n { color: var(--ouro-escuro); margin-right: 4px; }
-  nav a .feitas { color: var(--cinza); font-weight: 500; margin-left: 4px; }
-  main { max-width: 1200px; margin: 0 auto; padding: 8px 16px 24px; }
-  section.logo { margin-top: 28px; }
-  section.logo h2 { color: var(--azul); font-size: 24px; font-weight: 800; margin: 0; }
-  section.logo h2 .n { color: var(--ouro-escuro); }
-  section.logo .origem { color: var(--cinza); font-size: 14px; margin: 2px 0 12px; }
-  .grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 14px; }
-  @media (max-width: 400px) { .grade { grid-template-columns: 1fr; } }
-  .cartao { background: var(--cartao); border: 1px solid var(--linha); border-radius: 12px; padding: 14px;
-    display: flex; flex-direction: column; gap: 12px; }
-  .cartao.completa { border-color: #9FB6D8; box-shadow: 0 0 0 2px #E4ECF7; }
-  .topo { display: flex; align-items: center; gap: 8px; }
-  .selo { background: var(--ouro); color: var(--azul); font-weight: 800; font-size: 14px; border-radius: 5px;
-    padding: 2px 8px; }
-  .nome { font-weight: 700; color: var(--azul); font-size: 14px; line-height: 1.25; }
-  .nome small { display: block; color: var(--cinza); font-weight: 500; font-size: 12px; }
-  .nome { flex: 1; min-width: 0; }
-  .votar { flex: none; font: inherit; font-size: 12px; font-weight: 700; color: var(--azul); background: #fff;
-    border: 1.5px solid var(--azul); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
-  .votar:hover { background: var(--nevoa); }
-  .votar[aria-pressed="true"] { background: var(--azul); color: #fff; }
-  .cartao.escolhida { border-color: var(--ouro-escuro); box-shadow: 0 0 0 3px #FFE7A3; }
-  .botoes { display: flex; flex-direction: column; gap: 4px; align-items: stretch; flex: none; }
-  .melhor { font: inherit; font-size: 11px; font-weight: 600; color: var(--ufac); background: #fff;
-    border: 1px dashed var(--ufac); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
-  .melhor:hover { background: var(--nevoa); }
-  .melhor[aria-pressed="true"] { background: var(--nevoa); border-style: solid; color: var(--azul); }
-  .cartao.melhor-logo { border-color: var(--ufac); }
-  .cartao.melhor-logo.escolhida { border-color: var(--ouro-escuro); }
-  section.logo .dica { color: var(--ufac); font-size: 13px; margin: -6px 0 12px; }
-  footer.enviar .contagem a { color: var(--azul); text-decoration: none; }
-  .formatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .fmt { border: 1px solid var(--linha); border-radius: 8px; padding: 6px; display: flex; flex-direction: column;
-    gap: 4px; background: #fff; cursor: zoom-in; min-width: 0; }
-  .fmt.largo { grid-column: span 3; }
-  .fmt.dois { grid-column: span 2; }
-  .fmt .area { display: flex; align-items: center; justify-content: center; height: 70px; }
-  .fmt.largo .area { height: 84px; }
-  .fmt img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; min-width: 0; }
-  .area { min-width: 0; overflow: hidden; }
-  .fmt.escuro { background: var(--azul); border-color: var(--azul); }
-  .fmt.escuro .rot { color: #C9D6EA; }
-  .fmt .rot { font-size: 11px; color: var(--cinza); font-weight: 600; }
-  .perfil img { width: 60px; height: 60px; border-radius: 50%; }
-  .aba { display: flex; flex-direction: column; gap: 4px; width: 100%; }
-  .aba div { display: flex; align-items: center; gap: 6px; border-radius: 6px 6px 0 0; padding: 4px 6px;
-    font-size: 10px; white-space: nowrap; overflow: hidden; }
-  .aba .clara { background: #DEE1E6; color: #3C4043; } .aba .escura { background: #35363A; color: #E8EAED; }
-  .aba img { width: 16px; height: 16px; flex: none; }
-  .aba .t32 { display: flex; gap: 6px; align-items: center; justify-content: center; background: none; padding: 0; }
-  .aba .t32 img { width: 32px; height: 32px; }
-  .criterios { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; }
-  .criterios .k { font-size: 13px; font-weight: 600; color: var(--grafite); }
-  .estrelas { display: flex; align-items: center; gap: 2px; }
-  .estrelas button { border: 0; background: none; padding: 3px; cursor: pointer; line-height: 0; border-radius: 4px; }
-  .estrelas button:focus-visible { outline: 2px solid var(--ufac); }
-  .estrelas svg { width: 24px; height: 24px; fill: var(--estrela-vazia); transition: fill .1s; }
-  .estrelas button.on svg { fill: var(--ouro-escuro); }
-  .estrelas .limpar { font-size: 12px; color: var(--cinza); line-height: 1; padding: 4px 6px; visibility: hidden; }
-  .estrelas.tem .limpar { visibility: visible; }
-  .total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--linha);
-    padding-top: 8px; font-size: 13px; color: var(--cinza); }
-  .total b { color: var(--azul); font-size: 18px; }
-  .total .falta { color: #B05A00; }
-  footer.enviar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: #fff;
-    border-top: 1px solid var(--linha); box-shadow: 0 -4px 16px rgba(8, 54, 113, .08); }
-  footer.enviar .dentro { max-width: 1200px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 10px;
-    align-items: center; flex-wrap: wrap; }
-  footer.enviar .contagem { font-size: 14px; color: var(--cinza); margin-right: auto; }
-  footer.enviar .contagem b { color: var(--azul); }
-  footer.enviar input, footer.enviar textarea { font: inherit; font-size: 14px; border: 1px solid #C9D1DD;
-    border-radius: 8px; padding: 8px 10px; }
-  footer.enviar input { width: 220px; max-width: 100%; }
-  footer.enviar textarea { width: 260px; max-width: 100%; height: 38px; resize: vertical; }
-  footer.enviar button { font: inherit; font-weight: 700; font-size: 14px; background: var(--azul); color: #fff;
-    border: 0; border-radius: 8px; padding: 10px 18px; cursor: pointer; }
-  footer.enviar button:disabled { background: #9AA7BA; cursor: default; }
-  .aviso { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); background: var(--grafite);
-    color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 14px; z-index: 8; max-width: calc(100% - 32px);
-    display: none; }
-  .zoom { position: fixed; inset: 0; background: rgba(10, 20, 40, .72); z-index: 9; display: none;
-    align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
-  .zoom .caixa { background: #fff; border-radius: 12px; padding: 24px; max-width: min(900px, 100%);
-    max-height: 100%; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-  .zoom .caixa.escuro { background: var(--azul); }
-  .zoom img { width: min(760px, 86vw); height: min(62vh, 560px); object-fit: contain; }
-  .zoom .legenda { font-size: 14px; color: var(--cinza); } .zoom .caixa.escuro .legenda { color: #C9D6EA; }
-  @media (max-width: 640px) {
-    footer.enviar textarea { display: none; }
-    footer.enviar input { flex: 1; }
-  }
-</style>
+<!-- votação encerrada em 23/11/2026: o site completo saiu do ar (está no histórico do git) e esta
+     página leva ao resultado. app.js e dados.js continuam aqui. -->
+<title>Resultado da votação do novo logo do PEI</title>
+<meta name="description" content="Resultado da votação do novo logo do PEI: 14 votos e 528 marcações nas 12 finalistas. Grupo de Pesquisa em Aplicações Industriais, Engenharia Elétrica, Ufac.">
+<!-- o banner social (WhatsApp, redes): as imagens são as da votação (banner-social-quadrado.typ e banner-social.typ) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PEI · Ufac">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Resultado da votação do novo logo do PEI">
+<meta property="og:description" content="Votação encerrada: 14 votos e 528 marcações nas 12 finalistas.">
+<meta property="og:url" content="https://lucaslrodri.github.io/votacao/?v=4">
+<meta property="og:image" content="https://lucaslrodri.github.io/votacao/social-quadrado.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="800">
+<meta property="og:image:alt" content="Novo logo do PEI, com os ícones das 12 finalistas">
+<meta property="og:image" content="https://lucaslrodri.github.io/votacao/social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Novo logo do PEI, com os ícones das 12 finalistas">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lucaslrodri.github.io/votacao/social.png">
+<meta http-equiv="refresh" content="0; url=resultado.html">
+<link rel="canonical" href="resultado.html">
 </head>
-<body>
-<div class="faixa"><span></span><span></span><span></span></div>
-<header>
-  <h1>Votação do novo logo do PEI</h1>
-  <p class="sub">Grupo de Pesquisa em Aplicações Industriais · Engenharia Elétrica · Ufac</p>
-  <div class="filete"></div>
-  <p class="instr">Cada logo aparece com todas as variantes, e cada variante em vários formatos: horizontal, vertical,
-    ícone, negativa, foto de perfil e favicon (clique numa imagem para ampliar). <b>Para votar</b>, clique em
-    <b>Votar nesta</b> na candidata que você prefere (um voto por pessoa). Nos logos com várias variantes, escolha
-    também a melhor de cada um em <b>Melhor deste logo</b>. Se quiser, dê ainda de <b>1 a 4 estrelas</b> em cada critério nas candidatas que quiser avaliar; o total aparece sozinho, e cada um avalia do seu
-    jeito. No fim, escreva seu nome embaixo e clique em <b>Enviar voto</b>. O que você marcar fica guardado neste
-    navegador até o envio; se enviar de novo, vale o último envio.</p>
-</header>
-<nav><div class="dentro" id="menu"></div></nav>
-<main id="logos"></main>
-<footer class="enviar">
-  <div class="dentro">
-    <span class="contagem" id="contagem"></span>
-    <input id="nome" type="text" placeholder="Seu nome" autocomplete="name" maxlength="120">
-    <textarea id="comentario" placeholder="Comentário (opcional)" maxlength="2000"></textarea>
-    <button id="enviar" type="button">Enviar voto</button>
-  </div>
-</footer>
-<div class="aviso" id="aviso" role="status"></div>
-<div class="zoom" id="zoom"><div class="caixa"><img alt=""><span class="legenda"></span></div></div>
-<script src="config.js?v=20261122135530"></script>
-<script src="dados.js?v=20261122135530"></script>
-<script src="app.js?v=20261122135530"></script>
+<body style="font-family: system-ui, sans-serif; padding: 24px">
+<p>A votação do novo logo do PEI foi encerrada. Veja o <a href="resultado.html">resultado</a>.</p>
 </body>
 </html>
