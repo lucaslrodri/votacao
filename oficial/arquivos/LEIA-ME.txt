@@ -19,4 +19,5 @@ Formatos:
   png/impressao/       300 ppi, fundo transparente: Word, PowerPoint, impressão
   png/grande/          600 ppi, fundo transparente: banners e cartazes
   png/fundo-branco/    300 ppi, com fundo branco: onde não há transparência (WhatsApp, formulários)
-  icones/              o ícone de 16 a 1024 px, o ícone de aplicativo e a foto de perfil
+  icones/              o ícone de 16 a 1024 px (nas cinco versões), o ícone de aplicativo e a foto de perfil
+                       (colorida, sobre o azul; mono azul e mono, sobre o branco; mono negativa, sobre o grafite)

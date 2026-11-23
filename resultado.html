@@ -188,7 +188,7 @@
       <h3>O logo</h3>
       <div class="tabela"><table id="tabela-arquivos"><thead><tr><th>Forma</th><th>Cor</th><th>Vetor</th><th>PNG</th></tr></thead><tbody></tbody></table></div>
       <h3>Ícones, aplicativo e perfil</h3>
-      <p id="lista-icones" class="sub"></p>
+      <p id="lista-icones" class="sub" style="line-height: 2"></p>
     </details>
   </section>
 
@@ -282,13 +282,19 @@ Obrigado a todos que votaram!
         corpo.appendChild(tr);
       });
     });
-    const icones = [16, 32, 48, 64, 128, 256, 512, 1024].map(function (px) {
-      return link(A + "icones/pei-logo-icone-" + px + ".png", "ícone " + px + " px"); })
-      .concat([180, 192, 512, 1024].map(function (px) {
-        return link(A + "icones/pei-logo-icone-app-" + px + ".png", "aplicativo " + px + " px"); }))
-      .concat([400, 1024].map(function (px) {
-        return link(A + "icones/pei-logo-perfil-" + px + ".png", "foto de perfil " + px + " px"); }));
-    document.getElementById("lista-icones").innerHTML = icones.join(" · ");
+    // por versão: o ícone de 16 a 1024 px e, menos na negativa, o ícone de aplicativo e a foto de perfil
+    document.getElementById("lista-icones").innerHTML = cores.map(function (c) {
+      const s = c[1];
+      let l = [16, 32, 48, 64, 128, 256, 512, 1024].map(function (px) {
+        return link(A + "icones/pei-logo-icone" + s + "-" + px + ".png", px + " px"); });
+      if (s !== "-negativa") {
+        l = l.concat([180, 192, 512, 1024].map(function (px) {
+          return link(A + "icones/pei-logo-icone-app" + s + "-" + px + ".png", "app " + px); }))
+          .concat([400, 1024].map(function (px) {
+            return link(A + "icones/pei-logo-perfil" + s + "-" + px + ".png", "perfil " + px); }));
+      }
+      return "<b>" + c[0] + "</b>: " + l.join(" · ");
+    }).join("<br>");
   })();
 
   // o carrossel
