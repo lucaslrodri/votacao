@@ -8,10 +8,11 @@ só o resultado, em `resultado.html`. `index.html`, `formulario.html` e `complet
 site completo continuam no histórico do git. O link para divulgar o resultado é
 https://lucaslrodri.github.io/votacao/?v=4, para o WhatsApp gerar a prévia nova.
 
-O resultado vem de `../apuracao.json`, o mesmo do `grafico-votacao.typ`, que faz a imagem `resultado.png`. Nele, a
-vencedora (12A, "MOSFET com raio", 84 marcações) aparece com a letra J, e a Alt (12J, 62) com a letra A, a pedido do
-Lucas. O nome, o desenho e o número de cada uma são os da planilha. Para reabrir a votação, seria preciso uma
-implantação nova (Implantar → Nova implantação), com a URL nova em `config.js`, e voltar as páginas pelo git.
+O resultado vem de `../apuracao.json`, o mesmo do `grafico-votacao.typ`, que faz a imagem `resultado.png`. O gráfico
+mostra o desenho, o nome e o número de cada finalista, sem os códigos. Ao lado fica o infográfico do logo oficial, a
+12J (o "MOSFET com raio Alt", escolhida pelo Lucas em 23/11/2026), feito por `../oficial.typ`: `oficial-1.png` (o
+infográfico), `oficial-2.png` (o post do Instagram) e `oficial.pdf` (os dois). Para reabrir a votação, seria preciso
+uma implantação nova (Implantar → Nova implantação), com a URL nova em `config.js`, e voltar as páginas pelo git.
 
 O texto abaixo descreve o site durante a votação.
 
@@ -67,6 +68,7 @@ enviar de novo do mesmo navegador, vale o último envio.
 | Arquivo | O que é |
 |---|---|
 | `resultado.html`, `resultado.png` | o resultado (desde o encerramento, a página de entrada) e a imagem do gráfico, feita por `../grafico-votacao.typ` |
+| `oficial-1.png`, `oficial-2.png`, `oficial.pdf` | o infográfico e o post do Instagram do logo oficial (a 12J), ao lado do resultado, feitos por `../oficial.typ` |
 | `formulario.html`, `formulario.js`, `selecao.js`, `etapas.js` | o formulário das finalistas, a lista delas e as etapas (de `etapas.json`) |
 | `completo.html`, `app.js` | o site completo |
 | `config.js` | a URL da planilha (o único arquivo para editar à mão) |

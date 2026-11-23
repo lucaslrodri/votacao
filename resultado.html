@@ -24,7 +24,7 @@
 <meta property="og:image:alt" content="Novo logo do PEI, com os ícones das 12 finalistas">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://lucaslrodri.github.io/votacao/social.png">
-<link rel="icon" href="img/12A/favicon.png">
+<link rel="icon" href="img/12J/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,7 +38,20 @@
   .faixa { display: grid; grid-template-columns: 60% 30% 10%; height: 6px; }
   .faixa i:nth-child(1) { background: var(--azul); } .faixa i:nth-child(2) { background: var(--ufac); }
   .faixa i:nth-child(3) { background: var(--ouro); }
-  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+  main { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 20px; align-items: start;
+         grid-template-columns: minmax(0, 1fr) minmax(0, 520px); }
+  /* o resultado fica parado enquanto se rola o infográfico ao lado */
+  .fixo { position: sticky; top: 16px; }
+  .info img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--linha); }
+  .info h2 { margin: 8px 0 6px; font-size: 22px; font-weight: 800; color: var(--azul); line-height: 1.2; }
+  .botoes { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 16px; }
+  .botoes a { font-size: 13px; font-weight: 700; color: var(--azul); background: var(--fundo); border: 1px solid var(--linha);
+              border-radius: 999px; padding: 8px 14px; text-decoration: none; }
+  .botoes a.forte { background: var(--ouro); border-color: var(--ouro); }
+  @media (max-width: 980px) {
+    main { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+    .fixo { position: static; }
+  }
   .cartao { background: #fff; border: 1px solid var(--linha); border-radius: 12px; padding: 24px 22px 20px; }
   .chapeu { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ufac); }
   h1 { margin: 8px 0 6px; font-size: clamp(22px, 5vw, 30px); font-weight: 800; color: var(--azul); line-height: 1.15; }
@@ -50,7 +63,6 @@
         display: grid; place-items: center; }
   .ic img { width: 76%; height: 76%; object-fit: contain; }
   .nome { font-size: 14px; font-weight: 600; line-height: 1.25; }
-  .nome small { display: block; font-size: 12px; font-weight: 400; color: var(--cinza); margin-top: 2px; }
   .trilho { align-self: stretch; display: flex; align-items: center; gap: 6px; border-left: 1px solid var(--apagado); }
   .barra { height: 18px; background: var(--azul); border-radius: 0 4px 4px 0; min-width: 2px; }
   .valor { font-size: 14px; font-weight: 700; }
@@ -64,7 +76,6 @@
          min-height: 0; padding: 7px 0; }
     .ic { grid-row: 1 / 3; width: 44px; height: 44px; border-radius: 9px; }
     .nome { font-size: 13px; }
-    .nome small { display: inline; margin: 0 0 0 6px; }
     .trilho { border-left: 0; }
     .barra { height: 14px; }
   }
@@ -73,7 +84,7 @@
 <body>
 <div class="faixa" aria-hidden="true"><i></i><i></i><i></i></div>
 <main>
-  <section class="cartao">
+  <section class="cartao fixo">
     <p class="chapeu">VOTAÇÃO ENCERRADA</p>
     <h1>Resultado da votação do novo logo do PEI</h1>
     <p class="sub" id="sub"></p>
@@ -82,16 +93,29 @@
       etapas. Obrigado a todos que votaram!</p>
     <p class="acoes"><a href="resultado.png" download="resultado-votacao-logo-pei.png">Baixar o gráfico (imagem)</a></p>
   </section>
+  <!-- o infográfico do logo oficial (a 12J, o MOSFET com raio Alt), feito por ../oficial.typ -->
+  <section class="cartao info">
+    <p class="chapeu">O LOGO OFICIAL</p>
+    <h2>MOSFET com raio</h2>
+    <p class="sub" style="margin-bottom: 0">O logo mais votado, com 146 marcações nas duas versões. A versão oficial é a
+      Alt: as letras em Rockwell e o MOSFET mais grosso.</p>
+    <div class="botoes">
+      <a class="forte" href="oficial-1.png" download="infografico-logo-pei.png">Baixar o infográfico</a>
+      <a href="oficial.pdf" download="infografico-logo-pei.pdf">PDF</a>
+      <a href="oficial-2.png" download="post-instagram-logo-pei.png">Post do Instagram</a>
+    </div>
+    <img src="oficial-1.png" width="1080" height="5330" loading="lazy"
+      alt="Infográfico do logo oficial do PEI: o conceito, a votação, as versões e cores, o ícone na tela, as camisas polo, o papel, o slide, a Realização e o Instagram">
+  </section>
 </main>
 <script>
-  // O resultado final, de ../apuracao.json (o mesmo do grafico-votacao.typ): código, marcações e, se houver, o código
-  // a mostrar no lugar do código real (a vencedora, 12A, aparece como 12J, e a 12J como 12A). Os nomes e as imagens
-  // das finalistas vêm de selecao.js e de img/<código real>/.
+  // O resultado final, de ../apuracao.json (o mesmo do grafico-votacao.typ): código e marcações. Os nomes e as
+  // imagens das finalistas vêm de selecao.js e de img/<código>/; os códigos não aparecem na página.
   const RESULTADO = {
     encerrada: "23/11/2026, às 11h50",
     votos: 14,
     totais: [
-      ["12A", 84, "12J"], ["8A", 80], ["12J", 62, "12A"], ["1A", 59], ["1H", 54],
+      ["12A", 84], ["8A", 80], ["12J", 62], ["1A", 59], ["1H", 54],
       ["9B", 54], ["7B", 42], ["2C", 32], ["4A", 31], ["15F", 26], ["3E", 3], ["13B", 1],
     ],
   };
@@ -107,14 +131,13 @@
       " marcações, somadas as 20 etapas. Votação encerrada em " + RESULTADO.encerrada + ".";
     const lista = document.getElementById("lista");
     RESULTADO.totais.forEach(function (t) {
-      const cod = t[0], n = t[1], rotulo = t[2] || cod, nome = nomes[cod] || cod;
+      const cod = t[0], n = t[1], nome = nomes[cod] || cod;
       const li = document.createElement("li");
       li.innerHTML =
         '<span class="ic"><img alt="" src="img/' + cod + '/icone.svg"></span>' +
         '<span class="nome"></span>' +
         '<span class="trilho"><span class="barra"></span><span class="valor"></span></span>';
       li.querySelector(".nome").textContent = nome;
-      const sm = document.createElement("small"); sm.textContent = rotulo; li.querySelector(".nome").appendChild(sm);
       li.querySelector(".barra").style.width = "calc((100% - 2.6em) * " + (n / maximo) + ")";
       li.querySelector(".valor").textContent = n;
       li.setAttribute("aria-label", nome + ": " + n + (n === 1 ? " marcação" : " marcações"));
