@@ -3,32 +3,1733 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- a entrada do site: desde o fim da votação (23/11/2026), vai para o resultado -->
-<title>Resultado da votação do novo logo do PEI</title>
-<meta name="description" content="Resultado da votação do novo logo do PEI: 14 votos e 528 marcações nas 12 finalistas. Grupo de Pesquisa em Aplicações Industriais, Engenharia Elétrica, Ufac.">
-<!-- o banner social (WhatsApp, redes): as imagens são as da votação (banner-social-quadrado.typ e banner-social.typ) -->
+<!-- A página inicial do site: monte a camisa do PEI. Os desenhos vêm de montar-dados.js (../montar-dados.py), o 3D de
+     montar-3d.js (../avatar/exportar-3d.sh) e as camisas do grupo e os corações da planilha (apps-script/Codigo.gs,
+     com a URL em config.js). Como tudo funciona: LEIAME.md. -->
+<title>Camisa do PEI</title>
+<meta name="description" content="Monte a polo do PEI: a cor, o logo, as mangas, as costas e as barras. Comece de um design pronto, salve a sua com um nome e dê corações nas que mais gostar.">
+<!-- o banner social (WhatsApp, redes): social-camisa.png, de ../banner-camisa.typ -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PEI · Ufac">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="Resultado da votação do novo logo do PEI">
-<meta property="og:description" content="Votação encerrada: 14 votos e 528 marcações nas 12 finalistas.">
-<meta property="og:url" content="https://lucaslrodri.github.io/votacao/?v=4">
-<meta property="og:image" content="https://lucaslrodri.github.io/votacao/social-quadrado.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
-<meta property="og:image:alt" content="Novo logo do PEI, com os ícones das 12 finalistas">
-<meta property="og:image" content="https://lucaslrodri.github.io/votacao/social.png">
+<meta property="og:title" content="Monte a camisa do PEI">
+<meta property="og:description" content="Escolha a cor, o logo, as mangas e as barras, salve a sua e dê corações nas do grupo.">
+<meta property="og:url" content="https://lucaslrodri.github.io/votacao/">
+<meta property="og:image" content="https://lucaslrodri.github.io/votacao/social-camisa.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Novo logo do PEI, com os ícones das 12 finalistas">
+<meta property="og:image:alt" content="A polo do PEI, azul, com o logo no peito, de frente e de costas">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://lucaslrodri.github.io/votacao/social.png">
-<meta http-equiv="refresh" content="0; url=resultado.html">
-<link rel="canonical" href="resultado.html">
+<meta name="twitter:image" content="https://lucaslrodri.github.io/votacao/social-camisa.png">
+<link rel="icon" href="oficial/arquivos/icones/pei-logo-icone-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #083671; --ufac: #0C4DA2; --ouro: #FFBF14; --grafite: #1E1E1E; --nevoa: #DBE4F1;
+    --cinza: #5B6678; --linha: #DADFE7; --fundo: #EEF2F8; --amor: #E0245E;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Montserrat, system-ui, sans-serif; color: var(--grafite); background: var(--fundo); }
+  .faixa { display: grid; grid-template-columns: 60% 30% 10%; height: 6px; }
+  .faixa i:nth-child(1) { background: var(--azul); } .faixa i:nth-child(2) { background: var(--ufac); }
+  .faixa i:nth-child(3) { background: var(--ouro); }
+  /* o topo do site: o logo e as páginas */
+  .site { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+    max-width: 1520px; margin: 0 auto; padding: 14px 16px 0; }
+  .site .marca img { display: block; height: 42px; width: auto; }
+  .site nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .site nav a { font-size: 13px; font-weight: 700; color: var(--azul); text-decoration: none; padding: 7px 13px;
+    border-radius: 999px; }
+  .site nav a:hover { background: #fff; }
+  .site nav a[aria-current=page] { background: var(--azul); color: #fff; }
+  main { max-width: 1520px; margin: 0 auto; padding: 14px 16px 56px; }
+  .cartao { background: #fff; border: 1px solid var(--linha); border-radius: 12px; padding: 20px; }
+  .chapeu { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ufac); }
+  h1 { margin: 6px 0 6px; font-size: clamp(24px, 4.5vw, 32px); font-weight: 800; color: var(--azul); line-height: 1.15; }
+  h2 { margin: 0 0 8px; font-size: 15px; font-weight: 800; color: var(--azul); }
+  .sub { margin: 0; font-size: 14px; color: var(--cinza); line-height: 1.5; max-width: 72ch; }
+  .botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .botoes a, .botoes button { font: inherit; font-size: 13px; font-weight: 700; color: var(--azul); background: var(--fundo);
+    border: 1px solid var(--linha); border-radius: 999px; padding: 8px 14px; text-decoration: none; cursor: pointer; }
+  .botoes .forte { background: var(--ouro); border-color: var(--ouro); }
+  .botoes button:hover, .botoes a:hover { border-color: var(--azul); }
+  .botoes button:disabled { opacity: .5; cursor: default; }
+
+  /* a grade: no computador, a barra lateral (designs prontos e camisas do grupo), a prévia e as escolhas */
+  .grade { display: grid; grid-template-columns: 300px minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px;
+    align-items: start; }
+  .grade > *, .lateral > * { min-width: 0; }   /* a fila de cartões rola de lado sem alargar a página */
+  .parte { display: contents; }   /* as camisas do grupo e os designs prontos correm como uma lista só */
+  .lateral { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; display: grid; gap: 12px;
+    align-content: start; scrollbar-width: thin; border-radius: 12px; }
+  .bloco { padding: 16px; }
+  .previa { position: sticky; top: 12px; }
+  .dica { font-size: 12px; color: var(--cinza); margin: 2px 0 8px; line-height: 1.45; }
+
+  /* os cartões dos designs (prontos e do grupo) */
+  .cards { display: grid; gap: 6px; }
+  .item { position: relative; }
+  .card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; align-items: center; width: 100%;
+    font: inherit; text-align: left; color: inherit; background: #fff; border: 1px solid var(--linha);
+    border-radius: 10px; padding: 6px 62px 6px 6px; cursor: pointer; }
+  .card:hover { border-color: var(--azul); }
+  .card[aria-pressed=true] { border-color: var(--azul); box-shadow: inset 0 0 0 1px var(--azul); background: #F4F7FC; }
+  .card:focus-visible, .coracao:focus-visible, .apagar:focus-visible { outline: 3px solid var(--ouro); outline-offset: 2px; }
+  .mini { display: block; width: 64px; height: 64px; border-radius: 8px; background: var(--fundo); overflow: hidden; }
+  .mini svg { display: block; width: 100%; height: 100%; }
+  .card b { display: block; font-size: 13px; color: var(--azul); line-height: 1.25; }
+  .card small { display: block; font-size: 11.5px; color: var(--cinza); line-height: 1.35; margin-top: 2px; }
+  .coracao { position: absolute; top: 8px; right: 8px; display: inline-flex; align-items: center; gap: 4px;
+    font: inherit; font-size: 12px; font-weight: 700; color: var(--cinza); background: #fff; border: 1px solid var(--linha);
+    border-radius: 999px; padding: 4px 8px 4px 6px; cursor: pointer; }
+  .coracao svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .coracao:hover { color: var(--amor); border-color: var(--amor); }
+  .coracao[aria-pressed=true] { color: var(--amor); border-color: #F5B5C8; background: #FFF0F4; }
+  .coracao[aria-pressed=true] svg { fill: var(--amor); stroke: var(--amor); }
+  .coracao:disabled { cursor: default; opacity: .55; }
+  .coracao.pulsa svg { animation: pulsa .35s ease-out; }
+  @keyframes pulsa { 50% { transform: scale(1.35); } }
+  @media (prefers-reduced-motion: reduce) { .coracao.pulsa svg { animation: none; } }
+  .apagar { position: absolute; right: 8px; bottom: 7px; font: inherit; font-size: 11px; font-weight: 600;
+    color: var(--cinza); background: none; border: 0; padding: 2px 4px; cursor: pointer; text-decoration: underline; }
+  .apagar:hover { color: #B3261E; }
+  .ordem { display: inline-flex; gap: 4px; padding: 3px; background: var(--fundo); border-radius: 999px; margin: 4px 0 8px; }
+  .ordem button { font: inherit; font-size: 12px; font-weight: 700; color: var(--azul); background: transparent; border: 0;
+    border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+  .ordem button[aria-pressed=true] { background: var(--azul); color: #fff; }
+  .vazio { font-size: 12.5px; color: var(--cinza); margin: 4px 0; line-height: 1.45; }
+
+  /* salvar no grupo */
+  .salvar { display: grid; gap: 8px; margin: 6px 0 14px; padding: 12px; background: var(--fundo); border-radius: 10px; }
+  .salvar label { display: grid; gap: 3px; font-size: 12px; font-weight: 700; color: var(--azul); }
+  .salvar input { font: inherit; font-size: 14px; font-weight: 500; color: var(--grafite); border: 1px solid var(--linha);
+    border-radius: 8px; padding: 8px 10px; background: #fff; width: 100%; }
+  .salvar input:focus { outline: 2px solid var(--azul); outline-offset: 0; border-color: var(--azul); }
+  .salvar .botoes { margin-top: 2px; }
+  .salvar .dica { margin: 0; }
+
+  /* a prévia */
+  .atual { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .atual p { margin: 0; }
+  .atual b { display: block; font-size: 17px; font-weight: 800; color: var(--azul); line-height: 1.2; }
+  .atual small { font-size: 12px; color: var(--cinza); font-weight: 600; }
+  .atual .coracao { position: static; font-size: 13px; padding: 7px 12px 7px 10px; }
+  .atual .coracao svg { width: 17px; height: 17px; }
+  .vistas { display: grid; grid-template-columns: 1.25fr 1fr; gap: 10px; align-items: end; }
+  .vistas figure, .mangas figure { margin: 0; text-align: center; }
+  .vistas svg, .mangas svg { display: block; width: 100%; height: auto; background: #fff; }
+  figcaption { font-size: 12px; font-weight: 700; color: var(--azul); margin-top: 4px; }
+  .mangas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .mangas svg { border: 1px solid var(--linha); border-radius: 10px; }
+  .resumo { margin: 14px 0 0; padding: 12px 14px; background: var(--fundo); border-radius: 10px; font-size: 13px;
+    line-height: 1.55; }
+  .resumo b { color: var(--azul); }
+
+  /* as escolhas */
+  fieldset { border: 0; margin: 0 0 14px; padding: 0 0 14px; border-bottom: 1px solid var(--linha); }
+  fieldset:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  legend { padding: 0; font-size: 14px; font-weight: 800; color: var(--azul); margin-bottom: 8px; }
+  .linha { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 8px; align-items: center; margin: 6px 0; }
+  .linha > span { font-size: 13px; font-weight: 600; }
+  .opcoes { display: flex; flex-wrap: wrap; gap: 6px; }
+  .opcoes label { position: relative; cursor: pointer; }
+  .opcoes input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px;
+    border: 1px solid var(--linha); background: #fff; color: var(--grafite); }
+  input:checked + .chip { background: var(--azul); border-color: var(--azul); color: #fff; }
+  input:focus-visible + .chip, input:focus-visible + .cor { outline: 3px solid var(--ouro); outline-offset: 2px; }
+  .cor { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid #C9CED6; box-shadow: inset 0 0 0 2px #fff; }
+  input:checked + .cor { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--azul); }
+  .cor.nada { background: repeating-linear-gradient(45deg, #fff 0 5px, #E4E7EC 5px 7px); }
+  .cor.nada::after { content: "–"; font-size: 13px; font-weight: 700; color: var(--cinza); }
+  .ajuste { display: flex; align-items: center; gap: 8px; flex-basis: 100%; font-size: 12px; font-weight: 600;
+    color: var(--cinza); margin-top: 2px; }
+  .ajuste input[type=range] { position: static; opacity: 1; flex: 1; max-width: 220px; accent-color: var(--azul); }
+  .ajuste output { min-width: 4em; font-weight: 700; color: var(--azul); }
+  .aviso { min-height: 1em; margin: 8px 0 0; font-size: 12px; color: var(--ufac); font-weight: 600; }
+
+  /* a prévia em desenho ou em 3D */
+  .modo { display: inline-flex; gap: 4px; padding: 3px; background: var(--fundo); border-radius: 999px; margin-bottom: 12px; }
+  .modo button { font: inherit; font-size: 13px; font-weight: 700; color: var(--azul); background: transparent; border: 0;
+    border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+  .modo button[aria-pressed=true] { background: var(--azul); color: #fff; }
+  #v-3d { position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 78vh; border-radius: 10px; overflow: hidden;
+    background: #E9ECF1; touch-action: none; }
+  #v-3d canvas { display: block; width: 100%; height: 100%; }
+  #v-3d .carregando { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px;
+    color: var(--cinza); text-align: center; padding: 20px; }
+  .barra3d { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
+  .barra3d span { font-size: 12px; font-weight: 700; color: var(--cinza); margin-right: 2px; }
+  .barra3d button { font: inherit; font-size: 12px; font-weight: 600; color: var(--grafite); background: #fff;
+    border: 1px solid var(--linha); border-radius: 999px; padding: 5px 10px; cursor: pointer; }
+  .barra3d button[aria-pressed=true] { background: var(--azul); border-color: var(--azul); color: #fff; }
+  .barra3d .sep { flex-basis: 100%; height: 0; }
+
+  /* a vitrine (a foto para compartilhar) */
+  dialog#vitrine { width: min(960px, calc(100vw - 24px)); max-height: calc(100vh - 24px); border: 0; border-radius: 14px;
+    padding: 18px; color: var(--grafite); }
+  dialog#vitrine::backdrop { background: rgba(8, 20, 40, .6); }
+  .vit-topo { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .vit-topo h2 { margin: 0; font-size: 18px; }
+  .fechar { font: inherit; font-size: 22px; line-height: 1; color: var(--cinza); background: var(--fundo); border: 0;
+    border-radius: 999px; width: 36px; height: 36px; cursor: pointer; }
+  .vit-img { display: grid; place-items: center; min-height: 260px; background: var(--fundo); border-radius: 10px;
+    overflow: hidden; }
+  .vit-img img { display: block; width: 100%; height: auto; }
+  .vit-img p { font-size: 14px; color: var(--cinza); padding: 20px; text-align: center; }
+
+  /* tablet: os designs em cima (em fila, de lado), a prévia e as escolhas lado a lado, e o grupo embaixo */
+  @media (max-width: 1199px) {
+    .grade { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+    .lateral { display: contents; }
+    #bloco-grupo { grid-column: 1 / -1; order: -1; }
+    .cards { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 8px; scroll-snap-type: x proximity;
+      scrollbar-width: thin; }
+    .item { flex: 0 0 150px; scroll-snap-align: start; }
+    .card { grid-template-columns: 1fr; height: 100%; align-content: start; text-align: center; padding: 6px 6px 26px; }
+    .card .mini { width: 100%; height: auto; aspect-ratio: 1; }
+    .apagar { left: 0; right: 0; bottom: 6px; text-align: center; }
+    .salvar { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: end; }
+  }
+  @media (max-width: 820px) {
+    .grade { grid-template-columns: minmax(0, 1fr); }
+    .previa { position: static; }
+    .linha { grid-template-columns: 1fr; gap: 4px; }
+    .site .marca img { height: 34px; }
+  }
+  /* o login com o Google: só para salvar, ver as camisas do grupo e dar corações */
+  .botao-google { min-height: 40px; }
+  .pedir-login { display: grid; gap: 10px; justify-items: start; padding: 12px; margin: 6px 0 4px;
+    background: var(--fundo); border-radius: 10px; }
+  .pedir-login p { margin: 0; font-size: 12.5px; color: var(--grafite); line-height: 1.5; }
+  .sessao { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 12px 0 0; font-size: 12.5px; color: var(--cinza); }
+  .sessao b { color: var(--azul); }
+  .sessao button { font: inherit; font-size: 12px; font-weight: 600; color: var(--ufac); background: none; border: 0; padding: 0;
+    cursor: pointer; text-decoration: underline; }
+  [hidden] { display: none !important; }
+</style>
+<!-- o login com o Google (Google Identity Services): a página só abre depois do login -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
 </head>
-<body style="font-family: system-ui, sans-serif; padding: 24px">
-<p>A votação do novo logo do PEI foi encerrada. Veja o <a href="resultado.html">resultado</a>.</p>
+<body>
+<div class="faixa" aria-hidden="true"><i></i><i></i><i></i></div>
+<header class="site">
+  <a class="marca" href="index.html"><img src="oficial/arquivos/svg/pei-logo-horizontal.svg" width="190" height="42"
+    alt="PEI: Grupo de Pesquisa em Aplicações Industriais"></a>
+  <nav aria-label="Páginas do site">
+    <a href="index.html" aria-current="page">Camisa</a>
+    <a href="logo.html">Logo para baixar</a>
+  </nav>
+</header>
+<main id="pagina">
+  <section class="cartao">
+    <p class="chapeu">CAMISA DO PEI</p>
+    <h1>Monte a camisa do PEI</h1>
+    <p class="sub">Comece de um design pronto, de uma camisa do grupo ou do zero: escolha a cor da polo, o logo, as mangas,
+      as costas e as barras, e compartilhe. Entrando com o Google, você salva a sua com um nome para o grupo ver e dá
+      corações nas que mais gostar.</p>
+    <div class="botoes">
+      <button type="button" class="forte" id="compartilhar">Compartilhar a camisa</button>
+      <button type="button" id="copiar">Copiar o link</button>
+      <a href="#bloco-grupo">Ver as camisas do grupo</a>
+    </div>
+    <div class="sessao" id="sessao-fora">
+      <span>Para salvar a sua camisa e dar corações, entre com o Google. Para montar, ver as do grupo e compartilhar, não precisa.</span>
+      <div class="botao-google" id="login-topo"></div>
+    </div>
+    <p class="sessao" id="sessao-dentro" hidden>Entrou como <b id="sessao-nome"></b><span aria-hidden="true">·</span><button type="button" id="sair">Sair</button></p>
+    <p class="aviso" id="aviso" role="status"></p>
+  </section>
+
+  <div class="grade">
+    <aside class="lateral" aria-label="As camisas: as do grupo e os designs prontos">
+      <!-- uma lista só: primeiro as camisas do grupo, depois os designs prontos (Lucas, 24/11/2026) -->
+      <section class="cartao bloco" id="bloco-grupo" aria-labelledby="t-grupo">
+        <h2 id="t-grupo">Camisas</h2>
+        <p class="dica">Primeiro as camisas do grupo, depois os designs prontos. Clique numa para começar dela; nos designs
+          prontos, a cor da polo continua a que você escolheu.</p>
+        <div class="pedir-login" id="grupo-fora">
+          <p>Para salvar a sua camisa com um nome e dar corações, entre com o Google.</p>
+          <div class="botao-google" id="login-grupo"></div>
+        </div>
+        <form class="salvar" id="salvar" hidden>
+          <label>Nome da camisa<input id="s-nome" maxlength="40" required autocomplete="off" placeholder="Ex.: Polo do laboratório"></label>
+          <div class="botoes">
+            <button type="submit" class="forte" id="s-botao">Salvar no grupo</button>
+            <button type="button" id="s-nova" hidden>Salvar como nova</button>
+          </div>
+          <p class="dica" id="s-dica">Ela vai com o seu nome da conta Google. Todos veem a sua camisa e podem dar corações
+            nela.</p>
+        </form>
+        <div class="ordem" role="group" aria-label="Ordem das camisas">
+          <button type="button" data-ordem="recentes" aria-pressed="true">Recentes</button>
+          <button type="button" data-ordem="coracoes" aria-pressed="false">Mais corações</button>
+        </div>
+        <p class="vazio" id="grupo-vazio"></p>
+        <div class="cards" id="lista"><div class="parte" id="grupo"></div><div class="parte" id="prontos"></div></div>
+      </section>
+    </aside>
+
+    <section class="cartao previa" aria-label="Prévia da camisa">
+      <div class="atual">
+        <p><b id="atual-nome">Clássica</b><small id="atual-de">Design pronto</small></p>
+        <button type="button" class="coracao" id="coracao-atual" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.6 10.6 19.3C5.4 14.6 2 11.5 2 7.8 2 4.8 4.4 2.5 7.4 2.5c1.7 0 3.4.8 4.6 2.1 1.2-1.3 2.9-2.1 4.6-2.1 3 0 5.4 2.3 5.4 5.3 0 3.7-3.4 6.8-8.6 11.5z"/></svg><span class="rot">Dar coração</span> <span class="n">0</span></button>
+      </div>
+      <div class="modo" role="group" aria-label="Ver a camisa">
+        <button type="button" id="modo-2d" aria-pressed="true">Desenho</button>
+        <button type="button" id="modo-3d" aria-pressed="false">3D</button>
+      </div>
+      <div id="area-3d" hidden>
+        <div id="v-3d" aria-label="A camisa num avatar 3D: arraste para girar, use a roda ou dois dedos para aproximar">
+          <p class="carregando" id="carregando-3d">Carregando o 3D…</p>
+        </div>
+        <div class="barra3d">
+          <span>Vista</span>
+          <button type="button" data-vista="frente" aria-pressed="true">Frente</button>
+          <button type="button" data-vista="esquerda" aria-pressed="false">Lado esquerdo</button>
+          <button type="button" data-vista="direita" aria-pressed="false">Lado direito</button>
+          <button type="button" data-vista="costas" aria-pressed="false">Costas</button>
+          <i class="sep"></i>
+          <span>Braços</span>
+          <button type="button" data-pose="aberto" aria-pressed="true">Abertos</button>
+          <button type="button" data-pose="cruzado" aria-pressed="false">Cruzados</button>
+          <button type="button" id="baixar-3d">Baixar esta vista</button>
+        </div>
+        <p class="dica">Arraste para girar; use a roda do mouse (ou dois dedos) para aproximar. A camisa muda na hora,
+          conforme as escolhas.</p>
+      </div>
+      <div id="area-2d">
+        <div class="vistas">
+          <figure><div id="v-frente"></div><figcaption>Frente</figcaption></figure>
+          <figure><div id="v-costas"></div><figcaption>Costas</figcaption></figure>
+        </div>
+        <div class="mangas">
+          <figure><div id="v-manga-dir"></div><figcaption>Manga direita</figcaption></figure>
+          <figure><div id="v-manga-esq"></div><figcaption>Manga esquerda</figcaption></figure>
+        </div>
+      </div>
+      <div class="resumo" id="resumo" aria-live="polite"></div>
+    </section>
+
+    <section class="cartao escolhas" aria-label="Escolhas">
+      <form id="form"></form>
+    </section>
+  </div>
+</main>
+
+<dialog id="vitrine" aria-labelledby="vit-titulo">
+  <div class="vit-topo">
+    <h2 id="vit-titulo">Compartilhar a camisa</h2>
+    <button type="button" class="fechar" id="vit-fechar" aria-label="Fechar">×</button>
+  </div>
+  <div class="vit-img"><p id="vit-status" role="status">Montando a foto…</p><img id="vit-foto" alt="" hidden></div>
+  <div class="botoes">
+    <button type="button" class="forte" id="vit-enviar" disabled>Enviar a foto e o link</button>
+    <a class="forte" id="vit-whats" href="#" target="_blank" rel="noopener" hidden>Mandar o link no WhatsApp</a>
+    <button type="button" id="vit-enviar-link" hidden>Enviar só o link</button>
+    <button type="button" id="vit-copiar-foto" hidden disabled>Copiar a foto</button>
+    <button type="button" id="vit-baixar" disabled>Baixar a foto</button>
+    <button type="button" id="vit-copiar">Copiar o link</button>
+  </div>
+  <p class="dica" id="vit-dica"></p>
+</dialog>
+
+<script src="config.js?v=20261124110811"></script>
+<script src="montar-dados.js?v=20261124110811"></script>
+<script>
+(function () {
+  "use strict";
+  const D = window.DESENHOS;
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // As cores e as escolhas
+  // ------------------------------------------------------------------------------------------------------------------
+  const CORES = {
+    azul: ["Azul PEI", "#083671"], royal: ["Azul royal", "#1F4FC1"], ufac: ["Azul Ufac", "#0C4DA2"],
+    ouro: ["Dourado", "#FFBF14"], branco: ["Branco", "#FFFFFF"], cinza: ["Cinza", "#5F6368"], preto: ["Preto", "#1A1A1A"],
+  };
+  const TECIDOS = ["azul", "royal", "ufac", "branco", "cinza", "preto"];
+  const DESTAQUES = ["ouro", "ufac", "azul", "branco", "preto"];
+  // em minúscula só a primeira letra ("azul PEI", "azul Ufac")
+  const min1 = function (t) { return !t || /^(Ufac|PEI)\b/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1); };
+  const nomeCor = function (k) { return CORES[k] ? min1(CORES[k][0]) : ""; };
+  // a cor no feminino, para a polo, a gola, a faixa e a pala ("faixa lateral dourada", "polo preta")
+  const nomeCorF = function (k) { return nomeCor(k).replace(/^dourado$/, "dourada").replace(/^branco$/, "branca")
+    .replace(/^preto$/, "preta"); };
+
+  // cada escolha: chave curta (vai no link), rótulo, opções [valor, rótulo] ou cores, e o valor inicial
+  const GRUPOS = [
+    { titulo: "A polo", campos: [
+      { k: "t", rot: "Cor da polo", cores: TECIDOS, ini: "azul" },
+    ] },
+    { titulo: "O logo do PEI na frente", campos: [
+      { k: "l", rot: "Onde", ops: [["centro", "Centro do peito (18 cm)"], ["peito", "Peito esquerdo"],
+        ["peito-h", "Peito, horizontal"], ["sigla", "Peito, só a sigla"], ["nada", "Sem logo"]], ini: "peito" },
+      { k: "lt", rot: "Tamanho no peito", ops: [["10", "10 cm"], ["12", "12 cm"], ["14", "14 cm"]], ini: "10" },
+      { k: "la", rot: "Altura no peito", ops: [["0", "Alta"], ["2", "2 cm mais baixo"], ["6", "6 cm mais baixo"],
+        ["12", "12 cm mais baixo"]], faixa: [0, 15, 0.5], ini: "0" },
+      { k: "lc", rot: "Cor do logo", ops: [["auto", "Automática"], ["negativa", "Branco e dourado"],
+        ["branco", "Todo branco"], ["azul", "Azul PEI"], ["cor", "Colorido"]], ini: "auto" },
+    ] },
+    { titulo: "As mangas (em cima do ombro)", campos: [
+      { k: "me", rot: "Manga esquerda", ops: [["bandeira", "Bandeira do Brasil"], ["ufac", "Ufac"], ["nada", "Nada"]],
+        ini: "bandeira" },
+      { k: "md", rot: "Manga direita", ops: [["ufac", "Ufac"], ["bandeira", "Bandeira do Brasil"], ["nada", "Nada"]],
+        ini: "ufac" },
+      { k: "ac", rot: "Bandeira do Acre", ops: [["nao", "Não"], ["sim", "Embaixo da do Brasil"],
+        ["cima", "Em cima da do Brasil"], ["lado", "Lado a lado"]], ini: "nao" },
+      { k: "bt", rot: "Tamanho da bandeira", ops: [["3.5", "3,5 cm"], ["5", "5 cm"], ["7", "7 cm"]], faixa: [2, 9, 0.5],
+        ini: "3.5" },
+    ] },
+    { titulo: "As costas", campos: [
+      { k: "c", rot: "Costas", ops: [["lisa", "Lisas"], ["nome", "Nome pequeno, abaixo da gola"],
+        ["nome-grande", "Nome grande"], ["logo", "Logo grande (eventos)"]], ini: "lisa" },
+    ] },
+    { titulo: "As barras e os detalhes", campos: [
+      { k: "g", rot: "Gola", cores: DESTAQUES, nada: "Da cor da polo", ini: "" },
+      { k: "p", rot: "Punho (barra da manga)", cores: DESTAQUES, nada: "Da cor da polo", ini: "" },
+      { k: "f", rot: "Friso (gola e punho)", cores: DESTAQUES, nada: "Sem friso", ini: "" },
+      { k: "f2", rot: "Segundo friso", cores: DESTAQUES, nada: "Sem segundo friso", ini: "" },
+      { k: "fl", rot: "Faixa lateral", cores: DESTAQUES, nada: "Sem faixa", ini: "" },
+      { k: "fl2", rot: "Filete da faixa", cores: DESTAQUES, nada: "Sem filete", ini: "" },
+      { k: "pa", rot: "Pala nos ombros", cores: DESTAQUES, nada: "Sem pala", ini: "" },
+      { k: "pa2", rot: "Filete da pala", cores: DESTAQUES, nada: "Sem filete", ini: "" },
+      { k: "v", rot: "Vivo (ombro à carcela)", cores: DESTAQUES, nada: "Sem vivo", ini: "" },
+      { k: "o", rot: "Ombros (raglan)", cores: DESTAQUES, nada: "Da cor da polo", ini: "" },
+    ] },
+  ];
+  const CAMPOS = [];
+  GRUPOS.forEach(function (g) { g.campos.forEach(function (c) { CAMPOS.push(c); }); });
+  const INICIAL = {};
+  CAMPOS.forEach(function (c) { INICIAL[c.k] = c.ini; });
+
+  // os designs prontos: os dez escolhidos em 24/11/2026, com nomes no lugar dos códigos de ../camisa-pei.typ (que
+  // ficam em cod). O id vai na planilha dos corações ("p:" + id): não mude um id que já recebeu corações.
+  const PRONTOS = [
+    { id: "classica", cod: "H", nome: "Clássica", desc: "Logo no peito, Brasil e Ufac nas mangas.", m: {} },
+    { id: "sigla", cod: "H2", nome: "Sigla no peito", desc: "Só a sigla na frente e o nome grande nas costas.",
+      m: { l: "sigla", c: "nome-grande" } },
+    { id: "gola-ufac", cod: "H3", nome: "Gola azul Ufac", desc: "Gola e punho em azul Ufac.", m: { g: "ufac", p: "ufac" } },
+    { id: "friso", cod: "H4", nome: "Friso dourado", desc: "Um friso dourado na gola e no punho.", m: { f: "ouro" } },
+    { id: "faixa", cod: "H5", nome: "Faixa dourada", desc: "Uma faixa dourada em cada lateral.", m: { fl: "ouro" } },
+    { id: "gola-friso", cod: "H10", nome: "Gola Ufac e friso", desc: "Gola e punho azul Ufac, com friso dourado.",
+      m: { g: "ufac", p: "ufac", f: "ouro" } },
+    { id: "friso-duplo", cod: "H11", nome: "Friso duplo", desc: "Frisos dourado e branco na gola e no punho.",
+      m: { f: "ouro", f2: "branco" } },
+    { id: "eventos", cod: "H15", nome: "Logo nas costas", desc: "O logo grande nas costas, para eventos.", m: { c: "logo" } },
+    { id: "logo-maior", cod: "H18", nome: "Logo maior", desc: "Logo de 12 cm no peito, 6 cm mais baixo.",
+      m: { lt: "12", la: "6" } },
+    { id: "acre", cod: "H20", nome: "Bandeira do Acre", desc: "A do Acre embaixo da do Brasil, na manga.", m: { ac: "sim" } },
+  ];
+
+  let st = Object.assign({}, INICIAL);
+  // desenha com outro estado (as miniaturas): troca o estado só durante a chamada
+  function comEstado(e, fn) {
+    const velho = st;
+    st = e;
+    try { return fn(); } finally { st = velho; }
+  }
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // O desenho da polo (o mesmo de ../camisa-pei.typ: 100 × 100 ≈ 1 m de manga a manga)
+  // ------------------------------------------------------------------------------------------------------------------
+  const POLO = "M31 9 L41 5 L59 5 L69 9 L93 22 L85 40 L75 35 L75 96 L25 96 L25 35 L15 40 L7 22 Z";
+  const hex = function (k) { return CORES[k][1]; };
+  function escurecer(h, p) {
+    const n = parseInt(h.slice(1), 16);
+    const f = function (v) { return Math.round(v * (1 - p)).toString(16).padStart(2, "0"); };
+    return "#" + f(n >> 16) + f((n >> 8) & 255) + f(n & 255);
+  }
+  function tons(t) {
+    const claro = t === "branco";
+    const c = hex(t);
+    return {
+      claro: claro, tecido: c,
+      borda: claro ? "#C9CED6" : escurecer(c, 0.18),
+      costura: claro ? "#D5DAE2" : t === "preto" ? "#3A3A3A" : escurecer(c, 0.25),
+      botao: claro ? "#B8BEC8" : "#E8EAED",
+    };
+  }
+  const img = function (uri, x, y, w, h, alinha) {
+    return '<image href="' + uri + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h +
+      '" preserveAspectRatio="' + (alinha || "xMidYMin meet") + '"/>';
+  };
+
+  // a bandeira (Lei 5.700, 20 × 14 módulos), 7 cm de largura, centrada em (cx, cy) e girada
+  const ESTRELAS = [[8.1, 8.7], [8.7, 9.9], [9.3, 9.2], [9.9, 10.2], [10.2, 8.9], [10.7, 9.6], [11.1, 10.6],
+    [11.6, 8.8], [12.0, 9.8], [12.7, 8.7], [9.6, 11.0], [10.4, 11.3], [7.6, 9.6], [12.3, 6.9]];
+  // a bandeira do Acre (20 × 14): amarela em cima, à esquerda, verde embaixo, e a estrela vermelha no canto amarelo
+  function acre(cx, cy, ang, dx, dy, w) {
+    dx = dx || 0; dy = dy || 0; w = w || 7;
+    const pts = [];
+    for (let k = 0; k < 10; k++) {
+      const a = (90 + 36 * k) * Math.PI / 180, r = k % 2 ? 0.76 : 2;
+      pts.push((3.6 + r * Math.cos(a)).toFixed(3) + "," + (3.4 - r * Math.sin(a)).toFixed(3));
+    }
+    return '<g transform="rotate(' + ang + " " + cx + " " + cy + ") translate(" + (cx - w / 2 + dx) + " " + (cy - w * 0.35 + dy) +
+      ') scale(' + w / 20 + ')"><rect width="20" height="14" fill="#00853F"/><path d="M0 0 L20 0 L0 14 Z" fill="#FCD116"/>' +
+      '<polygon points="' + pts.join(" ") + '" fill="#E1251B"/></g>';
+  }
+  function bandeira(cx, cy, ang, id, dx, dy, w) {
+    dx = dx || 0; dy = dy || 0; w = w || 7;
+    return '<g transform="rotate(' + ang + " " + cx + " " + cy + ") translate(" + (cx - w / 2 + dx) + " " + (cy - w * 0.35 + dy) +
+      ') scale(' + w / 20 + ')"><defs><clipPath id="globo-' + id + '"><circle cx="10" cy="7" r="3.5"/></clipPath></defs>' +
+      '<rect width="20" height="14" fill="#009C3B"/><path d="M1.7 7 L10 1.7 L18.3 7 L10 12.3 Z" fill="#FFDF00"/>' +
+      '<circle cx="10" cy="7" r="3.5" fill="#002776"/><g clip-path="url(#globo-' + id + ')">' +
+      '<circle cx="8" cy="14" r="8.5" fill="#fff"/><circle cx="8" cy="14" r="8" fill="#002776"/></g>' +
+      ESTRELAS.map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="0.13" fill="#fff"/>'; }).join("") +
+      "</g>";
+  }
+  // o tamanho das bandeiras (largura em cm, "Tamanho da bandeira"); a Ufac e as bandeiras juntas acompanham na
+  // mesma proporção: com 7 cm de bandeira, a Ufac tinha 6,5 cm e as duas bandeiras juntas, 5,5 cm cada
+  const escalaEmblema = function () { return (+st.bt || 3.5) / 7; };
+  // a Ufac: o escudo e o nome embaixo, centralizado; branca na polo escura, azul na branca
+  function ufac(cx, cy, ang, claro) {
+    const cor = claro ? "azul" : "branco";
+    const L = 6.5 * escalaEmblema(), we = L / 1.55, he = we * 47 / 43.014, vao = 0.14 * we, hl = L * 35 / 106, H = he + vao + hl;
+    const x0 = cx - L / 2, y0 = cy - H / 2;
+    return '<g transform="rotate(' + ang + " " + cx + " " + cy + ')">' +
+      img(D.logos["ufac-escudo-" + cor], x0 + (L - we) / 2, y0, we, he, "none") +
+      img(D.logos["ufac-letras-" + cor], x0, y0 + he + vao, L, hl, "none") + "</g>";
+  }
+  function emblema(qual, cx, cy, ang, k, id) {
+    // as duas juntas, menores: uma em cima da outra ou lado a lado (o Brasil à esquerda)
+    const e = escalaEmblema(), P = 5.5 * e, dy = 2.2 * e, dx = 3.05 * e;
+    if (qual === "bandeira" && st.ac === "sim") return bandeira(cx, cy, ang, id, 0, -dy, P) + acre(cx, cy, ang, 0, dy, P);
+    if (qual === "bandeira" && st.ac === "cima") return acre(cx, cy, ang, 0, -dy, P) + bandeira(cx, cy, ang, id, 0, dy, P);
+    if (qual === "bandeira" && st.ac === "lado") return bandeira(cx, cy, ang, id, -dx, 0, P) + acre(cx, cy, ang, dx, 0, P);
+    if (qual === "bandeira") return bandeira(cx, cy, ang, id, 0, 0, 7 * e);
+    if (qual === "ufac") return ufac(cx, cy, ang, k.claro);
+    return "";
+  }
+  function versaoLogo(k) {
+    if (st.lc !== "auto") return st.lc;
+    return k.claro ? "azul" : "negativa";
+  }
+
+  // as partes comuns da frente e das costas: o corpo, a pala, os ombros, a faixa lateral, o contorno e o punho
+  function corpo(k, atras, id) {
+    let s = '<defs><clipPath id="corpo-' + id + '"><path d="' + POLO + '"/></clipPath></defs>' +
+      '<path d="' + POLO + '" fill="' + k.tecido + '"/>';
+    if (st.pa) {
+      const alt = atras ? 19 : 14.5;
+      s += '<g clip-path="url(#corpo-' + id + ')"><rect x="27" y="0" width="46" height="' + alt + '" fill="' + hex(st.pa) + '"/>' +
+        (st.pa2 ? '<rect x="27" y="' + alt + '" width="46" height="0.9" fill="' + hex(st.pa2) + '"/>' : "") + "</g>";
+    }
+    if (st.o) {
+      s += '<g clip-path="url(#corpo-' + id + ')" fill="' + hex(st.o) + '"><path d="M39.5 4 L31 9 L7 22 L15 40 L25 35.5 Z"/>' +
+        '<path d="M60.5 4 L69 9 L93 22 L85 40 L75 35.5 Z"/></g><path d="M39.5 5.6 L25 35.5 M60.5 5.6 L75 35.5" stroke="' +
+        k.borda + '" stroke-width="0.6" fill="none"/>';
+    }
+    const faixas = [st.fl, st.fl2].filter(Boolean);
+    let x = 0;
+    faixas.forEach(function (c, i) {
+      const l = i === 0 ? 3.6 - 1.0 * (faixas.length - 1) : 1.0;
+      s += '<rect x="' + (25 + x) + '" y="35.5" width="' + l + '" height="60.5" fill="' + hex(c) + '"/>' +
+        '<rect x="' + (75 - x - l) + '" y="35.5" width="' + l + '" height="60.5" fill="' + hex(c) + '"/>';
+      x += l;
+    });
+    if (st.p) {
+      s += '<path d="M7 22 L9.74 20.78 L17.74 38.78 L15 40 Z M93 22 L90.26 20.78 L82.26 38.78 L85 40 Z" fill="' +
+        hex(st.p) + '"/>';
+    }
+    s += '<path d="' + POLO + '" fill="none" stroke="' + k.borda + '" stroke-width="1.2" stroke-linejoin="round"/>' +
+      '<path d="M9.74 20.78 L17.74 38.78 M90.26 20.78 L82.26 38.78" stroke="' + k.costura + '" stroke-width="1.1" fill="none"/>';
+    const frisos = [st.f, st.f2].filter(Boolean);
+    frisos.forEach(function (c, i) {
+      const f = frisos.length === 1 ? 0.45 : [0.28, 0.66][i];
+      const dx = 2.74 * f, dy = -1.22 * f;
+      s += '<path d="M' + (7 + dx) + " " + (22 + dy) + " L" + (15 + dx) + " " + (40 + dy) + " M" + (93 - dx) + " " +
+        (22 + dy) + " L" + (85 - dx) + " " + (40 + dy) + '" stroke="' + hex(c) + '" stroke-width="' +
+        (frisos.length === 1 ? 0.8 : 0.6) + '" fill="none"/>';
+    });
+    return s;
+  }
+
+  function frente(id) {
+    const k = tons(st.t);
+    const gola = st.g ? hex(st.g) : k.tecido;
+    const golaTras = st.g ? escurecer(hex(st.g), 0.15) : k.costura;
+    let s = corpo(k, false, id) +
+      '<path d="M41 5 Q50 1.5 59 5 L59 6.6 Q50 3.6 41 6.6 Z" fill="' + golaTras + '"/>' +
+      '<rect x="47.3" y="12" width="5.4" height="19" fill="' + k.tecido + '" stroke="' + k.borda + '" stroke-width="0.8"/>' +
+      '<circle cx="50" cy="17.5" r="0.95" fill="' + k.botao + '"/><circle cx="50" cy="24" r="0.95" fill="' + k.botao + '"/>' +
+      '<path d="M41 5 L50 13 L46 19 L35.5 8.5 Z" fill="' + gola + '" stroke="' + k.borda + '" stroke-width="1" stroke-linejoin="round"/>' +
+      '<path d="M59 5 L50 13 L54 19 L64.5 8.5 Z" fill="' + gola + '" stroke="' + k.borda + '" stroke-width="1" stroke-linejoin="round"/>';
+    if (st.v) s += '<path d="M33 10 L46.6 30 M67 10 L53.4 30" stroke="' + hex(st.v) + '" stroke-width="0.7" fill="none" stroke-linecap="round"/>';
+    const frisos = [st.f, st.f2].filter(Boolean);
+    frisos.forEach(function (c, i) {
+      const o = 0.64 * i;
+      s += '<path d="M' + (37.2 + o) + " " + (8.3 - o) + " L" + (45.9 + o) + " " + (17.1 - o) + " M" + (62.8 - o) + " " +
+        (8.3 - o) + " L" + (54.1 - o) + " " + (17.1 - o) + '" stroke="' + hex(c) + '" stroke-width="' +
+        (frisos.length === 1 ? 0.8 : 0.6) + '" fill="none" stroke-linecap="round"/>';
+    });
+    // o logo do PEI
+    const v = versaoLogo(k);
+    if (st.l === "centro") s += img(D.logos["vertical-" + v], 41, 35.5, 18, 17);
+    else if (st.l === "peito") {
+      const w = +st.lt || 10, desce = +st.la || 0;
+      s += img(D.logos["vertical-" + v], 62.5 - (w - 10) * 0.5 - w / 2, 20.5 + desce, w, w);
+    }
+    else if (st.l === "peito-h") s += img(D.logos["horizontal-" + v], 57, 22.5, 13, 5);
+    else if (st.l === "sigla") s += img(D.logos["simbolo-" + v], 58.5, 22, 9, 5);
+    // as mangas: na frente, a direita de quem veste fica à esquerda de quem olha
+    s += emblema(st.md, 20.5, 25.5, 66, k, id + "d") + emblema(st.me, 79.5, 25.5, -66, k, id + "e");
+    return s;
+  }
+
+  function costas(id) {
+    const k = tons(st.t);
+    const gola = st.g ? hex(st.g) : k.tecido;
+    let s = corpo(k, true, id) +
+      '<path d="M38.5 6.5 Q50 2.5 61.5 6.5 L61 11 Q50 7.5 39 11 Z" fill="' + gola + '" stroke="' + k.borda + '" stroke-width="1" stroke-linejoin="round"/>' +
+      '<path d="M39 11 Q50 7.5 61 11" stroke="' + k.costura + '" stroke-width="0.9" fill="none"/>';
+    [st.f, st.f2].filter(Boolean).forEach(function (c, i) {
+      s += '<path d="' + ["M39.3 9.6 Q50 6.1 60.7 9.6", "M39 8.2 Q50 4.7 61 8.2"][i] + '" stroke="' + hex(c) +
+        '" stroke-width="0.7" fill="none"/>';
+    });
+    const nome = D.logos["nome-" + (k.claro ? "azul" : "branco")];
+    if (st.c === "nome") s += img(nome, 42, 15, 16, 5);
+    else if (st.c === "nome-grande") s += img(nome, 36, 20, 28, 8);
+    else if (st.c === "logo") s += img(D.logos["vertical-" + versaoLogo(k)], 37, 20, 26, 22);
+    // os emblemas das mangas não aparecem nas costas: ficam em cima do ombro, do lado de fora da manga (Lucas,
+    // 24/11/2026), e se veem de frente, nas mangas ampliadas e no 3D
+    return s;
+  }
+
+  const svg = function (vb, corpoSvg, rotulo) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" role="img" aria-label="' + rotulo + '">' +
+      corpoSvg + "</svg>";
+  };
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // O resumo (na página e na foto)
+  // ------------------------------------------------------------------------------------------------------------------
+  function rotuloDe(k, v) {
+    const c = CAMPOS.find(function (x) { return x.k === k; });
+    if (c.ops) { const o = c.ops.find(function (x) { return x[0] === v; }); return o ? o[1] : v; }
+    return v ? CORES[v][0] : c.nada;
+  }
+  const virgula = function (x) { return String(+x).replace(".", ","); };
+  // [rótulo, texto], um por linha
+  function partesResumo() {
+    const partes = [];
+    partes.push(["Polo", nomeCorF(st.t) + "."]);
+    partes.push(["Logo do PEI", min1(rotuloDe("l", st.l)) +
+      (st.l === "peito" ? ", " + st.lt + " cm" + (+st.la ? ", " + virgula(st.la) + " cm mais baixo" : "") : "") +
+      (st.l !== "nada" ? ", cor " + min1(rotuloDe("lc", st.lc)) : "") + "."]);
+    let mangas = "esquerda, " + min1(rotuloDe("me", st.me)) + "; direita, " + min1(rotuloDe("md", st.md));
+    const temBandeira = st.me === "bandeira" || st.md === "bandeira";
+    if (temBandeira) mangas += "; bandeira com " + virgula(st.bt || 3.5) + " cm, e a Ufac proporcional";
+    const ondeAcre = { sim: "embaixo da", cima: "em cima da", lado: "ao lado da" }[st.ac];
+    if (ondeAcre && temBandeira) mangas += "; com a bandeira do Acre " + ondeAcre + " do Brasil (as duas menores)";
+    partes.push(["Mangas", mangas + "."]);
+    partes.push(["Costas", min1(rotuloDe("c", st.c)) + "."]);
+    const det = [];
+    if (st.g) det.push("gola " + nomeCorF(st.g));
+    if (st.p) det.push("punho " + nomeCor(st.p));
+    const fr = [st.f, st.f2].filter(Boolean).map(nomeCor);
+    if (fr.length) det.push("friso " + fr.join(" e "));
+    const fl = [st.fl, st.fl2].filter(Boolean);
+    if (fl.length) det.push("faixa lateral " + nomeCorF(fl[0]) + (fl[1] ? " com filete " + nomeCor(fl[1]) : ""));
+    if (st.pa) det.push("pala " + nomeCorF(st.pa) + (st.pa2 ? " com filete " + nomeCor(st.pa2) : ""));
+    if (st.v) det.push("vivo " + nomeCor(st.v));
+    if (st.o) det.push("ombros (raglan) " + nomeCor(st.o).replace(/^(dourado|branco|preto)$/, "$1s").replace(/^cinza$/, "cinza"));
+    partes.push(["Detalhes", (det.length ? det.join("; ") : "nenhum (polo lisa)") + "."]);
+    return partes;
+  }
+  const esc = function (s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  };
+  function resumo() {
+    document.getElementById("resumo").innerHTML = partesResumo().map(function (p) {
+      return "<b>" + p[0] + ":</b> " + esc(p[1]);
+    }).join("<br>");
+  }
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // O estado em texto (o mesmo do link e da planilha): só o que muda do inicial, na ordem dos campos
+  // ------------------------------------------------------------------------------------------------------------------
+  function estadoDe(e) {
+    return CAMPOS.filter(function (c) { return e[c.k] !== INICIAL[c.k]; })
+      .map(function (c) { return c.k + "=" + encodeURIComponent(e[c.k]); }).join("&");
+  }
+  // aplica um par do link, se for válido (e os nomes antigos de alguns valores)
+  function aplicarPar(e, k, v) {
+    if (k === "l" && v === "peito-baixo") { e.l = "peito"; e.la = "6"; return; }
+    if (k === "la" && { alta: 1, media: 1, baixa: 1 }[v]) { e.la = { alta: "0", media: "6", baixa: "12" }[v]; return; }
+    const c = CAMPOS.find(function (x) { return x.k === k; });
+    if (!c) return;
+    const naFaixa = c.faixa && v !== "" && !isNaN(+v) && +v >= c.faixa[0] && +v <= c.faixa[1];
+    const valido = naFaixa || (c.ops ? c.ops.some(function (o) { return o[0] === v; }) : (v === "" || c.cores.indexOf(v) >= 0));
+    if (valido) e[c.k] = naFaixa ? String(+v) : v;
+  }
+  function pares(texto) {
+    return String(texto || "").split("&").filter(Boolean).map(function (par) {
+      const i = par.indexOf("=");
+      const k = i < 0 ? par : par.slice(0, i);
+      let v = i < 0 ? "" : par.slice(i + 1);
+      try { v = decodeURIComponent(v); } catch (e) { v = ""; }
+      return [k, v];
+    });
+  }
+  function lerEstado(texto) {
+    const e = Object.assign({}, INICIAL);
+    pares(texto).forEach(function (kv) { aplicarPar(e, kv[0], kv[1]); });
+    return e;
+  }
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // Os designs prontos, a camisa do grupo aberta e o que a prévia mostra
+  // ------------------------------------------------------------------------------------------------------------------
+  const URL_CAMISAS = window.URL_CAMISAS || "";
+
+  let grupo = [];          // as camisas do grupo: { id, nome, autor, estado, criada, atualizada, minha }
+  let origem = null;       // a camisa do grupo aberta por último
+  let pedidoS = null;      // a camisa do grupo do link (s=), até a lista chegar
+  let ordem = "recentes";
+
+  const estadoPronto = function (p, t) { return estadoDe(Object.assign({}, INICIAL, { t: t }, p.m)); };
+  function prontoAtual() {
+    const e = estadoDe(st);
+    return PRONTOS.find(function (p) { return estadoPronto(p, st.t) === e; }) || null;
+  }
+  function grupoAtual() { return origem && origem.estado === estadoDe(st) ? origem : null; }
+  // o design da prévia, para o nome e para os corações: { alvo, nome, de }, ou null se for uma camisa nova
+  function designAtual() {
+    const g = grupoAtual();
+    if (g) return { alvo: "g:" + g.id, nome: g.nome, de: "de " + g.autor, rotulo: g.nome + " (de " + g.autor + ")" };
+    const p = prontoAtual();
+    if (p) return { alvo: "p:" + p.id, nome: p.nome, de: "Design pronto", rotulo: p.nome };
+    return null;
+  }
+
+  const CORACAO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.6 10.6 19.3C5.4 14.6 2 11.5 2 7.8 2 4.8 ' +
+    '4.4 2.5 7.4 2.5c1.7 0 3.4.8 4.6 2.1 1.2-1.3 2.9-2.1 4.6-2.1 3 0 5.4 2.3 5.4 5.3 0 3.7-3.4 6.8-8.6 11.5z"/></svg>';
+  const mini = function (id) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" aria-hidden="true">' + frente(id) + "</svg>";
+  };
+  function cartao(alvo, nome, desc, desenho, rotuloCoracao) {
+    const item = document.createElement("div");
+    item.className = "item";
+    item.dataset.alvo = alvo;
+    item.innerHTML = '<button type="button" class="card" aria-pressed="false"><span class="mini">' + desenho +
+      '</span><span><b>' + esc(nome) + "</b><small>" + esc(desc) + "</small></span></button>" +
+      '<button type="button" class="coracao" data-coracao="' + alvo + '" data-rotulo="' + esc(rotuloCoracao) +
+      '" aria-pressed="false" aria-label="Dar coração em ' + esc(nome) + '">' + CORACAO + '<span class="n">0</span></button>';
+    return item;
+  }
+
+  let corMinis = null;
+  function desenharProntos() {
+    if (corMinis === st.t) return;
+    corMinis = st.t;
+    const caixa = document.getElementById("prontos");
+    caixa.innerHTML = "";
+    PRONTOS.forEach(function (p, i) {
+      const desenho = comEstado(Object.assign({}, INICIAL, { t: st.t }, p.m), function () { return mini("mp" + i); });
+      const item = cartao("p:" + p.id, p.nome, p.desc, desenho, p.nome);
+      item.dataset.cod = p.cod;
+      item.querySelector(".card").addEventListener("click", function () {
+        st = Object.assign({}, INICIAL, { t: st.t }, p.m);
+        origem = null;
+        atualizar();
+        aviso("Design “" + p.nome + "” carregado.");
+      });
+      caixa.appendChild(item);
+    });
+    ordenarProntos();
+    pintarCoracoes();
+  }
+  // os designs prontos: na ordem da lista ou, em "Mais corações", do mais amado para o menos
+  function ordenarProntos() {
+    const caixa = document.getElementById("prontos");
+    const itens = Array.prototype.slice.call(caixa.children);
+    const pos = function (it) { return PRONTOS.findIndex(function (p) { return "p:" + p.id === it.dataset.alvo; }); };
+    itens.sort(function (a, b) {
+      const d = ordem === "coracoes" ? (contagem[b.dataset.alvo] || 0) - (contagem[a.dataset.alvo] || 0) : 0;
+      return d || pos(a) - pos(b);
+    }).forEach(function (it) { caixa.appendChild(it); });
+  }
+
+  function desenharGrupo() {
+    const caixa = document.getElementById("grupo");
+    const vazio = document.getElementById("grupo-vazio");
+    caixa.innerHTML = "";
+    const lista = grupo.slice();
+    if (ordem === "coracoes") {
+      lista.sort(function (a, b) { return (contagem["g:" + b.id] || 0) - (contagem["g:" + a.id] || 0); });
+    }
+    lista.forEach(function (c, i) {
+      const data = c.atualizada ? new Date(c.atualizada) : null;
+      const quando = data && !isNaN(data) ? " · " + data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) : "";
+      const desenho = comEstado(lerEstado(c.estado), function () { return mini("mg" + i); });
+      const item = cartao("g:" + c.id, c.nome, "de " + c.autor + quando, desenho, c.nome + " (de " + c.autor + ")");
+      item.querySelector(".card").addEventListener("click", function () { abrirDoGrupo(c); });
+      if (c.minha) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "apagar";
+        b.textContent = "apagar";
+        b.setAttribute("aria-label", "Apagar a camisa " + c.nome);
+        b.addEventListener("click", function () { apagarCamisa(c); });
+        item.appendChild(b);
+      }
+      caixa.appendChild(item);
+    });
+    vazio.textContent = !URL_CAMISAS ? "As camisas do grupo ainda não estão ligadas à planilha (veja o LEIAME.md)." :
+      carregou && !grupo.length ? "Ainda não tem camisa do grupo: monte a sua e salve!" :
+      !carregou ? "Carregando as camisas do grupo…" : "";
+    ordenarProntos();
+    pintarCoracoes();
+    marcarAtivo();
+  }
+
+  function abrirDoGrupo(c) {
+    st = lerEstado(c.estado);
+    origem = c;
+    if (c.minha) document.getElementById("s-nome").value = c.nome;
+    atualizar();
+    aviso("Camisa “" + c.nome + "”, de " + c.autor + ", aberta.");
+  }
+
+  // o cartão do design da prévia fica marcado
+  function marcarAtivo() {
+    const d = designAtual();
+    document.querySelectorAll(".item").forEach(function (it) {
+      it.querySelector(".card").setAttribute("aria-pressed", d && it.dataset.alvo === d.alvo ? "true" : "false");
+    });
+  }
+
+  // o nome em cima da prévia, o coração dela e os botões de salvar
+  function atualizarAtual() {
+    const d = designAtual();
+    const nome = document.getElementById("atual-nome"), de = document.getElementById("atual-de");
+    const bc = document.getElementById("coracao-atual");
+    if (d) {
+      nome.textContent = d.nome;
+      de.textContent = d.de;
+      bc.dataset.coracao = d.alvo;
+      bc.dataset.rotulo = d.rotulo;
+      bc.disabled = false;
+      bc.title = "";
+    } else {
+      nome.textContent = "Camisa personalizada";
+      de.textContent = origem ? "a partir de “" + origem.nome + "”, de " + origem.autor :
+        login ? "Salve no grupo para receber corações" : "Monte, compartilhe ou entre com o Google para salvar";
+      delete bc.dataset.coracao;
+      bc.disabled = true;
+      bc.title = "Salve a camisa no grupo para receber corações";
+    }
+    const minha = origem && origem.minha;
+    document.getElementById("s-botao").textContent = minha ? "Salvar as mudanças em “" + origem.nome + "”" : "Salvar no grupo";
+    document.getElementById("s-nova").hidden = !minha;
+    marcarAtivo();
+    pintarCoracoes();
+  }
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // O login com o Google: montar, ver as camisas do grupo e compartilhar não pedem login; salvar e dar corações pedem.
+  // A credencial (um JWT assinado pelo Google, válido por 1 hora) vai em cada pedido à planilha, que a confere no
+  // Google. Fica guardada nesta aba do navegador (sessionStorage) até vencer; quem já entrou uma vez volta sem clicar
+  // (auto_select), se o Google deixar.
+  // ------------------------------------------------------------------------------------------------------------------
+  const K_LOGIN = "camisa-pei-login", K_JA = "camisa-pei-ja-entrou";
+  let login = null;                                    // { token, email, nome, exp }
+  function lerJwt(t) {
+    const b = t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const bin = atob(b + "===".slice((b.length + 3) % 4));
+    return JSON.parse(decodeURIComponent(bin.split("").map(function (ch) {
+      return "%" + ("00" + ch.charCodeAt(0).toString(16)).slice(-2);
+    }).join("")));
+  }
+  function guardar(k, v, sessao) {
+    try { (sessao ? sessionStorage : localStorage)[v == null ? "removeItem" : "setItem"](k, v); } catch (e) { /* sem armazenamento */ }
+  }
+  function aoEntrar(r) {
+    try {
+      const d = lerJwt(r.credential);
+      login = { token: r.credential, email: String(d.email || "").toLowerCase(), nome: d.name || d.email || "", exp: +d.exp || 0 };
+    } catch (e) { login = null; return; }
+    guardar(K_LOGIN, JSON.stringify(login), true);
+    guardar(K_JA, "1");
+    mostrarSessao();
+    atualizarAtual();
+    aviso("Você entrou como " + login.nome + ".");
+    carregarGrupo();
+  }
+  window.camisaEntrar = aoEntrar;                      // o retorno do login do Google
+  function sair(motivo) {
+    login = null;
+    guardar(K_LOGIN, null, true);
+    if (!motivo) guardar(K_JA, null);
+    if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect();
+    meus = new Set();
+    grupo.forEach(function (c) { c.minha = false; });
+    if (origem) origem.minha = false;
+    mostrarSessao();
+    desenharGrupo();
+    atualizarAtual();
+    carregarGrupo();
+    aviso(motivo || "Você saiu. A camisa continua aqui; para salvar ou dar corações, entre de novo.");
+    if (motivo) pedirLogin();
+  }
+  // sem login: o que pede login mostra o botão do Google; com login, o nome e o "Sair"
+  function mostrarSessao() {
+    const dentro = !!login;
+    document.getElementById("sessao-fora").hidden = dentro;
+    document.getElementById("sessao-dentro").hidden = !dentro;
+    document.getElementById("grupo-fora").hidden = dentro;
+    document.getElementById("salvar").hidden = !dentro;
+    if (dentro) document.getElementById("sessao-nome").textContent = login.nome + (login.email ? " (" + login.email + ")" : "");
+  }
+  // o aviso do Google no canto (One Tap), quando a pessoa tenta algo que pede login
+  function pedirLogin() {
+    if (window.google && google.accounts && google.accounts.id) google.accounts.id.prompt();
+  }
+  document.getElementById("sair").addEventListener("click", function () { sair(""); });
+  (function () {
+    try {
+      const g = JSON.parse(sessionStorage.getItem(K_LOGIN) || "null");
+      if (g && g.token && g.exp * 1000 > Date.now() + 60000) login = g;
+    } catch (e) { /* sem armazenamento */ }
+  })();
+  // os botões do Google (no topo e nas camisas do grupo): o script dele chega depois (async); espera até ele aparecer
+  (function iniciarGoogle(tentativas) {
+    const caixas = ["login-topo", "login-grupo"].map(function (id) { return document.getElementById(id); });
+    const problema = function (t) {
+      caixas.forEach(function (c) { c.innerHTML = '<p class="dica" style="margin:0">' + t + "</p>"; });
+    };
+    if (!window.CLIENTE_GOOGLE) { problema("O login ainda não foi configurado (veja o LEIAME.md)."); return; }
+    if (!(window.google && google.accounts && google.accounts.id)) {
+      if (tentativas > 75) problema("Não deu para carregar o login do Google. Confira a internet e recarregue a página.");
+      else setTimeout(function () { iniciarGoogle(tentativas + 1); }, 200);
+      return;
+    }
+    google.accounts.id.initialize({ client_id: window.CLIENTE_GOOGLE, callback: aoEntrar, auto_select: true,
+      cancel_on_tap_outside: true });
+    caixas.forEach(function (c) {
+      google.accounts.id.renderButton(c, { theme: "filled_blue", size: "large", text: "signin_with", shape: "pill",
+        locale: "pt-BR" });
+    });
+    let ja = false;
+    try { ja = localStorage.getItem(K_JA) === "1"; } catch (e) { /* sem armazenamento */ }
+    if (!login && ja) google.accounts.id.prompt();
+  })(0);
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // A planilha: as camisas do grupo e os corações (apps-script/Codigo.gs), sempre com o login
+  // ------------------------------------------------------------------------------------------------------------------
+  let contagem = {};                                   // alvo → corações
+  let meus = new Set();                                // os alvos em que a pessoa deu coração
+  const pendentes = new Set();
+  let carregou = false, ultimaCarga = 0;
+
+  // POST com o corpo em texto: o navegador não pede licença antes (CORS simples) e lê a resposta do Apps Script. Com
+  // login, vai o token; a lista também vai sem ele (é livre), o resto pede o login.
+  function enviar(corpo) {
+    if (!login && corpo.acao !== "lista") return Promise.reject(new Error("entre com o Google"));
+    if (login) corpo.token = login.token;
+    return fetch(URL_CAMISAS, { method: "POST", body: JSON.stringify(corpo) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r.erro === "login") { sair("O seu login venceu. Entre de novo."); throw new Error("login vencido"); }
+        if (!r.ok) throw new Error(r.erro || "erro");
+        return r;
+      });
+  }
+  function carregarGrupo() {
+    if (!URL_CAMISAS) { desenharGrupo(); return Promise.resolve(); }
+    ultimaCarga = Date.now();
+    return enviar({ acao: "lista" })
+      .then(function (r) {
+        carregou = true;
+        grupo = r.camisas || [];
+        contagem = r.coracoes || {};
+        pendentes.forEach(function (a) { delete contagem[a]; });
+        meus = new Set(r.meus || []);
+        if (pedidoS) {
+          const c = grupo.find(function (x) { return x.id === pedidoS; });
+          if (c && c.estado === estadoDe(st)) origem = c;
+          pedidoS = null;
+        }
+        if (origem) origem = grupo.find(function (x) { return x.id === origem.id; }) || null;
+        desenharGrupo();
+        atualizarAtual();
+        escreverLink();
+      })
+      .catch(function () {
+        document.getElementById("grupo-vazio").textContent =
+          "Não deu para carregar as camisas do grupo agora. Recarregue a página para tentar de novo.";
+      });
+  }
+  // volta a buscar a lista quando a pessoa volta para a aba (no máximo a cada 30 s)
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && URL_CAMISAS && Date.now() - ultimaCarga > 30000) carregarGrupo();
+  });
+
+  function pintarCoracoes() {
+    document.querySelectorAll(".coracao").forEach(function (b) {
+      const a = b.dataset.coracao;
+      const dado = !!a && !!login && meus.has(a);
+      b.setAttribute("aria-pressed", dado ? "true" : "false");
+      b.querySelector(".n").textContent = a ? (contagem[a] || 0) : "";
+      const rot = b.querySelector(".rot");
+      if (rot) rot.textContent = dado ? "Você deu coração" : "Dar coração";
+      if (a) b.setAttribute("aria-label", !login ? "Dar coração em " + (b.dataset.rotulo || "") + " (" + (contagem[a] || 0) +
+        "; entre com o Google)" :
+        (dado ? "Tirar o coração de " : "Dar coração em ") + (b.dataset.rotulo || "") + " (" + (contagem[a] || 0) + ")");
+    });
+  }
+  function darCoracao(b) {
+    const alvo = b.dataset.coracao;
+    if (!alvo || pendentes.has(alvo)) return;
+    if (!login) { aviso("Para dar coração, entre com o Google (o botão fica no topo da página)."); pedirLogin(); return; }
+    if (!URL_CAMISAS) { aviso("Os corações ainda não estão ligados à planilha."); return; }
+    const dar = !meus.has(alvo);
+    const mudar = function (d) {
+      if (d) meus.add(alvo); else meus.delete(alvo);
+      contagem[alvo] = Math.max(0, (contagem[alvo] || 0) + (d ? 1 : -1));
+      pintarCoracoes();
+    };
+    mudar(dar);                                      // muda na hora e confere com a planilha
+    if (dar) document.querySelectorAll('.coracao[data-coracao="' + alvo + '"]').forEach(function (x) {
+      x.classList.remove("pulsa"); void x.offsetWidth; x.classList.add("pulsa");
+    });
+    pendentes.add(alvo);
+    enviar({ acao: "coracao", alvo: alvo, nome: b.dataset.rotulo || "", dar: dar })
+      .then(function (r) {
+        pendentes.delete(alvo);
+        contagem[alvo] = r.n;
+        pintarCoracoes();
+        if (ordem === "coracoes") { if (alvo.charAt(0) === "g") desenharGrupo(); else ordenarProntos(); }
+      })
+      .catch(function (e) {
+        pendentes.delete(alvo);
+        if (!login) return;
+        mudar(!dar);
+        aviso("Não deu para registrar o coração" + (e && e.message && e.message !== "Failed to fetch" ? " (" + e.message + ")" : "") +
+          ". Tente de novo.");
+      });
+  }
+  document.addEventListener("click", function (ev) {
+    const b = ev.target.closest && ev.target.closest(".coracao");
+    if (b && !b.disabled) darCoracao(b);
+  });
+
+  // salvar no grupo: uma camisa nova ou as mudanças numa camisa sua (a planilha confere pelo login)
+  const fSalvar = document.getElementById("salvar");
+  const sNome = document.getElementById("s-nome");
+  function salvar(comoNova) {
+    if (!URL_CAMISAS) { aviso("O salvamento ainda não está ligado à planilha."); return; }
+    if (!fSalvar.reportValidity()) return;
+    const nome = sNome.value.trim();
+    const editar = !comoNova && origem && origem.minha;
+    const corpo = { acao: "salvar", nome: nome, estado: estadoDe(st) };
+    if (editar) corpo.id = origem.id;
+    const botoes = fSalvar.querySelectorAll("button");
+    botoes.forEach(function (b) { b.disabled = true; });
+    aviso("Salvando…");
+    enviar(corpo).then(function (r) {
+      origem = { id: r.id, nome: nome, autor: r.autor || (login && login.nome) || "", estado: estadoDe(st),
+        atualizada: new Date().toISOString(), minha: true };
+      grupo = [origem].concat(grupo.filter(function (x) { return x.id !== r.id; }));
+      desenharGrupo();
+      atualizar();
+      aviso(editar ? "Mudanças salvas em “" + nome + "”." : "“" + nome + "” salva no grupo: todos já podem ver e dar corações.");
+      carregarGrupo();
+    }).catch(function (e) {
+      if (!login) return;
+      aviso("Não deu para salvar" + (e && e.message && e.message !== "Failed to fetch" ? " (" + e.message + ")" : "") +
+        ". Tente de novo.");
+      carregarGrupo();
+    }).then(function () { botoes.forEach(function (b) { b.disabled = false; }); });
+  }
+  fSalvar.addEventListener("submit", function (ev) { ev.preventDefault(); salvar(false); });
+  document.getElementById("s-nova").addEventListener("click", function () { salvar(true); });
+
+  function apagarCamisa(c) {
+    if (!window.confirm("Apagar a camisa “" + c.nome + "”? Ela some da lista do grupo, com os corações.")) return;
+    enviar({ acao: "apagar", id: c.id }).then(function () {
+      grupo = grupo.filter(function (x) { return x.id !== c.id; });
+      if (origem && origem.id === c.id) origem = null;
+      desenharGrupo();
+      atualizar();
+      aviso("Camisa “" + c.nome + "” apagada.");
+    }).catch(function (e) { if (login) aviso("Não deu para apagar (" + (e && e.message) + ")."); });
+  }
+  document.querySelectorAll("[data-ordem]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      ordem = b.dataset.ordem;
+      document.querySelectorAll("[data-ordem]").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      desenharGrupo();
+    });
+  });
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // O formulário e o link
+  // ------------------------------------------------------------------------------------------------------------------
+  const form = document.getElementById("form");
+  function montarForm() {
+    GRUPOS.forEach(function (g) {
+      const fs = document.createElement("fieldset");
+      fs.innerHTML = "<legend>" + g.titulo + "</legend>";
+      g.campos.forEach(function (c) {
+        const linha = document.createElement("div");
+        linha.className = "linha";
+        const grupoId = "campo-" + c.k;
+        let html = '<span id="' + grupoId + '">' + c.rot + '</span><div class="opcoes" role="radiogroup" aria-labelledby="' +
+          grupoId + '">';
+        if (c.ops) {
+          c.ops.forEach(function (o) {
+            html += '<label><input type="radio" name="' + c.k + '" value="' + o[0] + '"><span class="chip">' + o[1] +
+              "</span></label>";
+          });
+          if (c.faixa) {
+            html += '<label class="ajuste">Personalizado: <input type="range" data-faixa="' + c.k + '" min="' + c.faixa[0] +
+              '" max="' + c.faixa[1] + '" step="' + c.faixa[2] + '" aria-label="' + c.rot + ', em cm"><output></output></label>';
+          }
+        } else {
+          if (c.nada) html += '<label title="' + c.nada + '"><input type="radio" name="' + c.k + '" value="" aria-label="' +
+            c.nada + '"><span class="cor nada"></span></label>';
+          c.cores.forEach(function (k) {
+            html += '<label title="' + CORES[k][0] + '"><input type="radio" name="' + c.k + '" value="' + k +
+              '" aria-label="' + CORES[k][0] + '"><span class="cor" style="background:' + CORES[k][1] + '"></span></label>';
+          });
+        }
+        linha.innerHTML = html + "</div>";
+        fs.appendChild(linha);
+      });
+      form.appendChild(fs);
+    });
+    form.addEventListener("change", function (ev) {
+      if (ev.target.name) { st[ev.target.name] = ev.target.value; atualizar(); }
+    });
+    // a barra muda enquanto se arrasta
+    form.addEventListener("input", function (ev) {
+      const k = ev.target.dataset && ev.target.dataset.faixa;
+      if (k) { st[k] = String(+ev.target.value); atualizar(); }
+    });
+  }
+
+  function marcarForm() {
+    CAMPOS.forEach(function (c) {
+      form.querySelectorAll('input[name="' + c.k + '"]').forEach(function (r) { r.checked = false; });
+      const el = form.querySelector('input[name="' + c.k + '"][value="' + (st[c.k] || "") + '"]');
+      if (el) el.checked = true;
+      const faixa = form.querySelector('input[data-faixa="' + c.k + '"]');
+      if (faixa) {
+        faixa.value = st[c.k];
+        faixa.nextElementSibling.textContent = virgula(st[c.k]) + " cm";
+      }
+    });
+  }
+
+  // o link: as escolhas, a camisa do grupo (s=) e o modo 3D (ver=3d)
+  function lerLink() {
+    pares(location.hash.replace(/^#/, "")).forEach(function (kv) {
+      if (kv[0] === "ver" && kv[1] === "3d") window.ABRIR_3D = true;
+      else if (kv[0] === "vista") window.VISTA_3D = kv[1];
+      else if (kv[0] === "s" && /^[0-9a-f]{10}$/.test(kv[1])) pedidoS = kv[1];
+      else aplicarPar(st, kv[0], kv[1]);
+    });
+  }
+  function escreverLink() {
+    const e = estadoDe(st);
+    const lista = e ? [e] : [];
+    const g = grupoAtual();
+    if (g) lista.push("s=" + g.id);
+    else if (pedidoS) lista.push("s=" + pedidoS);
+    if (window.EM_3D) lista.push("ver=3d");
+    try { history.replaceState(null, "", lista.length ? "#" + lista.join("&") : location.pathname + location.search); } catch (err) {}
+  }
+
+  let n = 0;
+  function atualizar() {
+    n++;
+    document.getElementById("v-frente").innerHTML = svg("2 0 96 98", frente("f" + n), "Frente da camisa");
+    document.getElementById("v-costas").innerHTML = svg("2 0 96 98", costas("c" + n), "Costas da camisa");
+    document.getElementById("v-manga-dir").innerHTML = svg("4 10 28 28", frente("md" + n), "Manga direita, ampliada");
+    document.getElementById("v-manga-esq").innerHTML = svg("68 10 28 28", frente("me" + n), "Manga esquerda, ampliada");
+    marcarForm();
+    resumo();
+    desenharProntos();
+    atualizarAtual();
+    escreverLink();
+    window.CAMISA = Object.assign({}, st);
+    window.dispatchEvent(new CustomEvent("camisa"));
+  }
+
+  let tempoAviso;
+  function aviso(t) {
+    const el = document.getElementById("aviso");
+    el.textContent = t;
+    clearTimeout(tempoAviso);
+    tempoAviso = setTimeout(function () { el.textContent = ""; }, 4000);
+  }
+  function copiarLink(onde) {
+    (navigator.clipboard ? navigator.clipboard.writeText(location.href) : Promise.reject()).then(function () {
+      onde("Link copiado.");
+    }, function () { onde("Não deu para copiar: copie o endereço da barra do navegador."); });
+  }
+  document.getElementById("copiar").addEventListener("click", function () { copiarLink(aviso); });
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // A vitrine: a foto para compartilhar, com o desenho (frente, costas e mangas), o resumo e o avatar 3D em quatro
+  // vistas (se o 3D abrir). Compartilhar manda só a foto e o link.
+  // ------------------------------------------------------------------------------------------------------------------
+  const carregarImagem = function (src) {
+    return new Promise(function (ok, erro) {
+      const im = new Image();
+      im.onload = function () { ok(im); };
+      im.onerror = erro;
+      im.src = src;
+    });
+  };
+  const LARG = 1600;
+  function svgVitrine(H) {
+    const quadro = function (x, y, w, h, vb, conteudo) {
+      return '<svg x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" viewBox="' + vb + '">' + conteudo + "</svg>";
+    };
+    const prop = D.proporcao.horizontal, lh = 74, lw = lh * prop[0] / prop[1];
+    const manga = function (x, vb, id) {
+      return '<clipPath id="r' + id + '"><rect x="' + x + '" y="188" width="214" height="214" rx="14"/></clipPath>' +
+        '<rect x="' + x + '" y="188" width="214" height="214" rx="14" fill="#fff"/>' +
+        '<g clip-path="url(#r' + id + ')">' + quadro(x, 188, 214, 214, vb, frente(id)) + "</g>" +
+        '<rect x="' + x + '" y="188" width="214" height="214" rx="14" fill="none" stroke="#DADFE7" stroke-width="2"/>';
+    };
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + LARG + '" height="' + H + '" viewBox="0 0 ' + LARG + " " + H + '">' +
+      '<rect width="' + LARG + '" height="' + H + '" fill="#fff"/>' +
+      '<rect width="960" height="12" fill="#083671"/><rect x="960" width="480" height="12" fill="#0C4DA2"/>' +
+      '<rect x="1440" width="160" height="12" fill="#FFBF14"/>' +
+      img(D.logos["horizontal-cor"], LARG - 48 - lw, 46, lw, lh, "xMaxYMid meet") +
+      '<rect x="32" y="188" width="1040" height="580" rx="18" fill="#F3F6FB"/>' +
+      quadro(52, 200, 500, 510, "2 0 96 98", frente("vf")) +
+      quadro(552, 200, 500, 510, "2 0 96 98", costas("vc")) +
+      manga(1100, "4 10 28 28", "vmd") + manga(1338, "68 10 28 28", "vme") +
+      '<rect x="1100" y="446" width="452" height="322" rx="14" fill="#EEF2F8"/>' +
+      "</svg>";
+  }
+  // o resumo com o rótulo em negrito, quebrando as linhas; devolve a altura usada (ou só mede, com desenhar = false)
+  function escreverResumo(ctx, x, y, largura, tam, desenhar) {
+    const alt = Math.round(tam * 1.45);
+    let yy = y;
+    partesResumo().forEach(function (p) {
+      const palavras = [{ t: p[0] + ":", b: true }].concat(p[1].split(" ").map(function (t) { return { t: t, b: false }; }));
+      let cx = x;
+      palavras.forEach(function (w) {
+        ctx.font = (w.b ? "700 " : "500 ") + tam + "px Montserrat, system-ui, sans-serif";
+        let s = (cx > x ? " " : "") + w.t;
+        let ws = ctx.measureText(s).width;
+        if (cx + ws > x + largura && cx > x) { yy += alt; cx = x; s = w.t; ws = ctx.measureText(s).width; }
+        if (desenhar) { ctx.fillStyle = w.b ? "#083671" : "#1E1E1E"; ctx.fillText(s, cx, yy); }
+        cx += ws;
+      });
+      yy += alt + 6;
+    });
+    return yy - y;
+  }
+  function cortar(ctx, texto, largura) {
+    if (ctx.measureText(texto).width <= largura) return texto;
+    while (texto.length > 1 && ctx.measureText(texto + "…").width > largura) texto = texto.slice(0, -1);
+    return texto + "…";
+  }
+  function arredondado(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h);
+  }
+  function titulos() {
+    const d = designAtual();
+    if (d) return [d.nome, d.de];
+    const nome = sNome.value.trim(), autor = login ? login.nome : "";
+    return [nome || "Camisa do PEI", autor ? "de " + autor : origem ? "a partir de “" + origem.nome + "”" : ""];
+  }
+  async function gerarVitrine(estado) {
+    try { await Promise.all(["800 48px Montserrat", "700 20px Montserrat", "500 16px Montserrat"].map(function (f) {
+      return document.fonts.load(f); })); } catch (e) { /* fica a fonte do sistema */ }
+    let vistas = null;
+    if (window.VISTAS_3D) {
+      estado("Montando o avatar 3D nas quatro vistas…");
+      try { vistas = await window.VISTAS_3D(744, 930); } catch (e) { vistas = null; }
+    }
+    estado("Montando a foto…");
+    const y3 = 800, l3 = 372, a3 = 465, H = vistas ? 1330 : 800;
+    const base = await carregarImagem("data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgVitrine(H)));
+    const cv = document.createElement("canvas");
+    cv.width = LARG; cv.height = H;
+    const ctx = cv.getContext("2d");
+    ctx.drawImage(base, 0, 0);
+    ctx.textBaseline = "alphabetic";
+    const t = titulos();
+    // o chapéu "CAMISA DO PEI" só quando a camisa tem nome; sem nome, o título já é "Camisa do PEI"
+    const soPEI = t[0] === "Camisa do PEI";
+    if (!soPEI) {
+      ctx.fillStyle = "#0C4DA2"; ctx.font = "700 20px Montserrat, system-ui, sans-serif";
+      ctx.fillText("CAMISA DO PEI", 48, 66);
+    }
+    ctx.fillStyle = "#083671"; ctx.font = "800 48px Montserrat, system-ui, sans-serif";
+    ctx.fillText(cortar(ctx, t[0], 1020), 48, soPEI ? (t[1] ? 108 : 118) : 122);
+    if (t[1]) {
+      ctx.fillStyle = "#5B6678"; ctx.font = "600 22px Montserrat, system-ui, sans-serif";
+      ctx.fillText(cortar(ctx, t[1], 1020), 48, soPEI ? 148 : 160);
+    }
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#083671"; ctx.font = "700 22px Montserrat, system-ui, sans-serif";
+    ctx.fillText("Frente", 302, 748); ctx.fillText("Costas", 802, 748);
+    ctx.font = "700 17px Montserrat, system-ui, sans-serif";
+    ctx.fillText("Manga direita", 1207, 428); ctx.fillText("Manga esquerda", 1445, 428);
+    ctx.textAlign = "left";
+    let tam = 17;
+    while (tam > 12 && escreverResumo(ctx, 1120, 0, 412, tam, false) > 290) tam--;
+    escreverResumo(ctx, 1120, 446 + 18 + tam, 412, tam, true);
+    if (vistas) {
+      const fotos = await Promise.all(vistas.map(carregarImagem));
+      const nomes = ["Frente", "Lado esquerdo", "Lado direito", "Costas"];
+      fotos.forEach(function (f, i) {
+        const x = 32 + i * (l3 + 16);
+        ctx.save(); arredondado(ctx, x, y3, l3, a3, 14); ctx.clip();
+        ctx.drawImage(f, x, y3, l3, a3);
+        ctx.restore();
+        ctx.textAlign = "center"; ctx.fillStyle = "#083671"; ctx.font = "700 20px Montserrat, system-ui, sans-serif";
+        ctx.fillText(nomes[i], x + l3 / 2, y3 + a3 + 32);
+        ctx.textAlign = "left";
+      });
+    }
+    // sem o "Monte a sua: <endereço>" no rodapé (Lucas, 24/11/2026: "Tire o monte a sua")
+    return new Promise(function (ok, erro) {
+      try { cv.toBlob(function (b) { b ? ok(b) : erro(new Error("sem imagem")); }, "image/png"); } catch (e) { erro(e); }
+    });
+  }
+
+  const dlg = document.getElementById("vitrine");
+  const vitFoto = document.getElementById("vit-foto"), vitStatus = document.getElementById("vit-status");
+  const vitEnviar = document.getElementById("vit-enviar"), vitBaixar = document.getElementById("vit-baixar");
+  const vitWhats = document.getElementById("vit-whats"), vitDica = document.getElementById("vit-dica");
+  const vitLink = document.getElementById("vit-enviar-link"), vitCopiarFoto = document.getElementById("vit-copiar-foto");
+  let fotoAtual = null, urlFoto = null, geracao = 0, linkCopiado = false;
+  // Alguns apps recebem só um item da folha de compartilhar: o WhatsApp no Mac (e no iPhone) fica com a foto e perde o
+  // link (Lucas, 24/11/2026: "não compartilha o link e a foto ao mesmo tempo (No mac)"). Por isso, ao enviar a foto, o
+  // link vai também para a área de transferência, e há os botões "Enviar só o link" e "Copiar a foto".
+  const celular = /iPhone|iPad|Android/.test(navigator.userAgent);
+  const colar = celular ? "cole o link na conversa" :
+    "cole o link na conversa (" + (/Mac/.test(navigator.platform || navigator.userAgent) ? "⌘V" : "Ctrl+V") + ")";
+  const podeCopiarFoto = !!(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write);
+  function nomeArquivo() {
+    const nome = titulos()[0].normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    return "camisa-pei" + (nome && nome !== "camisa-do-pei" ? "-" + nome.slice(0, 40) : "") + ".png";
+  }
+  function abrirVitrine() {
+    const minha = ++geracao;
+    fotoAtual = null;
+    if (urlFoto) { URL.revokeObjectURL(urlFoto); urlFoto = null; }
+    vitFoto.hidden = true;
+    vitStatus.hidden = false;
+    vitStatus.textContent = "Montando a foto…";
+    vitEnviar.disabled = true; vitBaixar.disabled = true; vitCopiarFoto.disabled = true;
+    vitEnviar.hidden = false; vitWhats.hidden = true;
+    vitLink.hidden = !navigator.share;
+    vitCopiarFoto.hidden = !podeCopiarFoto;
+    vitDica.textContent = "";
+    linkCopiado = false;
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    gerarVitrine(function (t) { if (minha === geracao) vitStatus.textContent = t; }).then(function (b) {
+      if (minha !== geracao) return;
+      fotoAtual = new File([b], nomeArquivo(), { type: "image/png" });
+      urlFoto = URL.createObjectURL(b);
+      vitFoto.src = urlFoto;
+      vitFoto.alt = "A foto da camisa: " + titulos()[0] + ", de frente, de costas, as mangas e o avatar 3D";
+      vitFoto.hidden = false;
+      vitStatus.hidden = true;
+      vitBaixar.disabled = false;
+      vitCopiarFoto.disabled = false;
+      const podeArquivo = navigator.canShare && navigator.canShare({ files: [fotoAtual] });
+      if (podeArquivo) {
+        vitEnviar.disabled = false;
+        vitDica.textContent = "Alguns apps, como o WhatsApp no Mac, recebem só a foto. Por isso, ao enviar, o link também " +
+          "é copiado: se ele não aparecer, " + colar + ". Ou mande o link separado.";
+      } else {
+        vitEnviar.hidden = true;
+        vitWhats.hidden = false;
+        vitWhats.href = "https://wa.me/?text=" + encodeURIComponent(location.href);
+        vitDica.textContent = podeCopiarFoto ?
+          "Copie a foto e cole na conversa; depois mande o link (pelo botão do WhatsApp ou copiando)." :
+          "Baixe a foto e anexe na conversa; o botão do WhatsApp manda o link.";
+      }
+    }, function () {
+      if (minha !== geracao) return;
+      vitStatus.textContent = "Não deu para montar a foto neste navegador. Copie o link e mande.";
+    });
+  }
+  document.getElementById("compartilhar").addEventListener("click", abrirVitrine);
+  document.getElementById("vit-fechar").addEventListener("click", function () { dlg.close(); });
+  dlg.addEventListener("click", function (ev) { if (ev.target === dlg) dlg.close(); });
+  dlg.addEventListener("close", function () { geracao++; });
+  vitEnviar.addEventListener("click", function () {
+    if (!fotoAtual) return;
+    const url = location.href;
+    // o link vai para a área de transferência antes (só na primeira vez: se o navegador gastar o clique com isso,
+    // o segundo clique já abre o menu de compartilhar direto)
+    if (!linkCopiado && navigator.clipboard && navigator.clipboard.writeText) {
+      linkCopiado = true;
+      navigator.clipboard.writeText(url).then(function () {
+        vitDica.textContent = "O link foi copiado. Se o app receber só a foto, " + colar + ".";
+      }, function () { linkCopiado = false; });
+    }
+    navigator.share({ files: [fotoAtual], text: url }).catch(function (e) {
+      if (e && e.name === "AbortError") return;              // a pessoa fechou o menu
+      vitDica.textContent = e && e.name === "NotAllowedError" ? "Clique de novo em “Enviar a foto e o link”." :
+        "Não deu para compartilhar daqui: copie ou baixe a foto e mande o link.";
+    });
+  });
+  vitLink.addEventListener("click", function () {
+    navigator.share({ url: location.href }).catch(function (e) {
+      if (e && e.name === "AbortError") return;
+      copiarLink(function (t) { vitDica.textContent = t; });
+    });
+  });
+  vitCopiarFoto.addEventListener("click", function () {
+    if (!fotoAtual) return;
+    navigator.clipboard.write([new ClipboardItem({ "image/png": fotoAtual })]).then(function () {
+      vitDica.textContent = "Foto copiada: cole na conversa e depois mande o link (botão “Copiar o link” ou “Enviar só o link”).";
+    }, function () { vitDica.textContent = "Não deu para copiar a foto neste navegador: use “Baixar a foto”."; });
+  });
+  vitBaixar.addEventListener("click", function () {
+    if (!urlFoto) return;
+    const a = document.createElement("a");
+    a.href = urlFoto;
+    a.download = fotoAtual ? fotoAtual.name : "camisa-pei.png";
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+  document.getElementById("vit-copiar").addEventListener("click", function () {
+    copiarLink(function (t) { vitDica.textContent = t; });
+  });
+
+  window.atualizarLink = escreverLink;
+  montarForm();
+  lerLink();
+  atualizar();
+  mostrarSessao();
+  carregarGrupo();
+})();
+</script>
+<script>
+// o seletor desenho / 3D: o 3D só carrega (three.js e as peças, ~3 MB) na primeira vez
+(function () {
+  const b2 = document.getElementById("modo-2d"), b3 = document.getElementById("modo-3d");
+  function modo(tres) {
+    b2.setAttribute("aria-pressed", tres ? "false" : "true");
+    b3.setAttribute("aria-pressed", tres ? "true" : "false");
+    document.getElementById("area-2d").hidden = tres;
+    document.getElementById("area-3d").hidden = !tres;
+    window.EM_3D = tres;
+    if (window.atualizarLink) window.atualizarLink();
+    if (tres) window.dispatchEvent(new CustomEvent("abrir-3d"));
+  }
+  if (window.ABRIR_3D) modo(true);
+  b2.addEventListener("click", function () { modo(false); });
+  b3.addEventListener("click", function () { modo(true); });
+})();
+</script>
+<script type="module">
+// O avatar 3D (as peças vêm do OpenSCAD: ../avatar/avatar.scad, exportadas pelo ../avatar/exportar-3d.sh para
+// montar-3d.js). Cada peça é pintada e ligada conforme a escolha (window.CAMISA), a cada mudança.
+const CORES = { azul: "#083671", royal: "#1F4FC1", ufac: "#0C4DA2", ouro: "#FFBF14", branco: "#FFFFFF",
+  cinza: "#5F6368", preto: "#1A1A1A" };
+const PELE = "#C68F6E", CABELO = "#2B2522", CALCA = "#3A3F47";
+const BANDEIRA = { verde: "#009C3B", amarelo: "#FFDF00", azul: "#002776", branco: "#FFFFFF" };
+const ACRE = { verde: "#00853F", amarelo: "#FCD116", vermelho: "#E1251B" };
+let THREE, cena, camera, render, controles, malhas = {}, pose = "aberto", pronto = false, iniciando = null;
+const alvo = { x: 0, y: 1280, z: 0 };
+
+function escurecer(h, p) {
+  const n = parseInt(h.slice(1), 16);
+  const f = (v) => Math.round(v * (1 - p)).toString(16).padStart(2, "0");
+  return "#" + f(n >> 16) + f((n >> 8) & 255) + f(n & 255);
+}
+function carregarScript(src) {
+  return new Promise((ok, erro) => {
+    const s = document.createElement("script");
+    s.src = src; s.onload = ok; s.onerror = erro;
+    document.head.appendChild(s);
+  });
+}
+const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)).buffer;
+
+// carrega uma vez só; quem chamar de novo espera a mesma carga
+function iniciar() {
+  if (pronto) return Promise.resolve();
+  if (!iniciando) iniciando = carregar().finally(() => { if (!pronto) iniciando = null; });
+  return iniciando;
+}
+async function carregar() {
+  const aviso = document.getElementById("carregando-3d");
+  try {
+    THREE = await import("three");
+    const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261124110811");
+    const caixa = document.getElementById("v-3d");
+    render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    caixa.appendChild(render.domElement);
+    cena = new THREE.Scene();
+    cena.background = new THREE.Color("#E9ECF1");
+    camera = new THREE.PerspectiveCamera(28, 4 / 5, 50, 12000);
+    cena.add(new THREE.HemisphereLight(0xffffff, 0x9aa0aa, 1.9));
+    const luz = new THREE.DirectionalLight(0xffffff, 1.7); luz.position.set(700, 2000, 1800); cena.add(luz);
+    const luz2 = new THREE.DirectionalLight(0xffffff, 0.7); luz2.position.set(-1500, 1400, -900); cena.add(luz2);
+    const M = window.MALHAS3D;
+    for (const [nome, p] of Object.entries(M.partes)) {
+      const v = new Int16Array(b64(p.v));
+      const pos = new Float32Array(v.length);
+      for (let i = 0; i < v.length; i++) pos[i] = v[i] * M.escala;
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      g.setIndex(new THREE.BufferAttribute(p.i32 ? new Uint32Array(b64(p.i)) : new Uint16Array(b64(p.i)), 1));
+      g.computeVertexNormals();
+      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.88, metalness: 0 }));
+      m.visible = false;
+      m.name = nome;
+      cena.add(m);
+      malhas[nome] = m;
+    }
+    controles = new OrbitControls(camera, render.domElement);
+    controles.target.set(alvo.x, alvo.y, alvo.z);
+    controles.enablePan = false;
+    controles.enableDamping = true;
+    controles.minDistance = 700;
+    controles.maxDistance = 4200;
+    controles.minPolarAngle = 0.35;
+    controles.maxPolarAngle = 2.2;
+    controles.addEventListener("change", desenhar);
+    new ResizeObserver(ajustar).observe(caixa);
+    aviso.remove();
+    pronto = true;
+    ajustar();
+    vista({ frente: 1, esquerda: 1, direita: 1, costas: 1 }[window.VISTA_3D] ? window.VISTA_3D : "frente");
+    aplicar();
+    (function laco() { requestAnimationFrame(laco); if (controles.update()) desenhar(); })();
+  } catch (e) {
+    console.error(e);
+    if (aviso.isConnected) aviso.textContent = "Não deu para abrir o 3D: precisa de internet (para o three.js) e de um navegador com WebGL.";
+    throw e;
+  }
+}
+// a profundidade da frente da polo (z), medida uma vez numa grade de x e y (mm) sobre o peito esquerdo, para o logo
+// descer acompanhando a curva do peito: cada ponto do logo anda a diferença da profundidade entre a altura nova e a velha
+let campo = null;
+function medirFrente() {
+  const corpo = malhas["corpo"];
+  corpo.updateMatrixWorld();
+  const raio = new THREE.Raycaster(), dir = new THREE.Vector3(0, 0, -1), o = new THREE.Vector3();
+  const c = { X0: -10, Y0: 990, P: 5, NX: 48, NY: 78 };
+  c.z = new Float32Array(c.NX * c.NY).fill(NaN);
+  for (let j = 0; j < c.NY; j++) for (let i = 0; i < c.NX; i++) {
+    raio.set(o.set(c.X0 + i * c.P, c.Y0 + j * c.P, 1500), dir);
+    const h = raio.intersectObject(corpo, false);
+    if (h.length) c.z[j * c.NX + i] = h[0].point.z;
+  }
+  campo = c;
+}
+function profundidade(x, y) {
+  const c = campo, fx = (x - c.X0) / c.P, fy = (y - c.Y0) / c.P, i = Math.floor(fx), j = Math.floor(fy);
+  if (i < 0 || j < 0 || i >= c.NX - 1 || j >= c.NY - 1) return NaN;
+  const a = fx - i, b = fy - j, k = j * c.NX + i;
+  return (c.z[k] * (1 - a) + c.z[k + 1] * a) * (1 - b) + (c.z[k + c.NX] * (1 - a) + c.z[k + c.NX + 1] * a) * b;
+}
+function descer(m, mm) {
+  if (!m || m.userData.desce === mm) return;
+  if (!campo) medirFrente();
+  const atr = m.geometry.attributes.position;
+  const orig = m.userData.orig || (m.userData.orig = atr.array.slice());
+  const pos = atr.array;
+  for (let i = 0; i < pos.length; i += 3) {
+    const x = orig[i], y = orig[i + 1], z = orig[i + 2];
+    const d = mm ? profundidade(x, y - mm) - profundidade(x, y) : 0;
+    pos[i + 1] = y - mm;
+    pos[i + 2] = z + (Number.isFinite(d) ? d : 0);
+  }
+  atr.needsUpdate = true;
+  m.geometry.computeBoundingSphere();
+  m.userData.desce = mm;
+}
+
+// os emblemas das mangas foram exportados no tamanho de antes (bandeira de 7 cm); aqui eles são reduzidos ou
+// ampliados em torno do centro, sobre a manga: em coordenadas cilíndricas do braço, o ângulo e a altura em volta do
+// centro são multiplicados pela escala, e o raio acompanha o cone da manga (de 63 mm no punho a 70 mm no ombro), para
+// o emblema continuar rente ao tecido
+function matrizBraco(lado, pose) {
+  const g = Math.PI / 180;
+  const r = pose === "cruzado" ? [lado > 0 ? -22 : -18, -lado * 5, 0] : [0, -lado * 16, 0];
+  return new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(r[0] * g, r[1] * g, r[2] * g, "ZYX"))
+    .setPosition(lado * 186, 0, 1368);
+}
+function escalarEmblema(m, s) {
+  if (!m || m.userData.escala === s) return;
+  const [nome, poseM] = m.name.split("@");
+  const lado = nome.includes("-esq") ? 1 : -1;
+  const zc = nome.startsWith("ufac") ? -98 : -100, tc = lado > 0 ? 0 : Math.PI;
+  const M = matrizBraco(lado, poseM), Mi = M.clone().invert();
+  const atr = m.geometry.attributes.position;
+  const orig = m.userData.orig || (m.userData.orig = atr.array.slice());
+  const pos = atr.array, v = new THREE.Vector3();
+  for (let i = 0; i < pos.length; i += 3) {
+    v.set(orig[i], -orig[i + 2], orig[i + 1]).applyMatrix4(Mi);       // three.js → OpenSCAD → braço
+    const r = Math.hypot(v.x, v.y);
+    let t = Math.atan2(v.y, v.x) - tc;
+    t = Math.atan2(Math.sin(t), Math.cos(t));
+    const t2 = tc + t * s, z2 = zc + (v.z - zc) * s, r2 = r + 0.0355 * (z2 - v.z);
+    v.set(r2 * Math.cos(t2), r2 * Math.sin(t2), z2).applyMatrix4(M);
+    pos[i] = v.x; pos[i + 1] = v.z; pos[i + 2] = -v.y;                 // OpenSCAD → three.js
+  }
+  atr.needsUpdate = true;
+  m.geometry.computeBoundingSphere();
+  m.userData.escala = s;
+}
+
+function ajustar() {
+  const c = document.getElementById("v-3d");
+  const w = c.clientWidth, h = c.clientHeight;
+  if (!w || !h) return;
+  render.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  desenhar();
+}
+function desenhar() { if (pronto) render.render(cena, camera); }
+
+// as vistas: o avatar olha para +z; o lado esquerdo dele é +x
+function posicionar(v, d = 3000) {
+  // de lado, 70°: a manga (a bandeira de um lado, a Ufac do outro) fica de frente para a câmera (Lucas, 24/11/2026:
+  // "o lado esquerdo vire mais para ver bem o lado esquerdo"; antes eram 42°)
+  const ang = { frente: 0, esquerda: 70, direita: -70, costas: 180 }[v] * Math.PI / 180;
+  camera.position.set(alvo.x + d * Math.sin(ang), alvo.y + 60, alvo.z + d * Math.cos(ang));
+  controles.target.set(alvo.x, alvo.y, alvo.z);
+}
+function vista(v) {
+  posicionar(v);
+  controles.update();
+  document.querySelectorAll("[data-vista]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.vista === v));
+  desenhar();
+}
+
+// pinta e liga as peças conforme a escolha
+function aplicar() {
+  if (!pronto) return;
+  const st = window.CAMISA || {};
+  const claro = st.t === "branco";
+  const T = CORES[st.t] || CORES.azul;
+  const c = (k) => CORES[k];
+  for (const m of Object.values(malhas)) m.visible = false;
+  const liga = (nome, cor) => {
+    const m = malhas[nome.includes("@") ? nome : nome] || malhas[nome + "@" + pose];
+    if (!m) return;
+    m.visible = true;
+    if (cor) m.material.color.set(cor);
+  };
+  liga("corpo", T); liga("carcela", T); liga("carcela-costura", claro ? "#D5DAE2" : escurecer(T, 0.25));
+  liga("botoes", claro ? "#B8BEC8" : "#E8EAED");
+  liga("gola", st.g ? c(st.g) : T);
+  liga("mangas", st.o ? c(st.o) : T);
+  liga("punhos", st.p ? c(st.p) : escurecer(T, 0.12));
+  liga("pele-bracos", PELE); liga("pele-cabeca", PELE); liga("cabelo", CABELO); liga("calca", CALCA);
+  const fr = [st.f, st.f2].filter(Boolean);
+  if (fr.length === 1) { liga("friso-gola-1", c(fr[0])); liga("friso-punho-1", c(fr[0])); }
+  if (fr.length === 2) {
+    liga("friso-gola-2a", c(fr[0])); liga("friso-punho-2a", c(fr[0]));
+    liga("friso-gola-2b", c(fr[1])); liga("friso-punho-2b", c(fr[1]));
+  }
+  const fl = [st.fl, st.fl2].filter(Boolean);
+  if (fl.length) { liga("lateral-nucleo", c(fl[0])); liga("lateral-borda", c(fl[fl.length - 1])); }
+  if (st.pa) { liga("pala", c(st.pa)); if (st.pa2) liga("pala-filete", c(st.pa2)); }
+  if (st.o) liga("ombros", c(st.o));
+  if (st.v) liga("vivo", c(st.v));
+  // o logo do PEI: as cores das duas partes (o branco, sem o raio, e o raio) em cada versão
+  const versao = !st.lc || st.lc === "auto" ? (claro ? "azul" : "negativa") : st.lc;
+  const par = { negativa: ["#FFFFFF", CORES.ouro], branco: ["#FFFFFF", "#FFFFFF"], azul: [CORES.azul, CORES.azul],
+    cor: [CORES.azul, CORES.ouro] }[versao];
+  const logo = st.l === "peito" ? "peito-" + (st.lt || "10") + "-alta" : st.l;
+  if (st.l && st.l !== "nada") {
+    liga("logo-" + logo + "-branco", par[0]); liga("logo-" + logo + "-ouro", par[1]);
+    if (st.l === "peito") for (const p of ["branco", "ouro"]) descer(malhas["logo-" + logo + "-" + p], (+st.la || 0) * 10);
+  }
+  const tinta = claro ? CORES.azul : "#FFFFFF";
+  if (st.c === "nome") liga("costas-nome", tinta);
+  if (st.c === "nome-grande") liga("costas-nome-grande", tinta);
+  if (st.c === "logo") { liga("costas-logo-branco", par[0]); liga("costas-logo-ouro", par[1]); }
+  // as mangas: esq = a manga esquerda de quem veste
+  for (const [lado, qual] of [["esq", st.me], ["dir", st.md]]) {
+    const emb = (nome, cor) => { liga(nome, cor); escalarEmblema(malhas[nome + "@" + pose], (+st.bt || 3.5) / 7); };
+    if (qual === "bandeira") {
+      // com o Acre, as duas menores: [onde vai o Brasil, onde vai o Acre]
+      const q = { sim: ["p-cima-", "p-baixo-"], cima: ["p-baixo-", "p-cima-"], lado: ["p-esq-", "p-dir-"] }[st.ac];
+      for (const [k, cor] of Object.entries(BANDEIRA)) emb("bandeira-" + lado + "-" + (q ? q[0] : "") + k, cor);
+      if (q) for (const [k, cor] of Object.entries(ACRE)) emb("acre-" + lado + "-" + q[1] + k, cor);
+    }
+    if (qual === "ufac") emb("ufac-" + lado, claro ? CORES.azul : "#FFFFFF");
+  }
+  desenhar();
+}
+
+window.addEventListener("abrir-3d", () => { iniciar().then(() => { if (pronto) ajustar(); }, () => {}); });
+// o módulo roda depois da página: se o link já abriu o 3D (ver=3d), começa aqui
+if (window.EM_3D) iniciar().catch(() => {});
+
+// as quatro vistas para a foto da vitrine (frente, lado esquerdo, lado direito e costas), em w × h px: carrega o 3D se
+// ainda não abriu, desenha cada vista fora da tela e volta a câmera e o tamanho de antes
+window.VISTAS_3D = async (w, h) => {
+  await iniciar();
+  aplicar();
+  const pos = camera.position.clone(), tgt = controles.target.clone(), asp = camera.aspect;
+  const tam = render.getSize(new THREE.Vector2()), ppx = render.getPixelRatio();
+  const fotos = [];
+  try {
+    render.setPixelRatio(1);
+    render.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    for (const v of ["frente", "esquerda", "direita", "costas"]) {
+      posicionar(v, 2600);                 // um pouco mais perto que na página: a camisa ocupa mais da foto
+      camera.lookAt(alvo.x, alvo.y, alvo.z);
+      render.render(cena, camera);
+      fotos.push(render.domElement.toDataURL("image/png"));
+    }
+  } finally {
+    render.setPixelRatio(ppx);
+    render.setSize(tam.x, tam.y, false);
+    camera.aspect = asp;
+    camera.updateProjectionMatrix();
+    camera.position.copy(pos);
+    controles.target.copy(tgt);
+    controles.update();
+    desenhar();
+  }
+  return fotos;
+};
+window.addEventListener("camisa", aplicar);
+document.querySelectorAll("[data-vista]").forEach((b) => b.addEventListener("click", () => pronto && vista(b.dataset.vista)));
+document.querySelectorAll("[data-pose]").forEach((b) => b.addEventListener("click", () => {
+  pose = b.dataset.pose;
+  document.querySelectorAll("[data-pose]").forEach((o) => o.setAttribute("aria-pressed", o === b));
+  aplicar();
+}));
+window.FOTO_3D = () => { if (!pronto) return null; desenhar(); return render.domElement.toDataURL("image/png"); };
+document.getElementById("baixar-3d").addEventListener("click", () => {
+  if (!pronto) return;
+  desenhar();
+  const a = document.createElement("a");
+  a.href = render.domElement.toDataURL("image/png");
+  a.download = "camisa-pei-3d.png";
+  document.body.appendChild(a); a.click(); a.remove();
+});
+</script>
 </body>
 </html>

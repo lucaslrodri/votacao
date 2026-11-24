@@ -1,93 +1,61 @@
-// Votação do novo logo do PEI: recebe os envios do site completo (site/completo.html) e do formulário das finalistas
-// (site/formulario.html) e grava na mesma planilha, cada um nas suas abas.
+// Camisa do PEI: guarda as camisas que as pessoas montam no site (site/index.html) e os corações (cada coração é um
+// voto num design), e devolve a lista e a contagem. Ver a lista e os corações é livre; salvar, apagar e dar coração
+// pedem o login com o Google, e este script confere a credencial no Google (tokeninfo) antes de gravar.
+// Grava nas abas "Camisas" e "Corações" (com a apuração em "Corações por design") da mesma planilha da votação do logo
+// ("Votação do novo logo do PEI (respostas do site)"), aberta pelo ID guardado nas propriedades deste projeto
+// (PLANILHA_ID). As abas da votação ficam como estão. O código da votação (encerrada em 23/11/2026) saiu daqui em
+// 24/11/2026 e continua no histórico do git de site/.
+//
 // Como instalar (passo a passo em site/LEIAME.md):
-//   1. script.google.com → Novo projeto; apague o que estiver lá e cole este arquivo; preencha CLIENTE_GOOGLE.
-//   2. Execute a função configurar (uma vez): ela cria a planilha da votação e mostra o link no registro.
-//   3. Implantar → Nova implantação → tipo "App da Web"; Executar como: Eu; Quem pode acessar: Qualquer pessoa.
-//   4. Copie a URL do app da Web (termina em /exec) para site/config.js.
-// O formulário usa o login com o Google: o site manda a credencial (o token que o Google assina) e este script a
-// confere no Google (tokeninfo) antes de gravar; o e-mail verificado da conta é o identificador do voto. Cole em
-// CLIENTE_GOOGLE o mesmo ID do cliente OAuth de site/config.js.
-// Abas do formulário (o e-mail identifica o voto; em cada formato, uma ou mais finalistas marcadas):
-//   Formulário             uma linha por e-mail: as marcadas em cada formato e o comentário
-//   Escolhas por formato   uma linha por e-mail, formato e finalista marcada (boa para contar)
-//   Apuração por formato   em cada formato, quantas marcações cada finalista teve, da mais marcada para a menos
-//   Apuração do formulário a soma das marcações de cada finalista em todos os formatos, com um gráfico de barras
-//   Apuração por critério  as marcações nos quatro critérios, uma coluna por critério, com um gráfico empilhado
-// Abas do site completo:
-//   Voto            uma linha por pessoa: a candidata escolhida e o comentário
-//   Apuração        quantos votos cada candidata teve, da mais votada para a menos
-//   Melhor por logo uma linha por pessoa e logo: a variante que ela achou melhor naquele logo
-//   Apuração por logo  em cada logo, quantas vezes cada variante foi escolhida como a melhor
-//   Notas           uma linha por candidata avaliada nas estrelas (1 a 4 em cada critério) e o total
-//   Média das notas a média das estrelas de cada candidata, da maior para a menor
-// Um voto por pessoa: no formulário, pelo e-mail; no site completo, por um código do navegador (votante). Se a
-// mesma pessoa enviar de novo, o envio anterior dela sai e fica só o novo.
+//   1. No projeto do Apps Script "Votação do logo do PEI (site)", apague o código antigo, cole este arquivo e salve.
+//   2. Implantar → Nova implantação → tipo "App da Web"; Executar como: Eu; Quem pode acessar: Qualquer pessoa.
+//   3. Copie a URL do app da Web (termina em /exec) para window.URL_CAMISAS, em site/config.js.
+//
+// O site manda tudo por POST (JSON em texto), com o token do login (a credencial que o Google assina) quando há:
+//   { acao: "lista" }                                 as camisas e os corações de cada design (sem login)
+//   { acao: "lista", token }                          o mesmo, e as camisas e os corações do próprio usuário
+//   { acao: "salvar", token, nome, estado }           uma camisa nova; o autor é o nome da conta Google; devolve o id
+//   { acao: "salvar", token, id, nome, estado }       muda a camisa id, se for de quem está logado
+//   { acao: "apagar", token, id }                     apaga a camisa id (e os corações dela), com a mesma condição
+//   { acao: "coracao", token, alvo, nome, dar }       dá (dar = true) ou tira o coração no design alvo
+// O estado é o que vai no link da página (por exemplo "l=sigla&c=nome-grande"). O alvo é "p:<id>" para os designs
+// prontos (os ids de PRONTOS, em site/index.html) e "g:<id>" para as camisas do grupo. Um coração por conta Google em
+// cada design. A resposta da lista: { ok, eu: { nome } ou null, camisas: [{ id, nome, autor, estado, criada, atualizada, minha }],
+// coracoes: { alvo: n }, meus: [alvo] }. Os e-mails ficam só na planilha: a lista não os mostra.
 
-const CLIENTE_GOOGLE = '129979775868-s8hofjoin16lvroc5gdervjnk1dt1144.apps.googleusercontent.com';  // o ID do cliente OAuth (o mesmo de site/config.js)
-const ABA_VOTO = 'Voto';
-const ABA_APURACAO = 'Apuração';
-const ABA_MELHOR = 'Melhor por logo';
-const ABA_APURACAO_LOGO = 'Apuração por logo';
-const ABA_NOTAS = 'Notas';
-const ABA_MEDIA = 'Média das notas';
-const CRITERIOS = ['Nitidez', 'Identidade', 'Uma cor', 'Conceito', 'Coerência', 'Simplicidade'];
-const CAB_VOTO = ['Data e hora', 'Envio', 'Votante', 'Nome', 'Voto (código)', 'Logo', 'Variante', 'Comentário'];
-// o formulário: as colunas dos formatos saem dos próprios envios (etapas.json, no site), na ordem das etapas
-const ABA_FORM = 'Formulário';
-const ABA_ESCOLHAS = 'Escolhas por formato';
-const ABA_APURACAO_FORMATO = 'Apuração por formato';
-const ABA_APURACAO_FORM = 'Apuração do formulário';
-const ABA_APURACAO_CRIT = 'Apuração por critério';
-const CAB_ESCOLHAS = ['Data e hora', 'Envio', 'E-mail', 'Nº', 'Formato', 'Código', 'Logo'];
-const CAB_MELHOR = ['Data e hora', 'Envio', 'Votante', 'Nome', 'Logo nº', 'Logo', 'Código', 'Variante'];
-const CAB_NOTAS = ['Data e hora', 'Envio', 'Votante', 'Nome', 'Código', 'Logo', 'Variante'].concat(CRITERIOS,
-  ['Total (de 24)']);
+const CLIENTE_GOOGLE = '129979775868-s8hofjoin16lvroc5gdervjnk1dt1144.apps.googleusercontent.com';  // o mesmo de site/config.js
+const ABA_CAMISAS = 'Camisas';
+const CAB_CAMISAS = ['Criada em', 'Atualizada em', 'ID', 'Nome da camisa', 'Autor', 'Escolhas (o que vai no link)',
+  'E-mail do autor'];
+const ABA_CORACOES = 'Corações';
+const CAB_CORACOES = ['Data e hora', 'E-mail', 'Design', 'Nome do design'];
+const ABA_APURACAO = 'Corações por design';
+const MAX_CAMISAS = 1000;   // um limite, para ninguém encher a planilha
+const MAX_TEXTO = 40;       // o nome da camisa
+
+function doGet() {
+  return resposta_({ ok: true, app: 'camisa do PEI' });   // abrir a URL no navegador mostra se o app está no ar
+}
 
 function doPost(e) {
+  let d;
+  try { d = JSON.parse(e.postData.contents); } catch (erro) { return resposta_({ ok: false, erro: 'pedido inválido' }); }
+  // a lista é livre: sem token, vem sem as marcas de "minha" e sem os corações da pessoa
+  if (d.acao === 'lista' && !d.token) {
+    try { return resposta_(lista_(null)); } catch (erro) { return resposta_({ ok: false, erro: String(erro) }); }
+  }
+  const eu = login_(d.token);
+  if (!eu) return resposta_({ ok: false, erro: 'login', mensagem: 'login do Google inválido ou expirado' });
+  if (d.acao === 'lista') {
+    try { return resposta_(lista_(eu)); } catch (erro) { return resposta_({ ok: false, erro: String(erro) }); }
+  }
   const trava = LockService.getScriptLock();
   trava.waitLock(30000);
   try {
-    const d = JSON.parse(e.postData.contents);
-    const planilha = planilha_();
-    if (d.formatos) return resposta_(formulario_(planilha, d));
-    const abaVoto = aba_(planilha, ABA_VOTO, CAB_VOTO);
-    const abaMelhor = aba_(planilha, ABA_MELHOR, CAB_MELHOR);
-    const abaNotas = aba_(planilha, ABA_NOTAS, CAB_NOTAS);
-    resumos_(planilha);
-    const quando = new Date();
-    const envio = Utilities.getUuid().slice(0, 8);
-    const votante = String(d.votante || envio).slice(0, 40);
-    const nome = String(d.nome || '').slice(0, 120);
-    apagar_(abaVoto, votante);
-    apagar_(abaMelhor, votante);
-    apagar_(abaNotas, votante);
-
-    const v = d.voto || {};
-    abaVoto.appendRow([quando, envio, votante, nome, String(v.codigo || ''), String(v.logo || ''),
-      String(v.variante || ''), String(d.comentario || '').slice(0, 2000)]);
-
-    const melhores = (d.melhores || []).map(function (m) {
-      return [quando, envio, votante, nome, Number(m.n) || '', String(m.logo || ''), String(m.codigo || ''),
-        String(m.variante || '')];
-    });
-    if (melhores.length) {
-      abaMelhor.getRange(abaMelhor.getLastRow() + 1, 1, melhores.length, CAB_MELHOR.length).setValues(melhores);
-    }
-
-    const linhas = (d.notas || []).map(function (c) {
-      const notas = CRITERIOS.map(function (_, j) {
-        const x = Number((c.notas || [])[j]);
-        return x >= 1 && x <= 4 ? x : '';
-      });
-      const total = notas.reduce(function (s, x) { return s + (x || 0); }, 0);
-      return [quando, envio, votante, nome, String(c.codigo || ''), String(c.logo || ''), String(c.variante || '')]
-        .concat(notas, [total]);
-    });
-    if (linhas.length) {
-      abaNotas.getRange(abaNotas.getLastRow() + 1, 1, linhas.length, CAB_NOTAS.length).setValues(linhas);
-    }
-    return resposta_({ ok: true, voto: v.codigo || null, melhores: melhores.length, notas: linhas.length });
+    if (d.acao === 'salvar') return resposta_(salvar_(d, eu));
+    if (d.acao === 'apagar') return resposta_(apagar_(d, eu));
+    if (d.acao === 'coracao') return resposta_(coracao_(d, eu));
+    return resposta_({ ok: false, erro: 'ação desconhecida' });
   } catch (erro) {
     return resposta_({ ok: false, erro: String(erro) });
   } finally {
@@ -95,149 +63,150 @@ function doPost(e) {
   }
 }
 
-// O formulário: uma linha na aba Formulário (as marcadas em cada formato) e uma por marcação em Escolhas por formato
-function formulario_(planilha, d) {
-  const email = emailDoLogin_(d.token);
-  if (!email) return { ok: false, erro: 'login do Google inválido ou expirado' };
-  const fs = (d.formatos || []).filter(function (f) { return f && f.formato; });
-  const nomes = fs.map(function (f) { return String(f.formato); });
-  const abaForm = aba_(planilha, ABA_FORM, ['Data e hora', 'Envio', 'E-mail'].concat(nomes, ['Comentário']));
-  const abaEsc = aba_(planilha, ABA_ESCOLHAS, CAB_ESCOLHAS);
-  apuracoesForm_(planilha, false);
-  try { graficos_(planilha); } catch (err) { console.warn('gráficos: ' + err); }  // um gráfico nunca impede o voto
-  // as colunas da aba Formulário: as que já existem e, no fim, os formatos novos
-  let cab = abaForm.getRange(1, 1, 1, abaForm.getLastColumn()).getValues()[0].map(String);
-  nomes.forEach(function (nome) {
-    if (cab.indexOf(nome) < 0) {
-      abaForm.getRange(1, cab.length + 1).setValue(nome).setFontWeight('bold');
-      cab = cab.concat([nome]);
-    }
-  });
-  const quando = new Date();
-  const envio = Utilities.getUuid().slice(0, 8);
-  apagar_(abaForm, email);
-  apagar_(abaEsc, email);
-  const linha = cab.map(function (col) {
-    if (col === 'Data e hora') return quando;
-    if (col === 'Envio') return envio;
-    if (col === 'E-mail') return email;
-    if (col === 'Comentário') return String(d.comentario || '').slice(0, 2000);
-    const f = fs.find(function (x) { return String(x.formato) === col; });
-    return f ? (f.escolhas || []).map(function (e) { return String(e.codigo); }).join(', ') : '';
-  });
-  abaForm.appendRow(linha);
-  const linhas = [];
-  fs.forEach(function (f) {
-    (f.escolhas || []).forEach(function (e) {
-      linhas.push([quando, envio, email, Number(f.ordem) || '', String(f.formato), String(e.codigo || ''),
-        String(e.logo || '')]);
-    });
-  });
-  if (linhas.length) {
-    abaEsc.getRange(abaEsc.getLastRow() + 1, 1, linhas.length, CAB_ESCOLHAS.length).setValues(linhas);
-  }
-  return { ok: true, marcacoes: linhas.length };
-}
-
 // Confere a credencial do login com o Google: assinada pelo Google, emitida para o nosso cliente (aud), dentro da
-// validade e com o e-mail verificado. Devolve o e-mail, ou null.
-function emailDoLogin_(token) {
-  if (!token || !CLIENTE_GOOGLE) return null;
+// validade e com o e-mail verificado. Devolve { email, nome }, ou null. Guarda a resposta por até 10 minutos (no
+// máximo até a credencial vencer), para os corações não esperarem o Google a cada clique.
+function login_(token) {
+  token = String(token || '');
+  if (!token || token.length > 4096) return null;
+  const cache = CacheService.getScriptCache(), chave = 'login:' + resumo_(token);
+  const guardado = cache.get(chave);
+  if (guardado) return JSON.parse(guardado);
   const r = UrlFetchApp.fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(token),
     { muteHttpExceptions: true });
   if (r.getResponseCode() !== 200) return null;
   const t = JSON.parse(r.getContentText());
   const verificado = t.email_verified === true || t.email_verified === 'true';
-  if (t.aud !== CLIENTE_GOOGLE || !verificado || Number(t.exp) * 1000 < Date.now()) return null;
-  return String(t.email || '').toLowerCase() || null;
+  const resta = Number(t.exp) - Date.now() / 1000;
+  if (t.aud !== CLIENTE_GOOGLE || !verificado || !(resta > 0) || !t.email) return null;
+  const email = String(t.email).toLowerCase();
+  const eu = { email: email, nome: texto_(t.name, 60) || email.split('@')[0] };
+  if (resta > 5) cache.put(chave, JSON.stringify(eu), Math.min(600, Math.floor(resta)));
+  return eu;
 }
 
-// A planilha da votação: criada na primeira vez e guardada nas propriedades do projeto
-function planilha_() {
-  const props = PropertiesService.getScriptProperties();
-  const id = props.getProperty('PLANILHA_ID');
-  if (id) {
-    try { return SpreadsheetApp.openById(id); } catch (e) { /* apagada: cria outra */ }
+// a lista: da mais recente para a mais antiga, sem os e-mails; "minha" marca as de quem pediu (com login)
+function lista_(eu) {
+  const aba = planilha_().getSheetByName(ABA_CAMISAS);
+  const linhas = aba && aba.getLastRow() > 1 ? aba.getRange(2, 1, aba.getLastRow() - 1, CAB_CAMISAS.length).getValues() : [];
+  const camisas = linhas.filter(function (l) { return l[2]; }).map(function (l) {
+    return { id: String(l[2]), nome: String(l[3]), autor: String(l[4]), estado: String(l[5]),
+      criada: data_(l[0]), atualizada: data_(l[1]), minha: !!eu && String(l[6]).toLowerCase() === eu.email };
+  }).sort(function (a, b) { return a.atualizada < b.atualizada ? 1 : a.atualizada > b.atualizada ? -1 : 0; });
+  const c = coracoes_();
+  return { ok: true, eu: eu ? { nome: eu.nome } : null, camisas: camisas, coracoes: c.contagem,
+    meus: eu ? (c.porEmail[eu.email] || []) : [] };
+}
+
+function salvar_(d, eu) {
+  const nome = texto_(d.nome), estado = String(d.estado || '');
+  if (!nome) return { ok: false, erro: 'falta o nome da camisa' };
+  if (estado.length > 400 || !/^([a-z0-9]+=[a-z0-9.\-]*(&[a-z0-9]+=[a-z0-9.\-]*)*)?$/.test(estado)) {
+    return { ok: false, erro: 'escolhas inválidas' };
   }
-  const nova = SpreadsheetApp.create('Votação do novo logo do PEI (respostas do site)');
-  props.setProperty('PLANILHA_ID', nova.getId());
-  return nova;
+  const aba = aba_();
+  const agora = new Date();
+  if (d.id) {
+    const i = linha_(aba, d.id);
+    if (!i) return { ok: false, erro: 'esta camisa não existe mais' };
+    if (String(aba.getRange(i, 7).getValue()).toLowerCase() !== eu.email) return { ok: false, erro: 'só quem criou pode mudar' };
+    aba.getRange(i, 2, 1, 5).setValues([[agora, String(d.id), seguro_(nome), seguro_(eu.nome), estado]]);
+    return { ok: true, id: String(d.id), autor: eu.nome };
+  }
+  if (aba.getLastRow() - 1 >= MAX_CAMISAS) return { ok: false, erro: 'a lista está cheia' };
+  const id = Utilities.getUuid().replace(/-/g, '').slice(0, 10);
+  aba.appendRow([agora, agora, id, seguro_(nome), seguro_(eu.nome), estado, eu.email]);
+  return { ok: true, id: id, autor: eu.nome };
 }
 
-// Rode uma vez no editor: cria a planilha (se ainda não existe) e mostra o link
-function configurar() {
-  Logger.log('Planilha da votação: ' + planilha_().getUrl());
-  Logger.log('Login do Google: ' + (CLIENTE_GOOGLE ? 'configurado' : 'FALTA o CLIENTE_GOOGLE'));
+function apagar_(d, eu) {
+  const aba = aba_();
+  const i = linha_(aba, d.id);
+  if (!i) return { ok: true, id: String(d.id || '') };        // já não existia
+  if (String(aba.getRange(i, 7).getValue()).toLowerCase() !== eu.email) return { ok: false, erro: 'só quem criou pode apagar' };
+  aba.deleteRow(i);
+  apagarCoracoes_('g:' + String(d.id));
+  return { ok: true, id: String(d.id) };
 }
 
-// Abrir a URL no navegador mostra se o app está no ar.
-function doGet() {
-  return resposta_({ ok: true, app: 'votação do novo logo do PEI' });
+// Os corações: uma linha por e-mail e design. Dar de novo não repete; tirar apaga a linha.
+function coracao_(d, eu) {
+  const alvo = String(d.alvo || '');
+  if (!/^(p:[a-z0-9-]{1,30}|g:[0-9a-f]{10})$/.test(alvo)) return { ok: false, erro: 'design inválido' };
+  if (alvo.charAt(0) === 'g' && !linha_(aba_(), alvo.slice(2))) return { ok: false, erro: 'esta camisa não existe mais' };
+  const aba = abaCoracoes_();
+  const n = aba.getLastRow() - 1;
+  const linhas = n > 0 ? aba.getRange(2, 2, n, 2).getValues() : [];
+  let i = -1;
+  for (let k = 0; k < linhas.length; k++) {
+    if (String(linhas[k][0]).toLowerCase() === eu.email && String(linhas[k][1]) === alvo) { i = k; break; }
+  }
+  if (d.dar && i < 0) aba.appendRow([new Date(), eu.email, alvo, seguro_(texto_(d.nome, 90))]);
+  if (!d.dar && i >= 0) aba.deleteRow(i + 2);
+  return { ok: true, alvo: alvo, dado: !!d.dar, n: coracoes_().contagem[alvo] || 0 };
 }
 
-function aba_(planilha, nome, cabecalho) {
-  let aba = planilha.getSheetByName(nome);
+// a contagem de cada alvo e os alvos de cada e-mail
+function coracoes_() {
+  const aba = planilha_().getSheetByName(ABA_CORACOES);
+  const contagem = {}, porEmail = {};
+  if (!aba || aba.getLastRow() < 2) return { contagem: contagem, porEmail: porEmail };
+  aba.getRange(2, 2, aba.getLastRow() - 1, 2).getValues().forEach(function (l) {
+    const e = String(l[0]).toLowerCase(), a = String(l[1]);
+    if (!a) return;
+    contagem[a] = (contagem[a] || 0) + 1;
+    (porEmail[e] = porEmail[e] || []).push(a);
+  });
+  return { contagem: contagem, porEmail: porEmail };
+}
+
+function apagarCoracoes_(alvo) {
+  const aba = planilha_().getSheetByName(ABA_CORACOES);
+  if (!aba || aba.getLastRow() < 2) return;
+  const alvos = aba.getRange(2, 3, aba.getLastRow() - 1, 1).getValues();
+  for (let k = alvos.length - 1; k >= 0; k--) if (String(alvos[k][0]) === alvo) aba.deleteRow(k + 2);
+}
+
+// o número da linha da camisa id (coluna C), ou 0
+function linha_(aba, id) {
+  const n = aba.getLastRow() - 1;
+  if (n < 1 || !id) return 0;
+  const ids = aba.getRange(2, 3, n, 1).getValues();
+  for (let i = 0; i < ids.length; i++) if (String(ids[i][0]) === String(id)) return i + 2;
+  return 0;
+}
+
+function aba_() {
+  const planilha = planilha_();
+  let aba = planilha.getSheetByName(ABA_CAMISAS);
   if (!aba) {
-    aba = planilha.insertSheet(nome);
-    aba.getRange(1, 1, 1, cabecalho.length).setValues([cabecalho]).setFontWeight('bold');
+    aba = planilha.insertSheet(ABA_CAMISAS);
+    aba.getRange(1, 1, 1, CAB_CAMISAS.length).setValues([CAB_CAMISAS]).setFontWeight('bold');
     aba.setFrozenRows(1);
   }
   return aba;
 }
 
-// tira as linhas de um votante (coluna C), de baixo para cima
-function apagar_(aba, votante) {
-  const n = aba.getLastRow() - 1;
-  if (n < 1) return;
-  const ids = aba.getRange(2, 3, n, 1).getValues();
-  for (let i = ids.length - 1; i >= 0; i--) {
-    if (String(ids[i][0]) === votante) aba.deleteRow(i + 2);
+// a aba dos corações e a apuração: quantos corações cada design tem, do mais amado para o menos
+function abaCoracoes_() {
+  const planilha = planilha_();
+  let aba = planilha.getSheetByName(ABA_CORACOES);
+  if (!aba) {
+    aba = planilha.insertSheet(ABA_CORACOES);
+    aba.getRange(1, 1, 1, CAB_CORACOES.length).setValues([CAB_CORACOES]).setFontWeight('bold');
+    aba.setFrozenRows(1);
   }
-}
-
-// As abas de resumo do site completo, com fórmulas
-function resumos_(planilha, refazer) {
-  apuracao_(planilha, ABA_APURACAO, '\'' + ABA_VOTO + '\'!E:G', 'select E, F, G, count(E) where E is not null ' +
-    'group by E, F, G order by count(E) desc label E \'Código\', F \'Logo\', G \'Variante\', count(E) \'Votos\'', refazer);
-  // colunas da aba Melhor por logo: E nº do logo, F logo, G código, H variante
-  apuracao_(planilha, ABA_APURACAO_LOGO, '\'' + ABA_MELHOR + '\'!E:H', 'select E, F, G, H, count(G) where G is not null ' +
-    'group by E, F, G, H order by E, count(G) desc label E \'Nº\', F \'Logo\', G \'Código\', H \'Variante\', ' +
-    'count(G) \'Escolhas\'', refazer);
-  // colunas da aba Notas: E código, F logo, G variante, H–M critérios, N total
-  apuracao_(planilha, ABA_MEDIA, '\'' + ABA_NOTAS + '\'!E:N', 'select E, F, G, avg(H), avg(I), avg(J), ' +
-    'avg(K), avg(L), avg(M), avg(N), count(N) where E is not null group by E, F, G order by avg(N) desc ' +
-    'label E \'Código\', F \'Logo\', G \'Variante\', avg(H) \'Nitidez\', avg(I) \'Identidade\', ' +
-    'avg(J) \'Uma cor\', avg(K) \'Conceito\', avg(L) \'Coerência\', avg(M) \'Simplicidade\', ' +
-    'avg(N) \'Total médio\', count(N) \'Avaliações\'', refazer);
-}
-
-// As apurações do formulário. Colunas de Escolhas por formato: D nº, E formato, F código, G logo.
-function apuracoesForm_(planilha, refazer) {
-  const fonte = '\'' + ABA_ESCOLHAS + '\'!';
-  apuracao_(planilha, ABA_APURACAO_FORMATO, fonte + 'D:G', 'select D, E, F, G, count(F) where F is not null ' +
-    'group by D, E, F, G order by D, count(F) desc label D \'Nº\', E \'Formato\', F \'Código\', G \'Logo\', ' +
-    'count(F) \'Marcações\'', refazer);
-  apuracao_(planilha, ABA_APURACAO_FORM, fonte + 'F:G', 'select F, G, count(F) where F is not null ' +
-    'group by F, G order by count(F) desc label F \'Código\', G \'Logo\', count(F) \'Marcações (todos os formatos)\'',
-    refazer);
-  // só os quatro critérios: uma linha por logo e uma coluna por critério (é a tabela do gráfico empilhado)
-  apuracao_(planilha, ABA_APURACAO_CRIT, fonte + 'E:G', 'select G, count(F) where E starts with \'Critério\' ' +
-    'group by G pivot E label G \'Logo\'', refazer);
-}
-
-// Uma aba de apuração: uma QUERY na A1. Cria a aba se ela não existe; com refazer, reescreve a fórmula.
-function apuracao_(planilha, nome, intervalo, consulta, refazer) {
-  let a = planilha.getSheetByName(nome);
-  if (a && !refazer) return a;
-  if (!a) a = planilha.insertSheet(nome);
-  query_(a.getRange('A1'), intervalo, consulta);
-  a.setFrozenRows(1);
-  return a;
+  if (!planilha.getSheetByName(ABA_APURACAO)) {
+    const ap = planilha.insertSheet(ABA_APURACAO);
+    query_(ap.getRange('A1'), '\'' + ABA_CORACOES + '\'!C:D', 'select C, D, count(C) where C is not null ' +
+      'group by C, D order by count(C) desc label C \'Design\', D \'Nome\', count(C) \'Corações\'');
+    ap.setFrozenRows(1);
+  }
+  return aba;
 }
 
 // O separador dos argumentos das fórmulas segue o idioma da planilha: vírgula em inglês, ponto e vírgula em
-// português. O setFormula não traduz (com vírgula, a planilha em português dava #ERROR!), então tenta a vírgula e,
-// se der erro de fórmula, o ponto e vírgula.
+// português. O setFormula não traduz, então tenta a vírgula e, se der erro de fórmula, o ponto e vírgula.
 function query_(celula, intervalo, consulta) {
   [',', ';'].some(function (s) {
     celula.setFormula('=QUERY(' + intervalo + s + ' "' + consulta + '"' + s + ' 1)');
@@ -246,48 +215,37 @@ function query_(celula, intervalo, consulta) {
   });
 }
 
-// Os gráficos, que se atualizam sozinhos com as fórmulas: as marcações de cada finalista nas 20 etapas (barras) e as
-// dos quatro critérios (barras empilhadas, uma cor por critério). Só cria o gráfico se a aba ainda não tem um.
-function graficos_(planilha) {
-  const tot = planilha.getSheetByName(ABA_APURACAO_FORM);
-  if (tot && !tot.getCharts().length) {
-    tot.insertChart(tot.newChart().asBarChart()
-      .setTitle('Marcações de cada finalista (as 20 etapas)')
-      .setLegendPosition(Charts.Position.NONE)
-      .setColors(['#083671'])
-      .addRange(tot.getRange('B1:C13'))
-      .setNumHeaders(1)
-      .setPosition(1, 5, 0, 0)
-      .setOption('width', 760)
-      .setOption('height', 440)
-      .build());
-  }
-  const crit = planilha.getSheetByName(ABA_APURACAO_CRIT);
-  if (crit && !crit.getCharts().length) {
-    crit.insertChart(crit.newChart().asBarChart()
-      .setStacked()
-      .setTitle('Marcações nos quatro critérios, por finalista')
-      .setLegendPosition(Charts.Position.TOP)
-      .addRange(crit.getRange('A1:E13'))
-      .setNumHeaders(1)
-      .setPosition(1, 7, 0, 0)
-      .setOption('width', 760)
-      .setOption('height', 440)
-      .build());
-  }
+// os nomes: uma linha só, sem espaços sobrando, até max letras
+function texto_(s, max) {
+  return String(s || '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max || MAX_TEXTO);
+}
+// um texto que começa com = + - @ viraria fórmula na planilha: o apóstrofo o guarda como texto (e não aparece)
+function seguro_(s) { return /^[=+\-@]/.test(s) ? "'" + s : s; }
+
+function resumo_(s) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(s), Utilities.Charset.UTF_8)
+    .map(function (b) { return ('0' + (b & 255).toString(16)).slice(-2); }).join('');
 }
 
-// Conserta as apurações de uma planilha que já existe e põe os gráficos: no editor, escolha consertarApuracao e
-// clique em Executar (uma vez). Foi preciso em 22/11/2026, porque as fórmulas antigas, com vírgula, davam #ERROR! na
-// planilha em português.
-function consertarApuracao() {
-  const planilha = planilha_();
-  if (planilha.getSheetByName(ABA_ESCOLHAS)) apuracoesForm_(planilha, true);
-  if ([ABA_VOTO, ABA_MELHOR, ABA_NOTAS].some(function (n) { return planilha.getSheetByName(n); })) {
-    resumos_(planilha, true);
+function data_(v) { return v instanceof Date ? v.toISOString() : String(v || ''); }
+
+// A planilha da votação: a do ID guardado nas propriedades do projeto; se não houver (um projeto novo), cria uma
+function planilha_() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('PLANILHA_ID');
+  if (id) {
+    try { return SpreadsheetApp.openById(id); } catch (e) { /* apagada: cria outra */ }
   }
-  graficos_(planilha);
-  console.log('Pronto: ' + planilha.getUrl());
+  const nova = SpreadsheetApp.create('Camisa do PEI (camisas do site)');
+  props.setProperty('PLANILHA_ID', nova.getId());
+  return nova;
+}
+
+// Rode uma vez no editor, se quiser: cria as abas e mostra o link da planilha
+function configurar() {
+  aba_();
+  abaCoracoes_();
+  Logger.log('Planilha: ' + planilha_().getUrl());
 }
 
 function resposta_(obj) {

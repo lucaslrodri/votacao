@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo do PEI</title>
+<meta name="description" content="O logo oficial do PEI para baixar: SVG, PDF, PNG, ícones e o manual de identidade. Grupo de Pesquisa em Aplicações Industriais, Engenharia Elétrica, Ufac.">
+<link rel="icon" href="oficial/arquivos/icones/pei-logo-icone-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --azul: #083671; --ufac: #0C4DA2; --ouro: #FFBF14; --grafite: #1E1E1E; --nevoa: #DBE4F1;
+    --cinza: #5B6678; --linha: #DADFE7; --fundo: #EEF2F8; --apagado: #B4C3DA;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Montserrat, system-ui, sans-serif; color: var(--grafite); background: var(--fundo); }
+  .faixa { display: grid; grid-template-columns: 60% 30% 10%; height: 6px; }
+  .faixa i:nth-child(1) { background: var(--azul); } .faixa i:nth-child(2) { background: var(--ufac); }
+  .faixa i:nth-child(3) { background: var(--ouro); }
+  main { max-width: 1100px; margin: 0 auto; padding: 14px 16px 56px; }
+  .cartao { background: #fff; border: 1px solid var(--linha); border-radius: 12px; padding: 24px 22px 20px; }
+  .chapeu { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ufac); }
+  h1 { margin: 8px 0 6px; font-size: clamp(24px, 5vw, 32px); font-weight: 800; color: var(--azul); line-height: 1.15; }
+  h2 { margin: 6px 0 6px; font-size: 22px; font-weight: 800; color: var(--azul); line-height: 1.2; }
+  h3 { margin: 22px 0 8px; font-size: 15px; font-weight: 700; color: var(--azul); }
+  .sub { margin: 0 0 16px; font-size: 14px; color: var(--cinza); line-height: 1.5; }
+  .topo { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+  .topo .logo { width: 260px; max-width: 40vw; }
+  .botoes { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+  .botoes a, .botoes button { font: inherit; font-size: 13px; font-weight: 700; color: var(--azul); background: var(--fundo);
+    border: 1px solid var(--linha); border-radius: 999px; padding: 8px 14px; text-decoration: none; cursor: pointer; }
+  .botoes .forte { background: var(--ouro); border-color: var(--ouro); }
+  /* o topo do site: o logo e as páginas (o mesmo de index.html) */
+  .site { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+    max-width: 1100px; margin: 0 auto; padding: 14px 16px 0; }
+  .site .marca img { display: block; height: 42px; width: auto; }
+  .site nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .site nav a { font-size: 13px; font-weight: 700; color: var(--azul); text-decoration: none; padding: 7px 13px;
+    border-radius: 999px; }
+  .site nav a:hover { background: #fff; }
+  .site nav a[aria-current=page] { background: var(--azul); color: #fff; }
+  .painel { margin-top: 16px; }
+  .painel img.grande { display: block; width: 100%; max-width: 820px; height: auto; margin: 0 auto;
+    border-radius: 8px; border: 1px solid var(--linha); }
+  @media (max-width: 560px) {
+    .cartao { padding: 20px 14px 16px; }
+    .topo { grid-template-columns: 1fr; }
+    .topo .logo { max-width: 70vw; }
+    .site .marca img { height: 34px; }
+  }
+  /* os arquivos */
+  .kit { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 8px 0 4px; }
+  .kit a { display: block; padding: 14px; border: 1px solid var(--linha); border-radius: 10px; text-decoration: none;
+    color: var(--grafite); background: #fff; }
+  .kit a b { display: block; color: var(--azul); font-size: 14px; margin-bottom: 4px; }
+  .kit a span { font-size: 12px; color: var(--cinza); line-height: 1.4; }
+  .kit a.forte { background: var(--ouro); border-color: var(--ouro); }
+  .kit a.forte span { color: var(--grafite); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--linha); vertical-align: middle; }
+  th { color: var(--azul); font-size: 12px; }
+  td a { color: var(--ufac); font-weight: 600; margin-right: 8px; white-space: nowrap; }
+  .tabela { overflow-x: auto; }
+  details { margin-top: 18px; }
+  summary { cursor: pointer; font-weight: 700; color: var(--azul); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="faixa" aria-hidden="true"><i></i><i></i><i></i></div>
+<header class="site">
+  <a class="marca" href="index.html"><img src="oficial/arquivos/svg/pei-logo-horizontal.svg" width="190" height="42"
+    alt="PEI: Grupo de Pesquisa em Aplicações Industriais"></a>
+  <nav aria-label="Páginas do site">
+    <a href="index.html">Camisa</a>
+    <a href="logo.html" aria-current="page">Logo para baixar</a>
+  </nav>
+</header>
+<main>
+  <section class="cartao">
+    <div class="topo">
+      <div>
+        <p class="chapeu">LOGO DO PEI</p>
+        <h1>O logo oficial para baixar</h1>
+        <p class="sub">O MOSFET com raio: a sigla PEI com o E desenhado como um transistor MOSFET e o raio dourado no
+          canal. Baixe o kit com todas as versões e o manual de identidade.</p>
+        <div class="botoes">
+          <a class="forte" href="oficial/pei-logo-oficial.zip" download>Baixar o kit do logo (zip)</a>
+          <a href="oficial/manual-de-identidade-pei.pdf" download>Manual de identidade (PDF)</a>
+        </div>
+      </div>
+      <img class="logo" src="oficial/arquivos/svg/pei-logo-horizontal.svg" alt="Logo do PEI: Grupo de Pesquisa em Aplicações Industriais">
+    </div>
+  </section>
+
+  <!-- os arquivos (../exportar-oficial.sh, ../manual.typ) -->
+  <section class="cartao painel" id="arquivos">
+    <p class="chapeu">MANUAL E ARQUIVOS</p>
+    <h2>Baixe o logo</h2>
+    <p class="sub">O kit tem o logo em cinco versões de cor (colorida, negativa, mono azul, mono e mono negativa), nas
+      quatro formas (horizontal, vertical, símbolo e ícone), em SVG, PDF e PNG, e o manual de identidade.</p>
+    <div class="kit">
+      <a class="forte" href="oficial/pei-logo-oficial.zip" download><b>Kit completo (zip)</b>
+        <span>Tudo: SVG, PDF, PNG, ícones e o manual. 2,9 MB.</span></a>
+      <a href="oficial/manual-de-identidade-pei.pdf" download><b>Manual de identidade (PDF)</b>
+        <span>Conceito, versões, cores, tipografia, área de proteção, usos incorretos e aplicações.</span></a>
+      <a href="oficial/pei-logo-svg.zip" download><b>Só os SVG (zip)</b>
+        <span>Vetor, de qualquer tamanho: site, Inkscape, Illustrator, Canva.</span></a>
+      <a href="oficial/pei-logo-png.zip" download><b>Só os PNG (zip)</b>
+        <span>150, 300 e 600 ppi, com fundo transparente ou branco, e os ícones.</span></a>
+      <a href="oficial/pei-logo-pdf.zip" download><b>Só os PDF (zip)</b>
+        <span>Vetor, para a gráfica e para o LaTeX ou o Typst.</span></a>
+    </div>
+    <details>
+      <summary>Todos os arquivos, um a um</summary>
+      <h3>O logo</h3>
+      <div class="tabela"><table id="tabela-arquivos"><thead><tr><th>Forma</th><th>Cor</th><th>Vetor</th><th>PNG</th></tr></thead><tbody></tbody></table></div>
+      <h3>Ícones, aplicativo e perfil</h3>
+      <p id="lista-icones" class="sub" style="line-height: 2"></p>
+    </details>
+  </section>
+
+
+  <!-- as versões (../kit-oficial.typ, parte logo) -->
+  <section class="cartao painel" id="versoes">
+    <p class="chapeu">VERSÕES</p>
+    <h2>As versões, as cores e as fontes</h2>
+    <p class="sub">Horizontal, vertical, símbolo e ícone, nas cinco versões de cor.</p>
+    <img class="grande" src="kit-logo.png" width="1080" height="2615" loading="lazy" alt="As versões do logo oficial: horizontal, vertical, símbolo e ícone, em cinco cores; as cores e as fontes">
+  </section>
+</main>
+<script>
+  // a lista de arquivos (oficial/arquivos/, feita pelo ../exportar-oficial.sh)
+  (function () {
+    const A = "oficial/arquivos/";
+    const formas = [["Horizontal", "horizontal"], ["Vertical", "vertical"], ["Símbolo", "simbolo"], ["Ícone", "icone"]];
+    const cores = [["Colorida", "", true], ["Negativa", "-negativa", false], ["Mono azul", "-mono-azul", true],
+      ["Mono", "-mono", true], ["Mono negativa", "-negativa-mono", false]];
+    const link = function (href, texto) { return '<a href="' + href + '" download>' + texto + "</a>"; };
+    const corpo = document.querySelector("#tabela-arquivos tbody");
+    formas.forEach(function (f) {
+      cores.forEach(function (c) {
+        const n = "pei-logo-" + f[1] + c[1];
+        const tr = document.createElement("tr");
+        tr.innerHTML = "<td>" + f[0] + "</td><td>" + c[0] + "</td><td>" + link(A + "svg/" + n + ".svg", "SVG") +
+          link(A + "pdf/" + n + ".pdf", "PDF") + "</td><td>" + link(A + "png/web/" + n + ".png", "150 ppi") +
+          link(A + "png/impressao/" + n + ".png", "300 ppi") + link(A + "png/grande/" + n + ".png", "600 ppi") +
+          (c[2] ? link(A + "png/fundo-branco/" + n + ".png", "fundo branco") : "") + "</td>";
+        corpo.appendChild(tr);
+      });
+    });
+    // por versão: o ícone de 16 a 1024 px e, menos na negativa, o ícone de aplicativo e a foto de perfil
+    document.getElementById("lista-icones").innerHTML = cores.map(function (c) {
+      const s = c[1];
+      let l = [16, 32, 48, 64, 128, 256, 512, 1024].map(function (px) {
+        return link(A + "icones/pei-logo-icone" + s + "-" + px + ".png", px + " px"); });
+      if (s !== "-negativa") {
+        l = l.concat([180, 192, 512, 1024].map(function (px) {
+          return link(A + "icones/pei-logo-icone-app" + s + "-" + px + ".png", "app " + px); }))
+          .concat([400, 1024].map(function (px) {
+            return link(A + "icones/pei-logo-perfil" + s + "-" + px + ".png", "perfil " + px); }));
+      }
+      return "<b>" + c[0] + "</b>: " + l.join(" · ");
+    }).join("<br>");
+  })();
+
+</script>
+</body>
+</html>
