@@ -342,8 +342,8 @@
   <p class="dica" id="vit-dica"></p>
 </dialog>
 
-<script src="config.js?v=20261124110811"></script>
-<script src="montar-dados.js?v=20261124110811"></script>
+<script src="config.js?v=20261124111751"></script>
+<script src="montar-dados.js?v=20261124111751"></script>
 <script>
 (function () {
   "use strict";
@@ -1475,7 +1475,7 @@ async function carregar() {
   try {
     THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261124110811");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261124111751");
     const caixa = document.getElementById("v-3d");
     render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
