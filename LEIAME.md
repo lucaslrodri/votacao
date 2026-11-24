@@ -81,6 +81,9 @@ as fotos estão em `../inspiracoes.html` e `../inspiracoes/`, para consulta.
 
 ## Ligar a planilha (uma vez)
 
+**Já está ligada** desde 24/11/2026: implantação "Camisa do PEI: camisas do grupo e corações", com a URL em
+`config.js`. Os passos abaixo servem para refazer.
+
 As camisas do grupo e os corações vão para a mesma planilha da votação, "Votação do novo logo do PEI (respostas do
 site)", em abas novas. O Apps Script é o mesmo projeto da votação, "Votação do logo do PEI (site)", que guarda o ID da
 planilha nas propriedades. Por isso ele grava na mesma planilha sem precisar de configuração. As abas da votação não
