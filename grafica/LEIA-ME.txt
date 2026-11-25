@@ -1,0 +1,36 @@
+CAMISA DO PEI: ARQUIVOS PARA A GRÁFICA
+Grupo de Pesquisa em Aplicações Industriais (PEI), Ufac. Gerado em 25/11/2026.
+
+Comece pelo guia-da-camisa-pei.pdf: ele mostra onde vai cada elemento, as cores e as fontes. Os desenhos da camisa são
+só para dar a ideia: o tamanho e a posição exata de cada elemento ficam a cargo da malharia, conforme o tamanho de cada
+camisa.
+
+FORMATOS
+  svg/  vetor (Inkscape, Illustrator, CorelDRAW, navegador)
+  pdf/  vetor, com os textos em curvas (para a gráfica)
+  eps/  vetor, com os textos em curvas (CorelDRAW, Illustrator, programas de bordado)
+  png/  imagem de 600 ppi com fundo transparente (para conferir ou para quem não usa vetor)
+
+PASTAS
+  pei/        o logo do PEI: vertical (o símbolo e o nome embaixo), horizontal (o nome ao lado) e símbolo (só a sigla),
+              em cinco versões: colorida (sem sufixo), -negativa (para polo escura: branco com o raio dourado),
+              -negativa-mono (toda branca), -mono-azul (toda azul PEI) e -mono (toda preta)
+  ufac/       o logo da Ufac. Na manga vai o vertical (o escudo e o nome embaixo): -branco na polo escura, -azul na
+              polo branca, -cores nas cores do logo. O horizontal é o logo completo, para outros usos.
+  bandeiras/  a bandeira do Brasil e a do Acre: desenhos de referência, para a posição. Use a bandeira oficial
+              (o bordado padrão da malharia).
+  costas/     o nome por extenso, "Grupo de Pesquisa em Aplicações Industriais", em três linhas (branco ou azul)
+  modelos/    os desenhos dos modelos mais votados (frente, costas e mangas), sem medidas
+
+FONTES (nos arquivos de vetor, os textos já estão em curvas: não é preciso instalar as fontes)
+  logo do PEI: as letras P e I em Rockwell (Regular); o nome por extenso em Montserrat Bold
+  logo da Ufac: as letras do próprio logo oficial da Ufac
+  nome nas costas: Montserrat Bold
+  Montserrat é gratuita (Google Fonts, licença OFL): https://fonts.google.com/specimen/Montserrat
+  Rockwell é comercial (Monotype)
+
+CORES (o CMYK é aproximado: confira na prova de cor)
+  Azul PEI    #083671   RGB 8, 54, 113     CMYK 93, 52, 0, 56
+  Dourado     #FFBF14   RGB 255, 191, 20   CMYK 0, 25, 92, 0
+  Azul Ufac   #0C4DA2   RGB 12, 77, 162    CMYK 93, 52, 0, 36
+  Branco      #FFFFFF

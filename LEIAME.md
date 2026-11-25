@@ -14,6 +14,7 @@ as fotos estão em `../inspiracoes.html` e `../inspiracoes/`, para consulta.
 | Página | O que é |
 |---|---|
 | `index.html` | **Monte a camisa do PEI**: a página inicial (descrita abaixo). |
+| `grafica.html` | **Para a gráfica**: os arquivos da camisa (os logos do PEI e da Ufac, as bandeiras, o nome por extenso e os modelos mais votados) em SVG, PDF e EPS, com os textos em curvas, e em PNG de 600 ppi, mais o guia da camisa em PDF, sem medidas (a malharia ajusta o tamanho). Tudo em `grafica/`, feito por `../exportar-grafica.py` (com `../grafica.typ` e `../guia-camisa.typ`). |
 | `logo.html` | **O logo oficial para baixar**: o kit em zip, o manual de identidade, cada arquivo do logo e a imagem das versões (`kit-logo.png`, de `../kit-oficial.typ`). Os arquivos estão em `oficial/` e saem do `../exportar-oficial.sh`. |
 | `resultado.html`, `formulario.html`, `completo.html`, `montar.html` | Só redirecionam os links antigos. `resultado.html#arquivos` vai para `logo.html`, e o resto vai para a camisa. O `montar.html` leva as escolhas do link junto. |
 
@@ -140,3 +141,27 @@ mais.
 Para testar, sirva a pasta: rode `python3 -m http.server 8000` dentro dela e abra `http://localhost:8000/`. O login
 não funciona abrindo o arquivo direto (`file://`). Sem a URL em `config.js`, a página funciona, mas a lista do grupo, o
 salvamento e os corações ficam desligados.
+
+## O fim da votação (25/11/2026)
+
+A votação das camisas terminou em 25/11/2026. O resultado ficou congelado em `resultado-camisas.js`, feito por
+`../resultado-camisas.py` a partir da planilha (sem e-mails). Com esse arquivo no site, a página da camisa:
+
+- mostra no topo o resultado das camisas dos alunos, da que tem mais corações para a que tem menos, com a frente e as
+  costas de cada uma; as camisas da coordenação e os designs prontos aparecem numa linha à parte;
+- lê as camisas do grupo e os corações do arquivo, e não mais da planilha;
+- desliga os corações (só mostram o número), o salvar no grupo e o login. Montar, abrir as camisas do grupo e
+  compartilhar continuam.
+
+Resultado: entre os alunos, "Doug?", de Douglas Lima, com 2 corações, e "Clásica", de Elmer Osman Hancco Catata, com 1.
+No total, "Clássica" (design pronto) teve 3 corações. Para reabrir a votação, apague `resultado-camisas.js`. O Apps
+Script continua implantado; para que ninguém grave mais nada direto na planilha, arquive a implantação (Implantar →
+Gerenciar implantações).
+
+## Para a gráfica (25/11/2026)
+
+`grafica.html` e a pasta `grafica/`: o kit da camisa para a gráfica, refeito por `python3 ../exportar-grafica.py`.
+Os desenhos dos modelos vêm do próprio site (o Chrome abre o `index.html` com cada modelo no link). O guia
+(`grafica/guia-da-camisa-pei.pdf`) e os resumos não têm medidas: o tamanho e a posição exata ficam com a malharia,
+conforme o tamanho de cada camisa. As bandeiras do Brasil e do Acre são referência de posição; a malharia usa as
+oficiais.

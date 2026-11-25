@@ -48,6 +48,25 @@
   main { max-width: 1520px; margin: 0 auto; padding: 14px 16px 56px; }
   .cartao { background: #fff; border: 1px solid var(--linha); border-radius: 12px; padding: 20px; }
   .chapeu { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--ufac); }
+  /* o resultado da votação das camisas (resultado-camisas.js) */
+  .resultado { margin-top: 16px; }
+  .podio { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .podio li { display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--linha); border-radius: 12px;
+    background: #fff; overflow: hidden; }
+  .podio li.primeiro { border-color: var(--ouro); box-shadow: 0 0 0 2px var(--ouro) inset; }
+  .podio .desenhos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--fundo); padding: 6px; }
+  .podio .desenhos svg { display: block; width: 100%; height: auto; }
+  .podio .txt { padding: 10px 12px 12px; display: grid; gap: 4px; align-content: start; }
+  .podio .pos { font-size: 12px; font-weight: 800; color: var(--ufac); letter-spacing: .06em; }
+  .podio b { font-size: 15px; color: var(--azul); overflow-wrap: anywhere; }
+  .podio small { color: var(--cinza); font-size: 12px; }
+  .podio .n { font-weight: 700; font-size: 13px; color: var(--azul); display: flex; align-items: center; gap: 5px; }
+  .podio .n svg { width: 15px; height: 15px; fill: #E0245E; }
+  .podio button { justify-self: start; margin-top: 4px; font: inherit; font-size: 12px; font-weight: 700;
+    color: var(--azul); background: var(--fundo); border: 1px solid var(--linha); border-radius: 999px;
+    padding: 6px 12px; cursor: pointer; }
+  .podio button:hover { border-color: var(--azul); }
   h1 { margin: 6px 0 6px; font-size: clamp(24px, 4.5vw, 32px); font-weight: 800; color: var(--azul); line-height: 1.15; }
   h2 { margin: 0 0 8px; font-size: 15px; font-weight: 800; color: var(--azul); }
   .sub { margin: 0; font-size: 14px; color: var(--cinza); line-height: 1.5; max-width: 72ch; }
@@ -227,6 +246,7 @@
   <nav aria-label="Páginas do site">
     <a href="index.html" aria-current="page">Camisa</a>
     <a href="logo.html">Logo para baixar</a>
+    <a href="grafica.html">Para a gráfica</a>
   </nav>
 </header>
 <main id="pagina">
@@ -247,6 +267,14 @@
     </div>
     <p class="sessao" id="sessao-dentro" hidden>Entrou como <b id="sessao-nome"></b><span aria-hidden="true">·</span><button type="button" id="sair">Sair</button></p>
     <p class="aviso" id="aviso" role="status"></p>
+  </section>
+
+  <section class="cartao resultado" id="resultado" aria-labelledby="t-resultado" hidden>
+    <p class="chapeu">VOTAÇÃO ENCERRADA</p>
+    <h2 id="t-resultado" style="font-size: 20px">Resultado: as camisas dos alunos</h2>
+    <p class="sub" id="res-sub"></p>
+    <ol class="podio" id="podio"></ol>
+    <p class="dica" id="res-outros" style="margin-top: 12px"></p>
   </section>
 
   <div class="grade">
@@ -342,8 +370,9 @@
   <p class="dica" id="vit-dica"></p>
 </dialog>
 
-<script src="config.js?v=20261124111915"></script>
-<script src="montar-dados.js?v=20261124111915"></script>
+<script src="config.js?v=20261125105627"></script>
+<script src="resultado-camisas.js?v=20261125105627"></script>
+<script src="montar-dados.js?v=20261125105627"></script>
 <script>
 (function () {
   "use strict";
@@ -695,7 +724,9 @@
   let grupo = [];          // as camisas do grupo: { id, nome, autor, estado, criada, atualizada, minha }
   let origem = null;       // a camisa do grupo aberta por último
   let pedidoS = null;      // a camisa do grupo do link (s=), até a lista chegar
-  let ordem = "recentes";
+  // a votação encerrada (resultado-camisas.js): o resultado fica congelado, e os corações e o salvar, desligados
+  const FIM = window.RESULTADO_CAMISAS || null;
+  let ordem = FIM ? "coracoes" : "recentes";
 
   const estadoPronto = function (p, t) { return estadoDe(Object.assign({}, INICIAL, { t: t }, p.m)); };
   function prontoAtual() {
@@ -884,6 +915,10 @@
   }
   // sem login: o que pede login mostra o botão do Google; com login, o nome e o "Sair"
   function mostrarSessao() {
+    if (FIM) {
+      ["sessao-fora", "sessao-dentro", "grupo-fora", "salvar"].forEach(function (id) { document.getElementById(id).hidden = true; });
+      return;
+    }
     const dentro = !!login;
     document.getElementById("sessao-fora").hidden = dentro;
     document.getElementById("sessao-dentro").hidden = !dentro;
@@ -908,6 +943,7 @@
     const problema = function (t) {
       caixas.forEach(function (c) { c.innerHTML = '<p class="dica" style="margin:0">' + t + "</p>"; });
     };
+    if (FIM) return;                                   // a votação terminou: ninguém precisa entrar
     if (!window.CLIENTE_GOOGLE) { problema("O login ainda não foi configurado (veja o LEIAME.md)."); return; }
     if (!(window.google && google.accounts && google.accounts.id)) {
       if (tentativas > 75) problema("Não deu para carregar o login do Google. Confira a internet e recarregue a página.");
@@ -936,6 +972,7 @@
   // POST com o corpo em texto: o navegador não pede licença antes (CORS simples) e lê a resposta do Apps Script. Com
   // login, vai o token; a lista também vai sem ele (é livre), o resto pede o login.
   function enviar(corpo) {
+    if (FIM && corpo.acao !== "lista") return Promise.reject(new Error("a votação terminou"));
     if (!login && corpo.acao !== "lista") return Promise.reject(new Error("entre com o Google"));
     if (login) corpo.token = login.token;
     return fetch(URL_CAMISAS, { method: "POST", body: JSON.stringify(corpo) })
@@ -947,10 +984,20 @@
       });
   }
   function carregarGrupo() {
+    if (FIM) {
+      return Promise.resolve({ camisas: FIM.camisas.map(function (c) { return Object.assign({ minha: false }, c); }),
+        coracoes: Object.assign({}, FIM.coracoes), meus: [] }).then(receberLista);
+    }
     if (!URL_CAMISAS) { desenharGrupo(); return Promise.resolve(); }
     ultimaCarga = Date.now();
-    return enviar({ acao: "lista" })
-      .then(function (r) {
+    return enviar({ acao: "lista" }).then(receberLista)
+      .catch(function () {
+        document.getElementById("grupo-vazio").textContent =
+          "Não deu para carregar as camisas do grupo agora. Recarregue a página para tentar de novo.";
+      });
+  }
+  function receberLista(r) {
+    (function () {
         carregou = true;
         grupo = r.camisas || [];
         contagem = r.coracoes || {};
@@ -965,15 +1012,11 @@
         desenharGrupo();
         atualizarAtual();
         escreverLink();
-      })
-      .catch(function () {
-        document.getElementById("grupo-vazio").textContent =
-          "Não deu para carregar as camisas do grupo agora. Recarregue a página para tentar de novo.";
-      });
+    })();
   }
   // volta a buscar a lista quando a pessoa volta para a aba (no máximo a cada 30 s)
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden && URL_CAMISAS && Date.now() - ultimaCarga > 30000) carregarGrupo();
+    if (!FIM && !document.hidden && URL_CAMISAS && Date.now() - ultimaCarga > 30000) carregarGrupo();
   });
 
   function pintarCoracoes() {
@@ -983,7 +1026,8 @@
       b.setAttribute("aria-pressed", dado ? "true" : "false");
       b.querySelector(".n").textContent = a ? (contagem[a] || 0) : "";
       const rot = b.querySelector(".rot");
-      if (rot) rot.textContent = dado ? "Você deu coração" : "Dar coração";
+      if (rot) rot.textContent = FIM ? "corações" : dado ? "Você deu coração" : "Dar coração";
+      if (FIM) b.title = "A votação terminou em " + FIM.encerrada;
       if (a) b.setAttribute("aria-label", !login ? "Dar coração em " + (b.dataset.rotulo || "") + " (" + (contagem[a] || 0) +
         "; entre com o Google)" :
         (dado ? "Tirar o coração de " : "Dar coração em ") + (b.dataset.rotulo || "") + " (" + (contagem[a] || 0) + ")");
@@ -991,6 +1035,7 @@
   }
   function darCoracao(b) {
     const alvo = b.dataset.coracao;
+    if (FIM) { aviso("A votação terminou em " + FIM.encerrada + ": os corações ficaram congelados."); return; }
     if (!alvo || pendentes.has(alvo)) return;
     if (!login) { aviso("Para dar coração, entre com o Google (o botão fica no topo da página)."); pedirLogin(); return; }
     if (!URL_CAMISAS) { aviso("Os corações ainda não estão ligados à planilha."); return; }
@@ -1029,6 +1074,7 @@
   const fSalvar = document.getElementById("salvar");
   const sNome = document.getElementById("s-nome");
   function salvar(comoNova) {
+    if (FIM) { aviso("A votação terminou: as camisas do grupo não recebem mais mudanças."); return; }
     if (!URL_CAMISAS) { aviso("O salvamento ainda não está ligado à planilha."); return; }
     if (!fSalvar.reportValidity()) return;
     const nome = sNome.value.trim();
@@ -1416,9 +1462,63 @@
   window.atualizarLink = escreverLink;
   montarForm();
   lerLink();
+  // o resultado da votação: as camisas dos alunos, da que tem mais corações para a que tem menos (empates na mesma
+  // posição); as camisas da coordenação e os designs prontos aparecem numa linha à parte
+  function desenharResultado() {
+    if (!FIM) return;
+    document.getElementById("resultado").hidden = false;
+    document.querySelectorAll("[data-ordem]").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.dataset.ordem === ordem ? "true" : "false");
+    });
+    document.querySelector("#pagina .sub").textContent = "A votação das camisas terminou em " + FIM.encerrada +
+      ". Veja o resultado abaixo. Você ainda pode montar a sua camisa a partir de um design pronto ou de uma camisa do " +
+      "grupo e compartilhar.";
+    const coord = FIM.coordenacao || [];
+    const n = function (alvo) { return FIM.coracoes[alvo] || 0; };
+    const alunos = FIM.camisas.filter(function (c) { return coord.indexOf(c.autor) < 0; }).sort(function (a, b) {
+      return n("g:" + b.id) - n("g:" + a.id) || (a.criada < b.criada ? -1 : 1);
+    });
+    const total = alunos.reduce(function (t, c) { return t + n("g:" + c.id); }, 0);
+    document.getElementById("res-sub").textContent = alunos.length + " camisas dos alunos e " + total +
+      (total === 1 ? " coração" : " corações") + " nelas. Clique numa camisa para abri-la e montar a partir dela.";
+    const ol = document.getElementById("podio");
+    ol.innerHTML = "";
+    let pos = 0, antes = null;
+    alunos.forEach(function (c, i) {
+      const k = n("g:" + c.id);
+      if (k !== antes) { pos = i + 1; antes = k; }
+      const desenho = comEstado(lerEstado(c.estado), function () {
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" aria-label="Frente">' +
+          frente("rf" + i) + '</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" ' +
+          'aria-label="Costas">' + costas("rc" + i) + "</svg>";
+      });
+      const li = document.createElement("li");
+      if (k > 0 && pos === 1) li.className = "primeiro";
+      li.innerHTML = '<div class="desenhos">' + desenho + '</div><div class="txt"><span class="pos">' +
+        (k > 0 ? pos + "º LUGAR" : "SEM CORAÇÕES") + "</span><b>" + esc(c.nome) + "</b><small>de " + esc(c.autor) +
+        '</small><span class="n">' + CORACAO + k + (k === 1 ? " coração" : " corações") + "</span>" +
+        '<button type="button">Abrir esta camisa</button></div>';
+      li.querySelector("button").addEventListener("click", function () {
+        abrirDoGrupo(grupo.find(function (x) { return x.id === c.id; }) || Object.assign({ minha: false }, c));
+        document.querySelector(".previa").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      ol.appendChild(li);
+    });
+    // os outros corações: os designs prontos e as camisas da coordenação
+    const outros = [];
+    PRONTOS.forEach(function (p) { if (n("p:" + p.id)) outros.push([n("p:" + p.id), p.nome + " (design pronto)"]); });
+    FIM.camisas.forEach(function (c) {
+      if (coord.indexOf(c.autor) >= 0 && n("g:" + c.id)) outros.push([n("g:" + c.id), c.nome + " (de " + c.autor + ", da coordenação)"]);
+    });
+    outros.sort(function (a, b) { return b[0] - a[0]; });
+    document.getElementById("res-outros").textContent = outros.length ? "Fora das camisas dos alunos, também receberam " +
+      "corações: " + outros.map(function (o) { return o[1] + ", " + o[0]; }).join("; ") + "." : "";
+  }
+
   atualizar();
   mostrarSessao();
   carregarGrupo();
+  desenharResultado();
 })();
 </script>
 <script>
@@ -1475,7 +1575,7 @@ async function carregar() {
   try {
     THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261124111915");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125105627");
     const caixa = document.getElementById("v-3d");
     render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
