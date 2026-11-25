@@ -54,11 +54,22 @@
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
   .podio li { display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--linha); border-radius: 12px;
     background: #fff; overflow: hidden; }
-  .podio li.primeiro { border-color: var(--ouro); box-shadow: 0 0 0 2px var(--ouro) inset; }
+  /* a vencedora, a Clássica, na polo azul e na preta, com o formulário da cor (Lucas, 25/11/2026: "Tá confuso" e "faz
+     um formulário para quem quer preto ou azul. As duas clássicas.") */
+  .vence { display: grid; gap: 10px; margin-top: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+  .vence > div { border: 1px solid var(--ouro); box-shadow: 0 0 0 2px var(--ouro) inset; border-radius: 12px; background: #fff;
+    overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  .vence .desenhos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--fundo); padding: 8px; }
+  .vence .desenhos svg { display: block; width: 100%; height: auto; }
+  .vence .txt { padding: 10px 14px 14px; display: grid; gap: 4px; align-content: start; }
+  .vence .txt b { font-size: 17px; color: var(--azul); }
+  .vence .txt small { color: var(--cinza); font-size: 13px; }
+  .vence .botoes { margin-top: 8px; }
+  .alunos-t { margin: 22px 0 4px; font-size: 15px; font-weight: 800; color: var(--azul); }
+  .podio .igual { color: var(--ufac); font-size: 12px; font-weight: 700; }
   .podio .desenhos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--fundo); padding: 6px; }
   .podio .desenhos svg { display: block; width: 100%; height: auto; }
   .podio .txt { padding: 10px 12px 12px; display: grid; gap: 4px; align-content: start; }
-  .podio .pos { font-size: 12px; font-weight: 800; color: var(--ufac); letter-spacing: .06em; }
   .podio b { font-size: 15px; color: var(--azul); overflow-wrap: anywhere; }
   .podio small { color: var(--cinza); font-size: 12px; }
   .podio .n { font-weight: 700; font-size: 13px; color: var(--azul); display: flex; align-items: center; gap: 5px; }
@@ -271,8 +282,12 @@
 
   <section class="cartao resultado" id="resultado" aria-labelledby="t-resultado" hidden>
     <p class="chapeu">VOTAÇÃO ENCERRADA</p>
-    <h2 id="t-resultado" style="font-size: 20px">Resultado: as camisas dos alunos</h2>
+    <h2 id="t-resultado" style="font-size: 20px">A vencedora: a Clássica</h2>
     <p class="sub" id="res-sub"></p>
+    <div class="vence" id="vence"></div>
+    <div class="botoes" id="res-form"></div>
+    <h3 class="alunos-t">As camisas dos alunos</h3>
+    <p class="sub" id="res-alunos"></p>
     <ol class="podio" id="podio"></ol>
     <p class="dica" id="res-outros" style="margin-top: 12px"></p>
   </section>
@@ -370,9 +385,9 @@
   <p class="dica" id="vit-dica"></p>
 </dialog>
 
-<script src="config.js?v=20261125144500"></script>
-<script src="resultado-camisas.js?v=20261125144500"></script>
-<script src="montar-dados.js?v=20261125144500"></script>
+<script src="config.js?v=20261125150425"></script>
+<script src="resultado-camisas.js?v=20261125150425"></script>
+<script src="montar-dados.js?v=20261125150425"></script>
 <script>
 (function () {
   "use strict";
@@ -1466,41 +1481,87 @@
   window.atualizarLink = escreverLink;
   montarForm();
   lerLink();
-  // o resultado da votação: as camisas dos alunos, da que tem mais corações para a que tem menos (empates na mesma
-  // posição); as camisas da coordenação e os designs prontos aparecem numa linha à parte
+  // o resultado da votação. Lucas, 25/11/2026: "Deixe claro que é só a clássica que venceu" e "Tá confuso": em cima, a
+  // vencedora, a Clássica, na polo azul e na preta (a mesma camisa, só muda a cor), com o formulário da cor; embaixo,
+  // as camisas dos alunos, da que tem mais corações para a que tem menos, sem "lugar" (para não parecer outra
+  // vencedora); os corações dos designs prontos e das camisas da coordenação numa linha à parte
   function desenharResultado() {
     if (!FIM) return;
     document.getElementById("resultado").hidden = false;
     document.querySelectorAll("[data-ordem]").forEach(function (b) {
       b.setAttribute("aria-pressed", b.dataset.ordem === ordem ? "true" : "false");
     });
+    const FORM = window.FORM_COR || "";
+    const linkCor = function (cor) {
+      return FORM + "?usp=pp_url&" + (window.ENTRADA_COR || "") + "=" + encodeURIComponent(cor);
+    };
     document.querySelector("#pagina .sub").textContent = "A votação das camisas terminou em " + FIM.encerrada +
-      ". Veja o resultado abaixo. Você ainda pode montar a sua camisa a partir de um design pronto ou de uma camisa do " +
-      "grupo e compartilhar.";
-    const coord = FIM.coordenacao || [];
+      ": venceu a Clássica. Ela vai ser feita na polo azul ou na preta; escolha a sua cor no formulário, logo abaixo. " +
+      "Você ainda pode montar uma camisa a partir de um design pronto ou de uma camisa do grupo e compartilhar.";
     const n = function (alvo) { return FIM.coracoes[alvo] || 0; };
+    const k0 = n("p:classica");
+    document.getElementById("res-sub").textContent = "A camisa do PEI vai ser a Clássica, a mais votada (" + k0 +
+      (k0 === 1 ? " coração" : " corações") + "): o logo do PEI no peito, a bandeira do Brasil e a Ufac nas mangas, " +
+      "costas lisas. Ela vai ser feita na polo azul ou na preta: é a mesma camisa, só muda a cor. Escolha a sua no " +
+      "formulário (com a conta Google; dá para mudar a resposta depois).";
+    // as duas Clássicas
+    const CORES = [
+      { t: "azul", nome: "Clássica azul", desc: "Na polo azul PEI.", form: "Azul (a Clássica)", botao: "Quero a azul" },
+      { t: "preto", nome: "Clássica preta", desc: "A mesma camisa, na polo preta.", form: "Preta (a Clássica preta)",
+        botao: "Quero a preta" },
+    ];
+    const vence = document.getElementById("vence");
+    vence.innerHTML = "";
+    CORES.forEach(function (c, i) {
+      const e = Object.assign({}, INICIAL, { t: c.t });
+      const desenho = comEstado(e, function () {
+        return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" aria-label="Frente">' +
+          frente("vf" + i) + '</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" ' +
+          'aria-label="Costas">' + costas("vc" + i) + "</svg>";
+      });
+      const d = document.createElement("div");
+      d.innerHTML = '<div class="desenhos">' + desenho + '</div><div class="txt"><b>' + c.nome + "</b><small>" +
+        c.desc + '</small><div class="botoes">' + (FORM ? '<a class="forte" target="_blank" rel="noopener" href="' +
+        esc(linkCor(c.form)) + '">' + c.botao + "</a>" : "") + '<button type="button">Abrir no montador</button>' +
+        "</div></div>";
+      d.querySelector("button").addEventListener("click", function () {
+        st = Object.assign({}, e);
+        origem = null;
+        atualizar();
+        aviso("Design “" + c.nome + "” carregado.");
+        document.querySelector(".previa").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      vence.appendChild(d);
+    });
+    document.getElementById("res-form").innerHTML = FORM ? '<a target="_blank" rel="noopener" href="' + esc(FORM) +
+      '">Abrir o formulário da cor</a>' : "";
+    // as camisas dos alunos
+    const coord = FIM.coordenacao || [];
     const alunos = FIM.camisas.filter(function (c) { return coord.indexOf(c.autor) < 0; }).sort(function (a, b) {
       return n("g:" + b.id) - n("g:" + a.id) || (a.criada < b.criada ? -1 : 1);
     });
     const total = alunos.reduce(function (t, c) { return t + n("g:" + c.id); }, 0);
-    document.getElementById("res-sub").textContent = alunos.length + " camisas dos alunos e " + total +
-      (total === 1 ? " coração" : " corações") + " nelas. Clique numa camisa para abri-la e montar a partir dela.";
+    // a camisa de aluno que é o mesmo desenho da Clássica (em qualquer cor de polo)
+    const classica = estadoDe(INICIAL);
+    const ehClassica = function (c) {
+      return estadoDe(Object.assign(lerEstado(c.estado), { t: INICIAL.t })) === classica;
+    };
+    document.getElementById("res-alunos").textContent = "Os corações nas " + alunos.length + " camisas que os alunos " +
+      "montaram no site (" + total + (total === 1 ? " coração" : " corações") + " ao todo). Clique numa camisa para " +
+      "abri-la e montar a partir dela.";
     const ol = document.getElementById("podio");
     ol.innerHTML = "";
-    let pos = 0, antes = null;
     alunos.forEach(function (c, i) {
       const k = n("g:" + c.id);
-      if (k !== antes) { pos = i + 1; antes = k; }
       const desenho = comEstado(lerEstado(c.estado), function () {
         return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" aria-label="Frente">' +
           frente("rf" + i) + '</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="2 0 96 98" role="img" ' +
           'aria-label="Costas">' + costas("rc" + i) + "</svg>";
       });
       const li = document.createElement("li");
-      if (k > 0 && pos === 1) li.className = "primeiro";
-      li.innerHTML = '<div class="desenhos">' + desenho + '</div><div class="txt"><span class="pos">' +
-        (k > 0 ? pos + "º LUGAR" : "SEM CORAÇÕES") + "</span><b>" + esc(c.nome) + "</b><small>de " + esc(c.autor) +
-        '</small><span class="n">' + CORACAO + k + (k === 1 ? " coração" : " corações") + "</span>" +
+      li.innerHTML = '<div class="desenhos">' + desenho + '</div><div class="txt"><b>' + esc(c.nome) + "</b><small>de " +
+        esc(c.autor) + '</small><span class="n">' + CORACAO + k + (k === 1 ? " coração" : " corações") + "</span>" +
+        (ehClassica(c) ? '<span class="igual">O mesmo desenho da Clássica, a vencedora.</span>' : "") +
         '<button type="button">Abrir esta camisa</button></div>';
       li.querySelector("button").addEventListener("click", function () {
         abrirDoGrupo(grupo.find(function (x) { return x.id === c.id; }) || Object.assign({ minha: false }, c));
@@ -1510,13 +1571,15 @@
     });
     // os outros corações: os designs prontos e as camisas da coordenação
     const outros = [];
-    PRONTOS.forEach(function (p) { if (n("p:" + p.id)) outros.push([n("p:" + p.id), p.nome + " (design pronto)"]); });
+    PRONTOS.forEach(function (p) {
+      if (n("p:" + p.id)) outros.push([n("p:" + p.id), p.nome + (p.id === "classica" ? " (design pronto, a vencedora)" : " (design pronto)")]);
+    });
     FIM.camisas.forEach(function (c) {
       if (coord.indexOf(c.autor) >= 0 && n("g:" + c.id)) outros.push([n("g:" + c.id), c.nome + " (de " + c.autor + ", da coordenação)"]);
     });
     outros.sort(function (a, b) { return b[0] - a[0]; });
-    document.getElementById("res-outros").textContent = outros.length ? "Fora das camisas dos alunos, também receberam " +
-      "corações: " + outros.map(function (o) { return o[1] + ", " + o[0]; }).join("; ") + "." : "";
+    document.getElementById("res-outros").textContent = outros.length ? "Os corações fora das camisas dos alunos: " +
+      outros.map(function (o) { return o[1] + ", " + o[0]; }).join("; ") + "." : "";
   }
 
   atualizar();
@@ -1579,7 +1642,7 @@ async function carregar() {
   try {
     THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125144500");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125150425");
     const caixa = document.getElementById("v-3d");
     render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));

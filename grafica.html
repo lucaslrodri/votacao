@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Camisa do PEI para a gráfica</title>
-<meta name="description" content="Os arquivos da camisa do PEI para a gráfica: só o que vai na camisa (o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, na polo azul e na preta), em SVG, PDF, EPS e PNG, com o guia em PDF.">
+<meta name="description" content="Os arquivos da camisa do PEI para a gráfica: só o que vai na camisa (o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, a vencedora da votação), em SVG, PDF, EPS e PNG, com o guia em PDF.">
 <link rel="icon" href="oficial/arquivos/icones/pei-logo-icone-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,6 +88,14 @@
   .modelo .desenhos img { width: 100%; height: auto; display: block; }
   .modelo .txt { padding: 10px 12px 12px; font-size: 12px; color: var(--cinza); line-height: 1.45; }
   .modelo .txt b { display: block; color: var(--azul); font-size: 14px; }
+  /* só a Clássica venceu (Lucas, 25/11/2026: "Deixe claro que é só a clássica que venceu") */
+  .modelo.vencedora { border-color: var(--ouro); box-shadow: 0 0 0 2px var(--ouro) inset; }
+  .modelo .selo { display: inline-block; margin-bottom: 4px; padding: 2px 7px; border-radius: 4px; font-size: 11px;
+    font-weight: 800; letter-spacing: .06em; background: var(--ouro); color: var(--azul); }
+  .modelo .selo.cinza { background: var(--linha); color: var(--cinza); }
+  .aviso-vencedora { background: var(--azul); color: #fff; border-radius: 10px; padding: 12px 14px; margin-top: 12px;
+    font-size: 13px; line-height: 1.5; }
+  .aviso-vencedora b { color: var(--ouro); }
   .cores { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; margin-top: 10px; }
   .cor { border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; background: #fff; }
   .cor i { display: block; height: 54px; }
@@ -113,14 +121,16 @@
   <section class="cartao painel">
     <p class="chapeu">PARA A GRÁFICA</p>
     <h1>Arquivos da camisa para a gráfica</h1>
-    <p class="sub">Só o que vai na camisa: o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, o modelo
-      mais votado, na polo azul e na preta. Em SVG, PDF e EPS (vetor, com os textos em curvas) e em PNG de 600 ppi com
+    <p class="sub">Só o que vai na camisa: o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, a
+      vencedora da votação. Em SVG, PDF e EPS (vetor, com os textos em curvas) e em PNG de 600 ppi com
       fundo transparente, mais o guia da camisa em PDF.</p>
     <div class="botoes">
       <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 0,8 MB)</a>
       <a href="grafica/guia-da-camisa-pei.pdf" download>Guia da camisa (PDF)</a>
       <a href="grafica/LEIA-ME.txt">LEIA-ME</a>
     </div>
+    <p class="aviso-vencedora"><b>Só a Clássica venceu.</b> A vencedora da votação de 25/11/2026 é a Clássica. A polo
+      preta não é outro modelo: é a mesma Clássica, com os mesmos elementos, só em outra cor.</p>
     <p class="aviso-medidas"><b>Sem medidas.</b> Os desenhos dão a ideia da camisa. O tamanho e a posição exata de cada
       elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.</p>
   </section>
@@ -134,9 +144,10 @@
   </section>
 
   <section class="cartao painel">
-    <p class="chapeu">O MODELO · VOTAÇÃO DE 25/11/2026</p>
-    <h2>A Clássica, na polo azul e na preta</h2>
-    <p class="sub">Frente e costas; as mangas ampliadas estão no guia e na pasta modelos/ do zip.</p>
+    <p class="chapeu">A VENCEDORA · VOTAÇÃO DE 25/11/2026</p>
+    <h2>Só a Clássica venceu</h2>
+    <p class="sub">A Clássica venceu a votação, com 3 corações. Ao lado, a mesma camisa na polo preta: não é outro
+      modelo, só uma opção de cor. Frente e costas; as mangas ampliadas estão no guia e na pasta modelos/ do zip.</p>
     <div class="modelos" id="modelos"></div>
   </section>
 
@@ -181,15 +192,18 @@
       '.svg"></div><div class="txt"><b>' + p[2] + "</b><small>" + p[3] + '</small><div class="formatos">' +
       links(p[0], p[1]) + "</div></div></div>";
   }).join("");
-  // a Clássica, na polo azul e na preta (grafica/modelos/, do exportar-grafica.py)
+  // a Clássica, a vencedora, e a mesma camisa na polo preta (grafica/modelos/, do exportar-grafica.py):
+  // [arquivo, nome, selo, texto, vencedora]
   const MODELOS = [
-    ["classica-design-pronto", "Clássica", "O modelo mais votado · 3 corações"],
-    ["classica-preta-design-pronto", "Clássica preta", "A versão preta da Clássica"],
+    ["classica-design-pronto", "Clássica", "A VENCEDORA", "3 corações na votação.", true],
+    ["classica-preta-design-pronto", "Clássica preta", "NÃO É OUTRO MODELO", "A mesma Clássica, na polo preta: só uma " +
+      "opção de cor, sem votação.", false],
   ];
   document.getElementById("modelos").innerHTML = MODELOS.map(function (m) {
     const f = function (v) { return K + "modelos/" + m[0] + "-" + v; };
-    return '<div class="modelo"><div class="desenhos"><img loading="lazy" alt="Frente" src="' + f("frente") + '.svg"><img ' +
-      'loading="lazy" alt="Costas" src="' + f("costas") + '.svg"></div><div class="txt"><b>' + m[1] + "</b>" + m[2] +
+    return '<div class="modelo' + (m[4] ? " vencedora" : "") + '"><div class="desenhos"><img loading="lazy" alt="Frente" src="' + f("frente") + '.svg"><img ' +
+      'loading="lazy" alt="Costas" src="' + f("costas") + '.svg"></div><div class="txt"><span class="selo' + (m[4] ? "" : " cinza") + '">' + m[2] + "</span><b>" + m[1] +
+      "</b>" + m[3] +
       '<div class="formatos"><a href="' + f("frente") + '.png" download>Frente (PNG)</a><a href="' + f("costas") +
       '.png" download>Costas (PNG)</a></div></div></div>';
   }).join("");

@@ -150,8 +150,12 @@ salvamento e os corações ficam desligados.
 A votação das camisas terminou em 25/11/2026. O resultado ficou congelado em `resultado-camisas.js`, feito por
 `../resultado-camisas.py` a partir da planilha (sem e-mails). Com esse arquivo no site, a página da camisa:
 
-- mostra no topo o resultado das camisas dos alunos, da que tem mais corações para a que tem menos, com a frente e as
-  costas de cada uma; as camisas da coordenação e os designs prontos aparecem numa linha à parte;
+- mostra no topo a vencedora, a Clássica, na polo azul e na preta (a mesma camisa, só muda a cor), com os botões
+  "Quero a azul" e "Quero a preta", que abrem o formulário da cor já com a cor marcada (Lucas, 25/11/2026: "Tá
+  confuso" e "faz um formulário para quem quer preto ou azul. As duas clássicas."); embaixo, as camisas dos alunos, da
+  que tem mais corações para a que tem menos, sem "lugar" (para não parecer outra vencedora), com a frente e as costas
+  de cada uma; a do aluno que é o mesmo desenho da Clássica leva um aviso; as camisas da coordenação e os designs
+  prontos aparecem numa linha à parte;
 - lê as camisas do grupo e os corações do arquivo, e não mais da planilha;
 - desliga os corações (só mostram o número), o salvar no grupo e o login. Montar, abrir as camisas do grupo e
   compartilhar continuam.
@@ -162,6 +166,15 @@ Script ("Camisa do PEI: camisas do grupo e corações") foi arquivada em 25/11/2
 mais e ninguém grava nada na planilha. Para reabrir a votação, faça uma nova implantação, ponha a URL nova em
 `config.js` e apague `resultado-camisas.js`.
 
+### O formulário da cor
+
+"Camisa do PEI: azul ou preta?", um Google Forms no Drive de Lucas (criado em 25/11/2026), para quem quer a Clássica
+azul ou a preta. Duas perguntas obrigatórias: a cor (com a foto de cada uma, tirada de `grafica/modelos/`) e o nome
+completo. Coleta o e-mail verificado (a pessoa entra com a conta Google), aceita uma resposta por conta e deixa editar
+a resposta. As respostas ficam na aba Respostas do próprio formulário (dá para ligar a uma planilha por lá). O link e o
+campo da cor estão em `config.js` (`FORM_COR` e `ENTRADA_COR`); se a pergunta da cor for refeita, o campo muda: pegue o
+novo em "Gerar link preenchido" no formulário. Para encerrar, desligue "Aceitando respostas" no formulário.
+
 ## Para a gráfica (25/11/2026)
 
 `grafica.html` e a pasta `grafica/`: o kit da camisa para a gráfica, refeito por `python3 ../exportar-grafica.py`.
@@ -171,3 +184,7 @@ desenhos das duas Clássicas e as quatro cores da camisa (azul PEI, preto, doura
 site (o Chrome abre o `index.html` com cada modelo no link). O guia (`grafica/guia-da-camisa-pei.pdf`) e os resumos
 não têm medidas: o tamanho e a posição exata ficam com a malharia, conforme o tamanho de cada camisa. A bandeira é
 referência de posição; a malharia usa a oficial.
+
+Só a Clássica venceu (Lucas: "Deixe claro que é só a clássica que venceu"): o kit diz isso no topo do `grafica.html`,
+na capa e na página do modelo do guia e no `LEIA-ME.txt`. A Clássica preta aparece como "não é outro modelo": a mesma
+camisa, só em outra cor, sem votação.

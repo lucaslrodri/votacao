@@ -4,7 +4,7 @@
   "de": "Design pronto",
   "estado": "",
   "coracoes": 3,
-  "rotulo": "O modelo mais votado",
+  "rotulo": "A vencedora da votação",
   "arquivo": "classica-design-pronto",
   "resumo": [
    "Polo: azul PEI.",
@@ -19,7 +19,8 @@
   "de": "Design pronto",
   "estado": "t=preto",
   "coracoes": null,
-  "rotulo": "A versão preta da Clássica",
+  "rotulo": "Não é outro modelo",
+  "nota": "A mesma Clássica, na polo preta: só uma opção de cor, sem votação",
   "arquivo": "classica-preta-design-pronto",
   "resumo": [
    "Polo: preta.",
