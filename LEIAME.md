@@ -37,15 +37,23 @@ própria página".
   ordem alfabética, por cor, para todo mundo ver. Os botões "Baixar a lista (PDF)" e "Baixar a lista (CSV)" fazem os
   arquivos no navegador (o PDF com o jsPDF 2.5.1, do cdnjs, carregado só ao clicar; o CSV com ponto e vírgula e BOM,
   que abre direto no Excel em português). Funciona no celular. A lista vem na hora, direto da planilha.
+- **Ampliar** (Lucas: "deixa ampliar para ver os detalhes também (Da camisa com o modelo 3D - em um modal)"): o
+  botão em cima de cada cor abre um modal com a camisa em 3D (o avatar do montador, girando com o dedo ou o mouse, com
+  as vistas de frente, dos lados e de costas) e em desenho (frente, costas e as duas mangas, grandes). Dá para trocar
+  a cor ali, e "Quero a polo ..." marca a cor no formulário. O 3D só carrega quando abre: o three.js (do jsDelivr) e
+  as peças da Clássica (`malhas-3d.js`, 0,5 MB), a Ufac 1,25× como nos desenhos.
 - Os e-mails ficam só na planilha: o site mostra só o nome e a cor.
 
 | Arquivo | O que é |
 |---|---|
 | `pedidos.js` | o login, o formulário da cor, a lista, o PDF e o CSV |
+| `ampliar.js` | o modal do "Ampliar" |
+| `camisa-3d.js` | o 3D do modal (módulo, com o three.js 0.160 pelo importmap da página) |
+| `malhas-3d.js` | as peças 3D da Clássica, feito por `../avatar/malhas-classica.py` (que o `../avatar/exportar-3d.sh` roda no fim) |
 | `config.js` | a URL do Apps Script (`window.URL_PEDIDOS`) e o ID do cliente OAuth do login (`window.CLIENTE_GOOGLE`), o único arquivo para editar à mão |
 | `apps-script/Codigo.gs` | o código que confere o login e anota a cor na planilha |
 | `resultado-camisas.js` | o resultado congelado da votação das camisas (o site não usa mais; fica de registro, e o montador o lê) |
-| `social-camisa.png` | o banner que o WhatsApp mostra ao compartilhar o link (etiquetas Open Graph), feito por `../banner-camisa.typ` |
+| `social-cor.png` | o banner que o WhatsApp mostra ao compartilhar o link (etiquetas Open Graph): a Clássica azul e a preta e "Escolha a sua cor", feito por `../banner-cor.typ` (25/11/2026). O `social-camisa.png` ("Monte a camisa", de `../banner-camisa.typ`) não é mais usado. |
 
 ## A planilha
 
@@ -115,7 +123,9 @@ Só o que vai na camisa (Lucas: "Coloca só o que vai ser usado mesmo"): a Clás
 do PEI do peito (vertical, negativa), a Ufac da manga (vertical, branca), a bandeira do Brasil, os desenhos das duas
 Clássicas, as quatro cores da camisa (azul PEI, preto, dourado e branco) e as fontes gratuitas (`fontes/`: a
 Montserrat Bold e a Inter, a fonte da Ufac pelo manual da marca da Ufac). O guia (`grafica/guia-da-camisa-pei.pdf`) e
-os resumos não têm medidas: o tamanho e a posição exata ficam com a malharia.
+os resumos não têm medidas: o tamanho e a posição exata ficam com a malharia. O `camisa-pei-png-tamanhos.zip` tem
+cada peça em PNG de 300 ppi, de 3 a 30 cm de largura (Lucas: "Coloque a parte da gráfica em diversos tamanhos (Vai
+que a gráfica quer um tamanho diferente - Aí vc coloca em zip)"); os PNG soltos não ficam no site, só o zip.
 
 Os ajustes finos (não aparecem nos textos do site nem do kit):
 

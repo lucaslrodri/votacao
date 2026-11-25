@@ -23,6 +23,7 @@ PASTAS (só o que vai na camisa)
   bandeira/   a bandeira do Brasil, da manga esquerda
   modelos/    os desenhos da Clássica, a vencedora, na polo azul e na preta (frente, costas e mangas), sem
               medidas
+  Em vários tamanhos: camisa-pei-png-tamanhos.zip, no site, tem cada peça em PNG de 300 ppi, de 3 a 30 cm de largura
   fontes/     a Montserrat Bold e a Inter, gratuitas (licença OFL)
 
 FONTES (nos arquivos de vetor, os textos já estão em curvas: não é preciso instalar as fontes)
