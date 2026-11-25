@@ -4,6 +4,7 @@
   "de": "Design pronto",
   "estado": "",
   "coracoes": 3,
+  "rotulo": "O modelo mais votado",
   "arquivo": "classica-design-pronto",
   "resumo": [
    "Polo: azul PEI.",
@@ -14,41 +15,14 @@
   ]
  },
  {
-  "nome": "Doug?",
-  "de": "de Douglas Lima",
-  "estado": "t=preto&l=sigla&lt=12&la=2&lc=negativa&me=ufac&md=bandeira&ac=sim&bt=4.5&c=nome&f=azul",
-  "coracoes": 2,
-  "arquivo": "doug-de-douglas-lima",
+  "nome": "Clássica preta",
+  "de": "Design pronto",
+  "estado": "t=preto",
+  "coracoes": null,
+  "rotulo": "A versão preta da Clássica",
+  "arquivo": "classica-preta-design-pronto",
   "resumo": [
    "Polo: preta.",
-   "Logo do PEI: peito, só a sigla, cor branco e dourado.",
-   "Mangas: esquerda, Ufac; direita, bandeira do Brasil; com a bandeira do Acre embaixo da do Brasil (as duas menores).",
-   "Costas: nome pequeno, abaixo da gola.",
-   "Detalhes: friso azul PEI."
-  ]
- },
- {
-  "nome": "Clássica - Alt",
-  "de": "de Lucas Rodrigues (coordenação)",
-  "estado": "lt=12&la=2&ac=sim&c=nome",
-  "coracoes": 2,
-  "arquivo": "classica-alt-de-lucas-rodrigues-coordenacao",
-  "resumo": [
-   "Polo: azul PEI.",
-   "Logo do PEI: peito esquerdo, mais baixo.",
-   "Mangas: esquerda, bandeira do Brasil; direita, Ufac; com a bandeira do Acre embaixo da do Brasil (as duas menores).",
-   "Costas: nome pequeno, abaixo da gola.",
-   "Detalhes: nenhum (polo lisa)."
-  ]
- },
- {
-  "nome": "Clásica",
-  "de": "de Elmer Osman Hancco Catata",
-  "estado": "",
-  "coracoes": 1,
-  "arquivo": "clasica-de-elmer-osman-hancco-catata",
-  "resumo": [
-   "Polo: azul PEI.",
    "Logo do PEI: peito esquerdo.",
    "Mangas: esquerda, bandeira do Brasil; direita, Ufac.",
    "Costas: lisas.",

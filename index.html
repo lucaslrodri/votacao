@@ -370,9 +370,9 @@
   <p class="dica" id="vit-dica"></p>
 </dialog>
 
-<script src="config.js?v=20261125105627"></script>
-<script src="resultado-camisas.js?v=20261125105627"></script>
-<script src="montar-dados.js?v=20261125105627"></script>
+<script src="config.js?v=20261125144500"></script>
+<script src="resultado-camisas.js?v=20261125144500"></script>
+<script src="montar-dados.js?v=20261125144500"></script>
 <script>
 (function () {
   "use strict";
@@ -441,9 +441,11 @@
   CAMPOS.forEach(function (c) { INICIAL[c.k] = c.ini; });
 
   // os designs prontos: os dez escolhidos em 24/11/2026, com nomes no lugar dos códigos de ../camisa-pei.typ (que
-  // ficam em cod). O id vai na planilha dos corações ("p:" + id): não mude um id que já recebeu corações.
+  // ficam em cod), e a Clássica preta (Lucas, 25/11/2026: "Faz também uma versão preta da clássica"), o único que fixa
+  // a cor da polo. O id vai na planilha dos corações ("p:" + id): não mude um id que já recebeu corações.
   const PRONTOS = [
     { id: "classica", cod: "H", nome: "Clássica", desc: "Logo no peito, Brasil e Ufac nas mangas.", m: {} },
+    { id: "classica-preta", cod: "H preto", nome: "Clássica preta", desc: "A Clássica na polo preta.", m: { t: "preto" } },
     { id: "sigla", cod: "H2", nome: "Sigla no peito", desc: "Só a sigla na frente e o nome grande nas costas.",
       m: { l: "sigla", c: "nome-grande" } },
     { id: "gola-ufac", cod: "H3", nome: "Gola azul Ufac", desc: "Gola e punho em azul Ufac.", m: { g: "ufac", p: "ufac" } },
@@ -731,7 +733,9 @@
   const estadoPronto = function (p, t) { return estadoDe(Object.assign({}, INICIAL, { t: t }, p.m)); };
   function prontoAtual() {
     const e = estadoDe(st);
-    return PRONTOS.find(function (p) { return estadoPronto(p, st.t) === e; }) || null;
+    const igual = function (p) { return estadoPronto(p, st.t) === e; };
+    // na polo preta, a Clássica e a Clássica preta dão o mesmo desenho: vale o design que fixa a cor da polo
+    return PRONTOS.find(function (p) { return p.m.t && igual(p); }) || PRONTOS.find(igual) || null;
   }
   function grupoAtual() { return origem && origem.estado === estadoDe(st) ? origem : null; }
   // o design da prévia, para o nome e para os corações: { alvo, nome, de }, ou null se for uma camisa nova
@@ -1575,7 +1579,7 @@ async function carregar() {
   try {
     THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125105627");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125144500");
     const caixa = document.getElementById("v-3d");
     render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));

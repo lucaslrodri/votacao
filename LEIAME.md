@@ -14,7 +14,7 @@ as fotos estão em `../inspiracoes.html` e `../inspiracoes/`, para consulta.
 | Página | O que é |
 |---|---|
 | `index.html` | **Monte a camisa do PEI**: a página inicial (descrita abaixo). |
-| `grafica.html` | **Para a gráfica**: os arquivos da camisa (os logos do PEI e da Ufac, as bandeiras, o nome por extenso e os modelos mais votados) em SVG, PDF e EPS, com os textos em curvas, e em PNG de 600 ppi, mais o guia da camisa em PDF, sem medidas (a malharia ajusta o tamanho). Tudo em `grafica/`, feito por `../exportar-grafica.py` (com `../grafica.typ` e `../guia-camisa.typ`). |
+| `grafica.html` | **Para a gráfica**: só o que vai na camisa, a Clássica na polo azul e na preta: o logo do PEI do peito, a Ufac da manga e a bandeira do Brasil em SVG, PDF e EPS, com os textos em curvas, e em PNG de 600 ppi; os desenhos das duas Clássicas; as cores da camisa; e o guia em PDF, sem medidas (a malharia ajusta o tamanho). Tudo em `grafica/`, feito por `../exportar-grafica.py` (com `../grafica.typ` e `../guia-camisa.typ`). |
 | `logo.html` | **O logo oficial para baixar**: o kit em zip, o manual de identidade, cada arquivo do logo e a imagem das versões (`kit-logo.png`, de `../kit-oficial.typ`). Os arquivos estão em `oficial/` e saem do `../exportar-oficial.sh`. |
 | `resultado.html`, `formulario.html`, `completo.html`, `montar.html` | Só redirecionam os links antigos. `resultado.html#arquivos` vai para `logo.html`, e o resto vai para a camisa. O `montar.html` leva as escolhas do link junto. |
 
@@ -25,15 +25,18 @@ as fotos estão em `../inspiracoes.html` e `../inspiracoes/`, para consulta.
   da página e no lugar do formulário de salvar. Sem login, o clique no coração só pede para entrar. O login vale por
   uma hora, nesta aba do navegador; quem já entrou uma vez volta sem clicar, se o Google deixar. A planilha entrega a
   lista sem login, mas confere o login no Google antes de gravar. Qualquer conta Google entra.
-- **Designs prontos.** São dez, com nomes no lugar dos códigos de `../camisa-pei.typ`. No computador, ficam numa
+- **Designs prontos.** São onze, com nomes no lugar dos códigos de `../camisa-pei.typ`: os dez de 24/11/2026 e a
+  Clássica preta (25/11/2026). No computador, ficam numa
   barra lateral, à esquerda. No celular e no tablet, ficam numa fila que rola de lado, em cima da prévia. Um design
-  pronto muda as escolhas, mas mantém a cor da polo que a pessoa escolheu. Os designs prontos e as camisas do grupo
+  pronto muda as escolhas, mas mantém a cor da polo que a pessoa escolheu; só a Clássica preta fixa a cor (na polo
+  preta, a Clássica e ela são o mesmo desenho, e a página dá o nome "Clássica preta"). Os designs prontos e as camisas do grupo
   ficam numa lista só, a "Camisas": primeiro as do grupo, depois os prontos. Em "Mais corações", cada parte vai do
   mais amado para o menos, e as do grupo continuam na frente.
 
   | Nome | Código antigo | O que muda |
   |---|---|---|
   | Clássica | H | nada: logo no peito, Brasil e Ufac nas mangas |
+  | Clássica preta | H (preto) | a Clássica na polo preta (o logo em branco e dourado) |
   | Sigla no peito | H2 | só a sigla na frente e o nome grande nas costas |
   | Gola azul Ufac | H3 | gola e punho em azul Ufac |
   | Friso dourado | H4 | friso dourado na gola e no punho |
@@ -154,14 +157,17 @@ A votação das camisas terminou em 25/11/2026. O resultado ficou congelado em `
   compartilhar continuam.
 
 Resultado: entre os alunos, "Doug?", de Douglas Lima, com 2 corações, e "Clásica", de Elmer Osman Hancco Catata, com 1.
-No total, "Clássica" (design pronto) teve 3 corações. Para reabrir a votação, apague `resultado-camisas.js`. O Apps
-Script continua implantado; para que ninguém grave mais nada direto na planilha, arquive a implantação (Implantar →
-Gerenciar implantações).
+No total, "Clássica" (design pronto) teve 3 corações, e a "Clásica" do Elmer é o mesmo desenho. A implantação do Apps
+Script ("Camisa do PEI: camisas do grupo e corações") foi arquivada em 25/11/2026: a URL em `config.js` não responde
+mais e ninguém grava nada na planilha. Para reabrir a votação, faça uma nova implantação, ponha a URL nova em
+`config.js` e apague `resultado-camisas.js`.
 
 ## Para a gráfica (25/11/2026)
 
 `grafica.html` e a pasta `grafica/`: o kit da camisa para a gráfica, refeito por `python3 ../exportar-grafica.py`.
-Os desenhos dos modelos vêm do próprio site (o Chrome abre o `index.html` com cada modelo no link). O guia
-(`grafica/guia-da-camisa-pei.pdf`) e os resumos não têm medidas: o tamanho e a posição exata ficam com a malharia,
-conforme o tamanho de cada camisa. As bandeiras do Brasil e do Acre são referência de posição; a malharia usa as
-oficiais.
+Só o que vai na camisa (Lucas: "Coloca só o que vai ser usado mesmo"): a Clássica, a mais votada, na polo azul e na
+preta. São o logo do PEI do peito (vertical, negativa), a Ufac da manga (vertical, branca), a bandeira do Brasil, os
+desenhos das duas Clássicas e as quatro cores da camisa (azul PEI, preto, dourado e branco). Os desenhos vêm do próprio
+site (o Chrome abre o `index.html` com cada modelo no link). O guia (`grafica/guia-da-camisa-pei.pdf`) e os resumos
+não têm medidas: o tamanho e a posição exata ficam com a malharia, conforme o tamanho de cada camisa. A bandeira é
+referência de posição; a malharia usa a oficial.
