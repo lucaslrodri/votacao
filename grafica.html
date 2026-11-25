@@ -96,18 +96,6 @@
   .aviso-vencedora { background: var(--azul); color: #fff; border-radius: 10px; padding: 12px 14px; margin-top: 12px;
     font-size: 13px; line-height: 1.5; }
   .aviso-vencedora b { color: var(--ouro); }
-  /* os pedidos: quem quer a azul e quem quer a preta (pedidos.js) */
-  .totais { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; }
-  .totais div { flex: 1 1 120px; border: 1px solid var(--linha); border-radius: 10px; padding: 10px 12px; background: var(--fundo); }
-  .totais b { display: block; font-size: 26px; font-weight: 800; color: var(--azul); line-height: 1.1; }
-  .totais small { font-size: 12px; color: var(--cinza); font-weight: 600; }
-  .listas { display: grid; gap: 10px; margin-top: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
-  .cor-pedido { border: 1px solid var(--linha); border-radius: 10px; padding: 12px 14px; }
-  .cor-pedido h3 { margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
-  .cor-pedido h3 i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
-  .cor-pedido h3 span { margin-left: auto; font-size: 13px; color: var(--cinza); }
-  .cor-pedido ol { margin: 0; padding-left: 22px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
-  .vazio { margin: 6px 0; font-size: 13px; color: var(--cinza); }
   .botoes button:disabled { opacity: .5; cursor: default; }
   .cores { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; margin-top: 10px; }
   .cor { border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; background: #fff; }
@@ -138,51 +126,30 @@
       vencedora da votação. Em SVG, PDF e EPS (vetor, com os textos em curvas) e em PNG de 600 ppi com
       fundo transparente, mais o guia da camisa em PDF.</p>
     <div class="botoes">
-      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 0,8 MB)</a>
+      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 1,9 MB)</a>
       <a href="grafica/guia-da-camisa-pei.pdf" download>Guia da camisa (PDF)</a>
       <a href="grafica/LEIA-ME.txt">LEIA-ME</a>
-      <a href="#pedidos">Os pedidos (azul ou preta)</a>
+      <a href="index.html#pedidos">A lista dos pedidos</a>
     </div>
-    <p class="aviso-vencedora"><b>Só a Clássica venceu.</b> A vencedora da votação de 25/11/2026 é a Clássica. A polo
-      preta não é outro modelo: é a mesma Clássica, com os mesmos elementos, só em outra cor.</p>
+    <p class="aviso-vencedora"><b>Só a Clássica venceu.</b> A vencedora da votação de 25/11/2026 é a Clássica. A azul e a
+      preta são o mesmo modelo; a preta é inspirada no modelo do Doug, o segundo colocado.</p>
     <p class="aviso-medidas"><b>Sem medidas.</b> Os desenhos dão a ideia da camisa. O tamanho e a posição exata de cada
       elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.</p>
-  </section>
-
-  <section class="cartao painel" id="pedidos">
-    <p class="chapeu">OS PEDIDOS</p>
-    <h2>Quem quer a azul e quem quer a preta</h2>
-    <p class="sub">Cada pessoa escolhe a cor da sua Clássica no formulário, entrando com a conta Google (uma resposta por
-      pessoa, que pode ser mudada depois). A lista é aberta para todo mundo, só com o nome e a cor; para mandar para a
-      gráfica, baixe em PDF ou em CSV.</p>
-    <div class="totais">
-      <div><b id="pedidos-n-azul">–</b><small>Polo azul</small></div>
-      <div><b id="pedidos-n-preta">–</b><small>Polo preta</small></div>
-      <div><b id="pedidos-n-total">–</b><small>Total</small></div>
-    </div>
-    <div class="botoes">
-      <button type="button" class="forte" data-baixar="pdf" disabled>Baixar a lista (PDF)</button>
-      <button type="button" data-baixar="csv" disabled>Baixar a lista (CSV)</button>
-      <a id="pedidos-form" target="_blank" rel="noopener" href="#">Escolher a minha cor</a>
-      <button type="button" id="pedidos-atualizar">Atualizar</button>
-    </div>
-    <div class="listas" id="pedidos-lista"></div>
-    <p class="sub" id="pedidos-quando" style="margin: 10px 0 0; font-size: 12px"></p>
   </section>
 
   <section class="cartao painel">
     <p class="chapeu">AS PEÇAS</p>
     <h2>O que vai na camisa</h2>
     <p class="sub">O logo do PEI vai na versão negativa (branco com o raio dourado) e a Ufac toda branca, iguais na polo
-      azul e na preta. A bandeira é referência de posição: a malharia usa a oficial.</p>
+      azul e na preta.</p>
     <div class="pecas" id="pecas"></div>
   </section>
 
   <section class="cartao painel">
     <p class="chapeu">A VENCEDORA · VOTAÇÃO DE 25/11/2026</p>
     <h2>Só a Clássica venceu</h2>
-    <p class="sub">A Clássica venceu a votação, com 3 corações. Ao lado, a mesma camisa na polo preta: não é outro
-      modelo, só uma opção de cor. Frente e costas; as mangas ampliadas estão no guia e na pasta modelos/ do zip.</p>
+    <p class="sub">A Clássica venceu a votação, com 3 corações. A azul e a preta são o mesmo modelo; a preta é inspirada
+      no modelo do Doug, o segundo colocado. Frente e costas; as mangas ampliadas estão no guia e na pasta modelos/ do zip.</p>
     <div class="modelos" id="modelos"></div>
   </section>
 
@@ -200,10 +167,11 @@
       <div><b>Rockwell (Regular)</b><br>As letras P e I do logo do PEI. Fonte comercial (Monotype).</div>
       <div><b>Montserrat Bold</b><br>O nome por extenso, embaixo da sigla, no logo do PEI. Gratuita:
         <a href="https://fonts.google.com/specimen/Montserrat">Google Fonts</a>.</div>
-      <div><b>Letras do logo da Ufac</b><br>O nome "Ufac" vem do próprio logo oficial, já desenhado.</div>
+      <div><b>Inter</b><br>A fonte da Ufac. Gratuita:
+        <a href="https://fonts.google.com/specimen/Inter">Google Fonts</a>.</div>
     </div>
     <p class="aviso-medidas">Nos arquivos em vetor (SVG, PDF e EPS), os textos já estão convertidos em curvas: <b>não é
-      preciso instalar as fontes</b>.</p>
+      preciso instalar as fontes</b>. A Montserrat e a Inter estão na pasta fontes/ do zip.</p>
   </section>
 
 </main>
@@ -220,7 +188,7 @@
   const PECAS = [
     ["pei", "pei-logo-vertical-negativa", "Logo do PEI · peito esquerdo", "A sigla com o nome embaixo, na versão negativa: branco com o raio dourado.", "escuro"],
     ["ufac", "ufac-vertical-branco", "Ufac · manga direita", "O escudo com o nome embaixo, todo branco.", "escuro"],
-    ["bandeira", "bandeira-brasil", "Bandeira do Brasil · manga esquerda", "Referência de posição: use a bandeira oficial.", "claro"],
+    ["bandeira", "bandeira-brasil", "Bandeira do Brasil · manga esquerda", "A bandeira oficial.", "claro"],
   ];
   document.getElementById("pecas").innerHTML = PECAS.map(function (p) {
     return '<div class="peca"><div class="previa ' + p[4] + '"><img loading="lazy" alt="" src="' + K + p[0] + "/svg/" + p[1] +
@@ -231,8 +199,8 @@
   // [arquivo, nome, selo, texto, vencedora]
   const MODELOS = [
     ["classica-design-pronto", "Clássica", "A VENCEDORA", "3 corações na votação.", true],
-    ["classica-preta-design-pronto", "Clássica preta", "NÃO É OUTRO MODELO", "A mesma Clássica, na polo preta: só uma " +
-      "opção de cor, sem votação.", false],
+    ["classica-preta-design-pronto", "Clássica preta", "O MESMO MODELO", "Inspirada no modelo do Doug, o segundo " +
+      "colocado.", false],
   ];
   document.getElementById("modelos").innerHTML = MODELOS.map(function (m) {
     const f = function (v) { return K + "modelos/" + m[0] + "-" + v; };
@@ -244,7 +212,5 @@
   }).join("");
 })();
 </script>
-<script src="config.js"></script>
-<script src="pedidos.js"></script>
 </body>
 </html>

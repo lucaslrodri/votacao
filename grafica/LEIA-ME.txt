@@ -14,21 +14,21 @@ FORMATOS
 O MODELO: SÓ A CLÁSSICA VENCEU
   A vencedora da votação de 25/11/2026 é a Clássica, e só ela: polo lisa, o logo do PEI no peito esquerdo, a
   bandeira do Brasil na manga esquerda e a Ufac na manga direita, costas lisas.
-  A polo preta não é outro modelo: é a mesma Clássica, com os mesmos elementos, só em outra cor.
+  A azul e a preta são o mesmo modelo; a preta é inspirada no modelo do Doug, o segundo colocado.
 
 PASTAS (só o que vai na camisa)
   pei/        o logo do PEI do peito: a sigla com o nome embaixo, na versão negativa (branco com o raio dourado),
               na polo azul e na preta
   ufac/       a Ufac da manga direita: o escudo com o nome embaixo, todo branco, na polo azul e na preta
-  bandeira/   a bandeira do Brasil, da manga esquerda: desenho de referência, para a posição. Use a bandeira oficial
-              (o bordado padrão da malharia).
+  bandeira/   a bandeira do Brasil, da manga esquerda
   modelos/    os desenhos da Clássica, a vencedora, na polo azul e na preta (frente, costas e mangas), sem
               medidas
+  fontes/     a Montserrat Bold e a Inter, gratuitas (licença OFL)
 
 FONTES (nos arquivos de vetor, os textos já estão em curvas: não é preciso instalar as fontes)
   logo do PEI: as letras P e I em Rockwell (Regular); o nome por extenso, embaixo da sigla, em Montserrat Bold
-  Ufac: as letras do próprio logo oficial da Ufac
-  Montserrat é gratuita (Google Fonts, licença OFL): https://fonts.google.com/specimen/Montserrat
+  Ufac: Inter (a fonte da Ufac)
+  Montserrat e Inter são gratuitas (Google Fonts, licença OFL) e estão na pasta fontes/
   Rockwell é comercial (Monotype)
 
 CORES DA CAMISA (o CMYK é aproximado: confira na prova de cor)

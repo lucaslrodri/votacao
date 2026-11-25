@@ -2,7 +2,7 @@
  {
   "nome": "Clássica",
   "de": "Design pronto",
-  "estado": "",
+  "estado": "ub=1.25",
   "coracoes": 3,
   "rotulo": "A vencedora da votação",
   "arquivo": "classica-design-pronto",
@@ -17,10 +17,10 @@
  {
   "nome": "Clássica preta",
   "de": "Design pronto",
-  "estado": "t=preto",
+  "estado": "t=preto&ub=1.25",
   "coracoes": null,
-  "rotulo": "Não é outro modelo",
-  "nota": "A mesma Clássica, na polo preta: só uma opção de cor, sem votação",
+  "rotulo": "O mesmo modelo",
+  "nota": "Inspirada no modelo do Doug, o segundo colocado",
   "arquivo": "classica-preta-design-pronto",
   "resumo": [
    "Polo: preta.",
