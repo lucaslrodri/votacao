@@ -286,6 +286,7 @@
     <p class="sub" id="res-sub"></p>
     <div class="vence" id="vence"></div>
     <div class="botoes" id="res-form"></div>
+    <p class="dica" id="res-contagem" style="margin-top: 8px"></p>
     <h3 class="alunos-t">As camisas dos alunos</h3>
     <p class="sub" id="res-alunos"></p>
     <ol class="podio" id="podio"></ol>
@@ -385,9 +386,9 @@
   <p class="dica" id="vit-dica"></p>
 </dialog>
 
-<script src="config.js?v=20261125150425"></script>
-<script src="resultado-camisas.js?v=20261125150425"></script>
-<script src="montar-dados.js?v=20261125150425"></script>
+<script src="config.js?v=20261125152347"></script>
+<script src="resultado-camisas.js?v=20261125152347"></script>
+<script src="montar-dados.js?v=20261125152347"></script>
 <script>
 (function () {
   "use strict";
@@ -1533,8 +1534,17 @@
       });
       vence.appendChild(d);
     });
-    document.getElementById("res-form").innerHTML = FORM ? '<a target="_blank" rel="noopener" href="' + esc(FORM) +
-      '">Abrir o formulário da cor</a>' : "";
+    document.getElementById("res-form").innerHTML = (FORM ? '<a target="_blank" rel="noopener" href="' + esc(FORM) +
+      '">Abrir o formulário da cor</a>' : "") + '<a href="grafica.html#pedidos">Ver quem já escolheu</a>';
+    // quantos já escolheram cada cor (a lista pública do formulário, a mesma de grafica.html)
+    if (window.CSV_PEDIDOS) {
+      fetch(window.CSV_PEDIDOS + "&t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; })
+        .then(function (texto) {
+          const a = (texto.match(/,"?Azul \(a Cl/g) || []).length, p = (texto.match(/,"?Preta \(a Cl/g) || []).length;
+          const v = document.getElementById("res-contagem");
+          if (v) v.textContent = a + p ? "Até agora: " + a + " na azul e " + p + " na preta." : "Ninguém escolheu a cor ainda.";
+        }).catch(function () {});
+    }
     // as camisas dos alunos
     const coord = FIM.coordenacao || [];
     const alunos = FIM.camisas.filter(function (c) { return coord.indexOf(c.autor) < 0; }).sort(function (a, b) {
@@ -1642,7 +1652,7 @@ async function carregar() {
   try {
     THREE = await import("three");
     const { OrbitControls } = await import("three/addons/controls/OrbitControls.js");
-    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125150425");
+    if (!window.MALHAS3D) await carregarScript("montar-3d.js?v=20261125152347");
     const caixa = document.getElementById("v-3d");
     render = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     render.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));

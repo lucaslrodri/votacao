@@ -14,7 +14,7 @@ as fotos estão em `../inspiracoes.html` e `../inspiracoes/`, para consulta.
 | Página | O que é |
 |---|---|
 | `index.html` | **Monte a camisa do PEI**: a página inicial (descrita abaixo). |
-| `grafica.html` | **Para a gráfica**: só o que vai na camisa, a Clássica na polo azul e na preta: o logo do PEI do peito, a Ufac da manga e a bandeira do Brasil em SVG, PDF e EPS, com os textos em curvas, e em PNG de 600 ppi; os desenhos das duas Clássicas; as cores da camisa; e o guia em PDF, sem medidas (a malharia ajusta o tamanho). Tudo em `grafica/`, feito por `../exportar-grafica.py` (com `../grafica.typ` e `../guia-camisa.typ`). |
+| `grafica.html` | **Para a gráfica**: os pedidos (quem quer a azul e quem quer a preta, do formulário, com PDF e CSV; `pedidos.js`); só o que vai na camisa, a Clássica na polo azul e na preta: o logo do PEI do peito, a Ufac da manga e a bandeira do Brasil em SVG, PDF e EPS, com os textos em curvas, e em PNG de 600 ppi; os desenhos das duas Clássicas; as cores da camisa; e o guia em PDF, sem medidas (a malharia ajusta o tamanho). Tudo em `grafica/`, feito por `../exportar-grafica.py` (com `../grafica.typ` e `../guia-camisa.typ`). |
 | `logo.html` | **O logo oficial para baixar**: o kit em zip, o manual de identidade, cada arquivo do logo e a imagem das versões (`kit-logo.png`, de `../kit-oficial.typ`). Os arquivos estão em `oficial/` e saem do `../exportar-oficial.sh`. |
 | `resultado.html`, `formulario.html`, `completo.html`, `montar.html` | Só redirecionam os links antigos. `resultado.html#arquivos` vai para `logo.html`, e o resto vai para a camisa. O `montar.html` leva as escolhas do link junto. |
 
@@ -174,6 +174,22 @@ completo. Coleta o e-mail verificado (a pessoa entra com a conta Google), aceita
 a resposta. As respostas ficam na aba Respostas do próprio formulário (dá para ligar a uma planilha por lá). O link e o
 campo da cor estão em `config.js` (`FORM_COR` e `ENTRADA_COR`); se a pergunta da cor for refeita, o campo muda: pegue o
 novo em "Gerar link preenchido" no formulário. Para encerrar, desligue "Aceitando respostas" no formulário.
+
+### A lista dos pedidos (quem quer azul e quem quer preta)
+
+Lucas, 25/11/2026: "vc coloca quem quer azul ou preta para mandar para a gráfica, pode deixar aberto para todo mundo e
+bota para exportar para um PDF ou um csv". O formulário grava as respostas na planilha "Camisa do PEI: azul ou preta?
+(respostas)", no Drive de Lucas. Nela, a aba "Público (site)" tem só o nome e a cor
+(`=QUERY('Respostas ao formulário 1'!A:D;"select D, C where C is not null";1)`), e só essa aba está publicada na Web,
+em CSV (Arquivo → Compartilhar → Publicar na Web; em "Conteúdo publicado", só "Público (site)"). A aba das respostas,
+com os e-mails, não está publicada (o link dela dá 401). O endereço do CSV está em `config.js` (`CSV_PEDIDOS`).
+
+- `grafica.html#pedidos` ("Os pedidos"): os totais, a lista de cada cor em ordem alfabética e os botões "Baixar a
+  lista (PDF)" e "Baixar a lista (CSV)", feitos no navegador por `pedidos.js` (o PDF com o jsPDF 2.5.1, do cdnjs,
+  carregado só ao clicar; o CSV com ponto e vírgula, que abre direto no Excel em português). Funciona no celular.
+- `index.html`: embaixo das duas Clássicas, "Até agora: N na azul e M na preta" e o link "Ver quem já escolheu".
+- O Google atualiza o CSV publicado em alguns minutos: uma resposta nova demora um pouco para aparecer no site.
+- Se mudar as perguntas do formulário, confira as colunas da fórmula (C é a cor e D é o nome).
 
 ## Para a gráfica (25/11/2026)
 

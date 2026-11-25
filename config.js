@@ -11,3 +11,7 @@ window.CLIENTE_GOOGLE = "129979775868-s8hofjoin16lvroc5gdervjnk1dt1144.apps.goog
 // de cada cor já abre com a cor marcada (ENTRADA_COR é o campo da pergunta "Qual cor você quer?").
 window.FORM_COR = "https://docs.google.com/forms/d/e/1FAIpQLSfyQDufFaR-UdtSH3d78cZfOzFvwPWmIZ0G73bWAmpor8RAnw/viewform";
 window.ENTRADA_COR = "entry.185439491";
+// A lista pública dos pedidos (nome e cor, sem e-mail): a aba "Público (site)" da planilha de respostas do formulário
+// ("Camisa do PEI: azul ou preta? (respostas)", no Drive de Lucas), publicada na Web em CSV. Só essa aba está
+// publicada; a aba das respostas, com os e-mails, não. O Google atualiza o CSV publicado em alguns minutos.
+window.CSV_PEDIDOS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8uorTfsRtMpnfGjzfAPkzUCLBxqnlfZvSMquo0THt8JiFZHVju_YGEs5IOkUOfoNPQWIyep7XOttf/pub?gid=824142083&single=true&output=csv";

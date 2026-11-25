@@ -96,6 +96,19 @@
   .aviso-vencedora { background: var(--azul); color: #fff; border-radius: 10px; padding: 12px 14px; margin-top: 12px;
     font-size: 13px; line-height: 1.5; }
   .aviso-vencedora b { color: var(--ouro); }
+  /* os pedidos: quem quer a azul e quem quer a preta (pedidos.js) */
+  .totais { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; }
+  .totais div { flex: 1 1 120px; border: 1px solid var(--linha); border-radius: 10px; padding: 10px 12px; background: var(--fundo); }
+  .totais b { display: block; font-size: 26px; font-weight: 800; color: var(--azul); line-height: 1.1; }
+  .totais small { font-size: 12px; color: var(--cinza); font-weight: 600; }
+  .listas { display: grid; gap: 10px; margin-top: 10px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .cor-pedido { border: 1px solid var(--linha); border-radius: 10px; padding: 12px 14px; }
+  .cor-pedido h3 { margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
+  .cor-pedido h3 i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+  .cor-pedido h3 span { margin-left: auto; font-size: 13px; color: var(--cinza); }
+  .cor-pedido ol { margin: 0; padding-left: 22px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+  .vazio { margin: 6px 0; font-size: 13px; color: var(--cinza); }
+  .botoes button:disabled { opacity: .5; cursor: default; }
   .cores { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 10px; margin-top: 10px; }
   .cor { border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; background: #fff; }
   .cor i { display: block; height: 54px; }
@@ -128,11 +141,33 @@
       <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 0,8 MB)</a>
       <a href="grafica/guia-da-camisa-pei.pdf" download>Guia da camisa (PDF)</a>
       <a href="grafica/LEIA-ME.txt">LEIA-ME</a>
+      <a href="#pedidos">Os pedidos (azul ou preta)</a>
     </div>
     <p class="aviso-vencedora"><b>Só a Clássica venceu.</b> A vencedora da votação de 25/11/2026 é a Clássica. A polo
       preta não é outro modelo: é a mesma Clássica, com os mesmos elementos, só em outra cor.</p>
     <p class="aviso-medidas"><b>Sem medidas.</b> Os desenhos dão a ideia da camisa. O tamanho e a posição exata de cada
       elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.</p>
+  </section>
+
+  <section class="cartao painel" id="pedidos">
+    <p class="chapeu">OS PEDIDOS</p>
+    <h2>Quem quer a azul e quem quer a preta</h2>
+    <p class="sub">Cada pessoa escolhe a cor da sua Clássica no formulário, entrando com a conta Google (uma resposta por
+      pessoa, que pode ser mudada depois). A lista é aberta para todo mundo, só com o nome e a cor; para mandar para a
+      gráfica, baixe em PDF ou em CSV.</p>
+    <div class="totais">
+      <div><b id="pedidos-n-azul">–</b><small>Polo azul</small></div>
+      <div><b id="pedidos-n-preta">–</b><small>Polo preta</small></div>
+      <div><b id="pedidos-n-total">–</b><small>Total</small></div>
+    </div>
+    <div class="botoes">
+      <button type="button" class="forte" data-baixar="pdf" disabled>Baixar a lista (PDF)</button>
+      <button type="button" data-baixar="csv" disabled>Baixar a lista (CSV)</button>
+      <a id="pedidos-form" target="_blank" rel="noopener" href="#">Escolher a minha cor</a>
+      <button type="button" id="pedidos-atualizar">Atualizar</button>
+    </div>
+    <div class="listas" id="pedidos-lista"></div>
+    <p class="sub" id="pedidos-quando" style="margin: 10px 0 0; font-size: 12px"></p>
   </section>
 
   <section class="cartao painel">
@@ -209,5 +244,7 @@
   }).join("");
 })();
 </script>
+<script src="config.js"></script>
+<script src="pedidos.js"></script>
 </body>
 </html>
