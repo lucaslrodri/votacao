@@ -6,7 +6,8 @@ só (A3) está em pagina-unica/. Os desenhos da camisa são só para dar a ideia
 elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.
 
 FORMATOS
-  svg/  vetor (Inkscape, Illustrator, CorelDRAW, navegador)
+  svg/  vetor tirado do PDF, só com curvas e cores chapadas, sem máscaras nem grupos (Inkscape, Illustrator,
+        CorelDRAW, conversores de SVG para CDR, navegador)
   pdf/  vetor, com os textos em curvas (para a gráfica)
   eps/  vetor, com os textos em curvas (CorelDRAW, Illustrator, programas de bordado)
   ai/   vetor, com os textos em curvas, no formato do Illustrator (o AI compatível com PDF, que o Illustrator grava
