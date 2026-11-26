@@ -1,14 +1,16 @@
 CAMISA DO PEI: ARQUIVOS PARA A GRÁFICA
-Grupo de Pesquisa em Aplicações Industriais (PEI), Ufac. Gerado em 25/11/2026.
+Grupo de Pesquisa em Aplicações Industriais (PEI), Ufac. Gerado em 26/11/2026.
 
-Comece pelo guia-da-camisa-pei.pdf: ele mostra onde vai cada elemento, as cores e as fontes. Os desenhos da camisa são
-só para dar a ideia: o tamanho e a posição exata de cada elemento ficam a cargo da malharia, conforme o tamanho de cada
-camisa.
+Comece pelo guia-da-camisa-pei.pdf: ele mostra onde vai cada elemento, as cores e as fontes. A mesma coisa numa folha
+só (A3) está em pagina-unica/. Os desenhos da camisa são só para dar a ideia: o tamanho e a posição exata de cada
+elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.
 
 FORMATOS
   svg/  vetor (Inkscape, Illustrator, CorelDRAW, navegador)
   pdf/  vetor, com os textos em curvas (para a gráfica)
   eps/  vetor, com os textos em curvas (CorelDRAW, Illustrator, programas de bordado)
+  ai/   vetor, com os textos em curvas, no formato do Illustrator (o AI compatível com PDF, que o Illustrator grava
+        desde a versão 9); abre também no CorelDRAW
   png/  imagem de 600 ppi com fundo transparente (para conferir ou para quem não usa vetor)
 
 O MODELO: SÓ A CLÁSSICA VENCEU
@@ -22,7 +24,9 @@ PASTAS (só o que vai na camisa)
   ufac/       a Ufac da manga direita: o escudo com o nome embaixo, todo branco, na polo azul e na preta
   bandeira/   a bandeira do Brasil, da manga esquerda
   modelos/    os desenhos da Clássica, a vencedora, na polo azul e na preta (frente, costas e mangas), sem
-              medidas
+              medidas, em svg, pdf, eps, ai e png (300 ppi, fundo branco), todos na mesma pasta
+  pagina-unica/  tudo numa folha A3 só: os desenhos, as peças, onde vai cada uma, as cores e as fontes, em pdf, eps,
+              ai, svg e png (300 ppi)
   Em vários tamanhos: camisa-pei-png-tamanhos.zip, no site, tem cada peça em PNG de 300 ppi, de 3 a 30 cm de largura
   fontes/     a Montserrat Bold e a Inter, gratuitas (licença OFL)
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Camisa do PEI para a gráfica</title>
-<meta name="description" content="Os arquivos da camisa do PEI para a gráfica: só o que vai na camisa (o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, a vencedora da votação), em SVG, PDF, EPS e PNG, com o guia em PDF.">
+<meta name="description" content="Os arquivos da camisa do PEI para a gráfica: só o que vai na camisa (o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, a vencedora da votação), e os desenhos da camisa, em SVG, PDF, EPS, AI (Illustrator) e PNG, com o guia em PDF e tudo numa página só.">
 <link rel="icon" href="oficial/arquivos/icones/pei-logo-icone-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,6 +105,20 @@
   .fontes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 10px; margin-top: 10px; }
   .fontes div { background: var(--fundo); border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
   .fontes b { color: var(--azul); }
+  /* os desenhos da camisa em todos os formatos, uma linha por vista */
+  .vistas { display: grid; gap: 6px; margin-top: 8px; }
+  .vistas div { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+  .vistas div > span { min-width: 104px; font-size: 12px; font-weight: 700; color: var(--grafite); }
+  .vistas .formatos { margin-top: 0; }
+  /* tudo numa página */
+  .unica { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  .unica a.previa-unica { display: block; border: 1px solid var(--linha); border-radius: 8px; overflow: hidden; }
+  .unica a.previa-unica img { display: block; width: 100%; height: auto; }
+  .unica ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; line-height: 1.6; color: var(--grafite); }
+  @media (max-width: 720px) { .unica { grid-template-columns: 1fr; } }
+  .programas { font-size: 13px; line-height: 1.55; margin: 12px 0 0; padding: 12px 14px; background: var(--fundo);
+    border-radius: 10px; }
+  .programas b { color: var(--azul); }
 </style>
 </head>
 <body>
@@ -123,10 +137,11 @@
     <p class="chapeu">PARA A GRÁFICA</p>
     <h1>Arquivos da camisa para a gráfica</h1>
     <p class="sub">Só o que vai na camisa: o logo do PEI, a Ufac e a bandeira do Brasil, como na Clássica, a
-      vencedora da votação. Em SVG, PDF e EPS (vetor, com os textos em curvas) e em PNG de 600 ppi com
-      fundo transparente, mais o guia da camisa em PDF.</p>
+      vencedora da votação, e os desenhos da camisa. Em SVG, PDF, EPS e AI (vetor, com os textos em curvas) e em PNG,
+      mais o guia da camisa em PDF e tudo numa página só.</p>
     <div class="botoes">
-      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 1,9 MB)</a>
+      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 4,7 MB)</a>
+      <a href="grafica/pagina-unica/camisa-pei-pagina-unica.pdf" download>Tudo numa página (PDF)</a>
       <a href="grafica/camisa-pei-png-tamanhos.zip" download>PNG em vários tamanhos (zip, 1,4 MB)</a>
       <a href="grafica/guia-da-camisa-pei.pdf" download>Guia da camisa (PDF)</a>
       <a href="grafica/LEIA-ME.txt">LEIA-ME</a>
@@ -136,6 +151,29 @@
       preta são o mesmo modelo; a preta é inspirada no modelo do Doug, o segundo colocado.</p>
     <p class="aviso-medidas"><b>Sem medidas.</b> Os desenhos dão a ideia da camisa. O tamanho e a posição exata de cada
       elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.</p>
+    <p class="programas"><b>Qual formato abrir?</b> No <b>Illustrator</b>, o AI. No <b>CorelDRAW</b>, o AI, o PDF ou o
+      EPS. Em programas de bordado, o EPS. Para conferir, o PNG ou o PDF. Nos vetores (SVG, PDF, EPS e AI), os textos
+      já estão em curvas.</p>
+  </section>
+
+  <section class="cartao painel">
+    <p class="chapeu">TUDO NUMA PÁGINA</p>
+    <h2>A camisa numa folha só</h2>
+    <div class="unica">
+      <a class="previa-unica" href="grafica/pagina-unica/camisa-pei-pagina-unica.pdf"><img loading="lazy"
+        src="grafica/previa-pagina-unica.png" width="1819" height="1286"
+        alt="A folha única: a Clássica na polo azul e na preta, as peças, onde vai cada uma, as cores e as fontes"></a>
+      <div>
+        <p class="sub" style="margin-bottom:8px">O guia inteiro numa folha A3 deitada, sem medidas:</p>
+        <ul>
+          <li>a Clássica na polo azul e na preta: frente, costas e as duas mangas;</li>
+          <li>o logo do PEI, a Ufac e a bandeira do Brasil;</li>
+          <li>onde vai cada elemento;</li>
+          <li>as cores (HEX, RGB e CMYK) e as fontes.</li>
+        </ul>
+        <div class="formatos" id="formatos-unica" style="margin-top:12px"></div>
+      </div>
+    </div>
   </section>
 
   <section class="cartao painel">
@@ -151,7 +189,7 @@
     <p class="chapeu">A VENCEDORA · VOTAÇÃO DE 25/11/2026</p>
     <h2>Só a Clássica venceu</h2>
     <p class="sub">A Clássica venceu a votação, com 3 corações. A azul e a preta são o mesmo modelo; a preta é inspirada
-      no modelo do Doug, o segundo colocado. Frente e costas; as mangas ampliadas estão no guia e na pasta modelos/ do zip.</p>
+      no modelo do Doug, o segundo colocado. Cada desenho (frente, costas e as duas mangas) em todos os formatos.</p>
     <div class="modelos" id="modelos"></div>
   </section>
 
@@ -172,7 +210,7 @@
       <div><b>Inter</b><br>A fonte da Ufac. Gratuita:
         <a href="https://fonts.google.com/specimen/Inter">Google Fonts</a>.</div>
     </div>
-    <p class="aviso-medidas">Nos arquivos em vetor (SVG, PDF e EPS), os textos já estão convertidos em curvas: <b>não é
+    <p class="aviso-medidas">Nos arquivos em vetor (SVG, PDF, EPS e AI), os textos já estão convertidos em curvas: <b>não é
       preciso instalar as fontes</b>. A Montserrat e a Inter estão na pasta fontes/ do zip.</p>
   </section>
 
@@ -181,11 +219,20 @@
 (function () {
   "use strict";
   const K = "grafica/";
-  const links = function (dir, n) {
-    return ["svg", "pdf", "eps", "png"].map(function (f) {
-      return '<a href="' + K + dir + "/" + f + "/" + n + "." + f + '" download>' + f.toUpperCase() + "</a>";
-    }).join("");
+  // os formatos do kit (grafica/, do exportar-grafica.py); o AI é o do Illustrator
+  const FORMATOS = ["svg", "pdf", "eps", "ai", "png"];
+  const link = function (caminho, f, rotulo) {
+    return '<a href="' + caminho + "." + f + '" download>' + (rotulo || f.toUpperCase()) + "</a>";
   };
+  // as peças ficam numa pasta por formato: grafica/<peça>/<formato>/<arquivo>.<formato>
+  const links = function (dir, n) {
+    return FORMATOS.map(function (f) { return link(K + dir + "/" + f + "/" + n, f); }).join("");
+  };
+  // os desenhos e a folha única ficam todos na mesma pasta: <pasta>/<arquivo>.<formato>
+  const todos = function (base) {
+    return FORMATOS.map(function (f) { return link(base, f); }).join("");
+  };
+  document.getElementById("formatos-unica").innerHTML = todos(K + "pagina-unica/camisa-pei-pagina-unica");
   // as peças da camisa: [pasta, arquivo, nome, uso, fundo]
   const PECAS = [
     ["pei", "pei-logo-vertical-negativa", "Logo do PEI · peito esquerdo", "A sigla com o nome embaixo, na versão negativa: branco com o raio dourado.", "escuro"],
@@ -204,13 +251,15 @@
     ["classica-preta-design-pronto", "Clássica preta", "O MESMO MODELO", "Inspirada no modelo do Doug, o segundo " +
       "colocado.", false],
   ];
+  const VISTAS = [["frente", "Frente"], ["costas", "Costas"], ["manga-dir", "Manga direita"],
+    ["manga-esq", "Manga esquerda"]];
   document.getElementById("modelos").innerHTML = MODELOS.map(function (m) {
     const f = function (v) { return K + "modelos/" + m[0] + "-" + v; };
     return '<div class="modelo' + (m[4] ? " vencedora" : "") + '"><div class="desenhos"><img loading="lazy" alt="Frente" src="' + f("frente") + '.svg"><img ' +
       'loading="lazy" alt="Costas" src="' + f("costas") + '.svg"></div><div class="txt"><span class="selo' + (m[4] ? "" : " cinza") + '">' + m[2] + "</span><b>" + m[1] +
-      "</b>" + m[3] +
-      '<div class="formatos"><a href="' + f("frente") + '.png" download>Frente (PNG)</a><a href="' + f("costas") +
-      '.png" download>Costas (PNG)</a></div></div></div>';
+      "</b>" + m[3] + '<div class="vistas">' + VISTAS.map(function (v) {
+        return "<div><span>" + v[1] + '</span><div class="formatos">' + todos(f(v[0])) + "</div></div>";
+      }).join("") + "</div></div></div>";
   }).join("");
 })();
 </script>
