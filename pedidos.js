@@ -105,8 +105,14 @@
           '">Remover</button></li>';
       }).join("");
     }
-    const n = somar(carrinho);
-    $("total-carrinho").textContent = n ? "Total: " + plural(n, "camisa", "camisas") : "";
+    // o subtotal de cada cor e o total geral no fim (Lucas, 25/11/2026)
+    const n = somar(carrinho), tot = $("total-carrinho");
+    tot.hidden = !n;
+    tot.innerHTML = n ? ["azul", "preta"].map(function (cor) {
+      const s = somar(carrinho.filter(function (it) { return it.cor === cor; }));
+      return s ? '<div><span><i style="background:' + CORES[cor].tinta + '"></i>Subtotal da ' + CORES[cor].nome.toLowerCase() +
+        "</span><span>" + plural(s, "camisa", "camisas") + "</span></div>" : "";
+    }).join("") + '<div class="geral"><span>Total geral</span><span>' + plural(n, "camisa", "camisas") + "</span></div>" : "";
     mostrarSessao();
   }
   $("itens").addEventListener("click", function (e) {
@@ -271,18 +277,23 @@
     $("pedidos-n-pessoas").textContent = pedidos.length;
     const cel = function (n) { return '<td class="n">' + (n || "–") + "</td>"; };
     $("pedidos-tamanhos").innerHTML = "<table><thead><tr><th></th>" + TAMANHOS.map(function (t) { return '<th class="n">' + t + "</th>"; }).join("") +
-      '<th class="n">Total</th></tr></thead><tbody>' + ["azul", "preta"].map(function (cor) {
+      '<th class="n">Subtotal</th></tr></thead><tbody>' + ["azul", "preta"].map(function (cor) {
         return '<tr><td><span class="cor-ponto" style="background:' + CORES[cor].tinta + '"></span>' + CORES[cor].nome + "</td>" +
           TAMANHOS.map(function (t) { return cel(c[cor][t]); }).join("") + cel(soma(c[cor])) + "</tr>";
-      }).join("") + "</tbody><tfoot><tr><td>Total</td>" + TAMANHOS.map(function (t) { return cel((c.azul[t] || 0) + (c.preta[t] || 0)); }).join("") +
+      }).join("") + "</tbody><tfoot><tr><td>Total geral</td>" + TAMANHOS.map(function (t) { return cel((c.azul[t] || 0) + (c.preta[t] || 0)); }).join("") +
       cel(na + np) + "</tr></tfoot></table>";
+    // no fim da lista das pessoas: o subtotal de cada cor e o total geral
+    const rodapeLista = "<tfoot>" + ["azul", "preta"].map(function (cor) {
+      return '<tr class="sub"><td colspan="2"><span class="cor-ponto" style="background:' + CORES[cor].tinta + '"></span>Subtotal da ' +
+        CORES[cor].nome.toLowerCase() + '</td><td class="n">' + (cor === "azul" ? na : np) + "</td></tr>";
+    }).join("") + '<tr><td colspan="2">Total geral</td><td class="n">' + (na + np) + "</td></tr></tfoot>";
     $("pedidos-lista").innerHTML = pedidos.length ? "<table><thead><tr><th>Nome</th><th>Pedido</th><th class=\"n\">Camisas</th>" +
       "</tr></thead><tbody>" + pedidos.map(function (p) {
         return '<tr class="pessoa"><td><b>' + esc(p.nome) + "</b></td><td>" + p.itens.map(function (it) {
           return '<span style="white-space:nowrap"><span class="cor-ponto" style="background:' + CORES[it.cor].tinta + '"></span>' +
             CORES[it.cor].curto + " " + it.tamanho + (it.qtd > 1 ? " × " + it.qtd : "") + "</span>";
         }).join(", ") + '</td><td class="n">' + somar(p.itens) + "</td></tr>";
-      }).join("") + "</tbody></table>" : '<p class="vazio">Ninguém pediu ainda.</p>';
+      }).join("") + "</tbody>" + rodapeLista + "</table>" : '<p class="vazio">Ninguém pediu ainda.</p>';
     document.querySelectorAll("[data-baixar]").forEach(function (b) { b.disabled = !pedidos.length; });
   }
   function hora(d) { return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2); }
@@ -301,6 +312,9 @@
     const q = function (s) { return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const linhas = [];
     pedidos.forEach(function (p) { p.itens.forEach(function (it) { linhas.push([q(p.nome), CORES[it.cor].curto, it.tamanho, it.qtd].join(";")); }); });
+    // no fim, depois de uma linha em branco: o subtotal de cada cor e o total geral
+    const c = contar(), na = soma(c.azul), np = soma(c.preta);
+    linhas.push("", "Subtotal;Azul;;" + na, "Subtotal;Preta;;" + np, "Total geral;;;" + (na + np));
     const texto = "Nome;Cor;Tamanho;Quantidade\r\n" + linhas.join("\r\n") + "\r\n";
     baixar("pedidos-camisa-pei.csv", new Blob(["﻿" + texto], { type: "text/csv;charset=utf-8" }));
   }
@@ -324,7 +338,7 @@
       fonte("normal", 10, CINZA);
       doc.text("A Clássica, na polo azul ou na preta. Lista de " + data(quando) + " às " + hora(quando) + ".", M, y); y += 11;
       // a tabela por cor e tamanho
-      const c = contar(), cols = ["", "P", "M", "G", "GG", "Total"], xs = [M, M + 52, M + 74, M + 96, M + 118, M + 144];
+      const c = contar(), cols = ["", "P", "M", "G", "GG", "Subtotal"], xs = [M, M + 52, M + 74, M + 96, M + 118, M + 144];
       fonte("bold", 12, AZUL); doc.text("Por tamanho", M, y); y += 7;
       fonte("bold", 10, CINZA); cols.forEach(function (t, k) { if (k) doc.text(t, xs[k], y, { align: "center" }); }); y += 6;
       const linha = function (rot, vals, negrito) {
@@ -337,7 +351,7 @@
       ["azul", "preta"].forEach(function (cor) {
         linha(CORES[cor].nome, TAMANHOS.map(function (t) { return c[cor][t]; }).concat([soma(c[cor])]));
       });
-      linha("Total", TAMANHOS.map(function (t) { return (c.azul[t] || 0) + (c.preta[t] || 0); }).concat([soma(c.azul) + soma(c.preta)]), true);
+      linha("Total geral", TAMANHOS.map(function (t) { return (c.azul[t] || 0) + (c.preta[t] || 0); }).concat([soma(c.azul) + soma(c.preta)]), true);
       y += 2;
       fonte("normal", 10, CINZA); doc.text(plural(pedidos.length, "pessoa", "pessoas") + ".", M, y); y += 10;
       // as pessoas
@@ -351,6 +365,17 @@
         doc.text(itens, M + 78, y);
         fonte("bold", 10.5, AZUL); doc.text(String(somar(p.itens)), M + L, y, { align: "right" });
         y += Math.max(1, itens.length) * 5.2 + 1.6;
+      });
+      // no fim: o subtotal de cada cor e o total geral
+      if (y + 24 > 278) nova();
+      doc.setDrawColor(218, 223, 231); doc.line(M, y - 2.6, M + L, y - 2.6); y += 3;
+      [["Subtotal da polo azul", soma(c.azul)], ["Subtotal da polo preta", soma(c.preta)],
+        ["Total geral", soma(c.azul) + soma(c.preta)]].forEach(function (r, k) {
+        const geral = k === 2;
+        fonte(geral ? "bold" : "normal", geral ? 11.5 : 10.5, geral ? AZUL : TEXTO);
+        doc.text(r[0], M + 8, y);
+        fonte("bold", geral ? 11.5 : 10.5, AZUL); doc.text(String(r[1]), M + L, y, { align: "right" });
+        y += geral ? 7 : 5.8;
       });
       rodape();
       doc.save("pedidos-camisa-pei.pdf");
