@@ -140,8 +140,9 @@
       vencedora da votação, e os desenhos da camisa. Em SVG, PDF, EPS e AI (vetor, com os textos em curvas) e em PNG,
       mais o guia da camisa em PDF e tudo numa página só.</p>
     <div class="botoes">
-      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 4,7 MB)</a>
+      <a class="forte" href="grafica/camisa-pei-grafica.zip" download>Baixar tudo (zip, 5 MB)</a>
       <a href="grafica/pagina-unica/camisa-pei-pagina-unica.pdf" download>Tudo numa página (PDF)</a>
+      <a href="grafica/camisa-pei-para-cdr.zip" download>Para o CorelDRAW (zip, 257 KB)</a>
       <a href="grafica/camisa-pei-png-tamanhos.zip" download>PNG em vários tamanhos (zip, 1,4 MB)</a>
       <a href="grafica/guia-da-camisa-pei.pdf" download>Guia da camisa (PDF)</a>
       <a href="grafica/LEIA-ME.txt">LEIA-ME</a>
@@ -152,8 +153,20 @@
     <p class="aviso-medidas"><b>Sem medidas.</b> Os desenhos dão a ideia da camisa. O tamanho e a posição exata de cada
       elemento ficam a cargo da malharia, conforme o tamanho de cada camisa.</p>
     <p class="programas"><b>Qual formato abrir?</b> No <b>Illustrator</b>, o AI. No <b>CorelDRAW</b>, o AI, o PDF ou o
-      EPS. Em programas de bordado, o EPS. Para conferir, o PNG ou o PDF. Nos vetores (SVG, PDF, EPS e AI), os textos
-      já estão em curvas.</p>
+      EPS, ou os SVG simples de <a href="#corel">Para o CorelDRAW</a>. Em programas de bordado, o EPS. Para conferir, o
+      PNG ou o PDF. Nos vetores (SVG, PDF, EPS e AI), os textos já estão em curvas.</p>
+  </section>
+
+  <section class="cartao painel" id="corel">
+    <p class="chapeu">PARA O CORELDRAW · CDR</p>
+    <h2>Arquivos para o formato do Corel</h2>
+    <p class="sub">O CDR é o formato do CorelDRAW. Para ter o arquivo .cdr, envie estes SVG a um conversor online de SVG
+      para CDR. São SVG simples, só com curvas (sem imagens embutidas e sem textos), que também abrem direto no
+      CorelDRAW (Arquivo › Importar).</p>
+    <div class="botoes">
+      <a class="forte" href="grafica/camisa-pei-para-cdr.zip" download>Baixar os 12 SVG (zip, 257 KB)</a>
+    </div>
+    <div class="vistas" id="corel-arquivos"></div>
   </section>
 
   <section class="cartao painel">
@@ -233,6 +246,22 @@
     return FORMATOS.map(function (f) { return link(base, f); }).join("");
   };
   document.getElementById("formatos-unica").innerHTML = todos(K + "pagina-unica/camisa-pei-pagina-unica");
+  // os SVG simples para o Corel (grafica/para-corel/), um por arquivo: [grupo, [rótulo, arquivo]...]
+  const C = K + "para-corel/";
+  const COREL = [
+    ["As peças", [["Logo do PEI", "pei-logo-vertical-negativa"], ["Ufac", "ufac-vertical-branco"],
+      ["Bandeira", "bandeira-brasil"]]],
+    ["Clássica azul", [["Frente", "classica-design-pronto-frente"], ["Costas", "classica-design-pronto-costas"],
+      ["Manga direita", "classica-design-pronto-manga-dir"], ["Manga esquerda", "classica-design-pronto-manga-esq"]]],
+    ["Clássica preta", [["Frente", "classica-preta-design-pronto-frente"], ["Costas", "classica-preta-design-pronto-costas"],
+      ["Manga direita", "classica-preta-design-pronto-manga-dir"], ["Manga esquerda", "classica-preta-design-pronto-manga-esq"]]],
+    ["Tudo numa página", [["Folha A3", "camisa-pei-pagina-unica"]]],
+  ];
+  document.getElementById("corel-arquivos").innerHTML = COREL.map(function (g) {
+    return "<div><span>" + g[0] + '</span><div class="formatos">' + g[1].map(function (a) {
+      return link(C + a[1], "svg", a[0]);
+    }).join("") + "</div></div>";
+  }).join("");
   // as peças da camisa: [pasta, arquivo, nome, uso, fundo]
   const PECAS = [
     ["pei", "pei-logo-vertical-negativa", "Logo do PEI · peito esquerdo", "A sigla com o nome embaixo, na versão negativa: branco com o raio dourado.", "escuro"],

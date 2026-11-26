@@ -27,6 +27,8 @@ PASTAS (só o que vai na camisa)
               medidas, em svg, pdf, eps, ai e png (300 ppi, fundo branco), todos na mesma pasta
   pagina-unica/  tudo numa folha A3 só: os desenhos, as peças, onde vai cada uma, as cores e as fontes, em pdf, eps,
               ai, svg e png (300 ppi)
+  para-corel/ SVG simples, só com curvas, das peças, dos desenhos e da página única: para importar no CorelDRAW ou
+              para converter em CDR num conversor online
   Em vários tamanhos: camisa-pei-png-tamanhos.zip, no site, tem cada peça em PNG de 300 ppi, de 3 a 30 cm de largura
   fontes/     a Montserrat Bold e a Inter, gratuitas (licença OFL)
 
