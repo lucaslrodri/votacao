@@ -1,36 +1,40 @@
-// Camisa do PEI: a cor de cada um. A camisa é a Clássica, na polo azul ou na preta; quem quer a camisa entra com o
-// Google no site (site/index.html), escolhe a cor e põe o nome completo, e este script anota na planilha. A lista dos
-// pedidos (nome e cor, sem e-mail) é livre; anotar e tirar o nome pedem o login, e o script confere a credencial no
-// Google (tokeninfo) antes de gravar. Uma linha por conta Google: escolher de novo troca a cor.
-// Grava na aba "Cor da camisa" (com a contagem em "Cor da camisa (total)") da mesma planilha da votação do logo
-// ("Votação do novo logo do PEI (respostas do site)"), aberta pelo ID guardado nas propriedades deste projeto
-// (PLANILHA_ID). As outras abas (a votação do logo, as camisas e os corações) ficam como estão. O código das camisas
-// do grupo e dos corações (votação encerrada em 25/11/2026) saiu daqui no mesmo dia e continua no histórico do git.
+// Camisa do PEI: os pedidos. A camisa é a Clássica, na polo azul ou na preta; quem quer a camisa entra com o Google
+// no site (site/index.html), monta o carrinho (a cor, o tamanho e a quantidade de cada item) e põe o nome completo, e
+// este script anota na planilha (Lucas, 25/11/2026: "deveria ter a quantidade e o carrinho na verdade e a pessoa (Em
+// uma lista em baixo para todo mundo ver)", "A quantidade de pretas e azuis" e "E o tamanho da camisa"). A lista dos
+// pedidos (nome e itens, sem e-mail) é livre; enviar e cancelar o pedido pedem o login, e o script confere a credencial
+// no Google (tokeninfo) antes de gravar. Um pedido por conta Google: enviar de novo troca o pedido inteiro.
+// Grava na aba "Pedidos da camisa" (uma linha por item; a contagem por cor e tamanho em "Pedidos da camisa (total)")
+// da mesma planilha da votação do logo ("Votação do novo logo do PEI (respostas do site)"), aberta pelo ID guardado
+// nas propriedades deste projeto (PLANILHA_ID). As outras abas ficam como estão.
 //
 // Como instalar (passo a passo em site/LEIAME.md):
 //   1. No projeto do Apps Script "Votação do logo do PEI (site)", apague o código antigo, cole este arquivo e salve.
-//   2. Implantar → Nova implantação → tipo "App da Web"; Executar como: Eu; Quem pode acessar: Qualquer pessoa.
-//   3. Copie a URL do app da Web (termina em /exec) para window.URL_PEDIDOS, em site/config.js.
+//   2. Implantar → Gerenciar implantações → editar → Nova versão (a URL continua a mesma, em site/config.js).
 //
 // O site manda tudo por POST (JSON em texto), com o token do login (a credencial que o Google assina) quando há:
-//   { acao: "pedidos" }                     a lista: [{ nome, cor }] e o total de cada cor (sem login)
-//   { acao: "pedidos", token }              o mesmo, e o pedido de quem está logado (meu: { nome, cor } ou null)
-//   { acao: "cor", token, cor, nome }       anota ou troca a cor ("azul" ou "preta") e o nome completo
-//   { acao: "tirar", token }                tira o nome da lista
-// A resposta: { ok, eu: { nome } ou null, meu, pedidos: [{ nome, cor }], total: { azul, preta } }. Os e-mails ficam
-// só na planilha.
+//   { acao: "pedidos" }                           a lista e os totais (sem login)
+//   { acao: "pedidos", token }                    o mesmo, e o pedido de quem está logado (meu)
+//   { acao: "pedido", token, nome, itens }        anota ou troca o pedido; itens: [{ cor, tamanho, qtd }]
+//   { acao: "tirar", token }                      cancela o pedido
+// A resposta: { ok, aberto, eu: { nome } ou null, meu: { nome, itens } ou null, pedidos: [{ nome, itens }] }. Os
+// e-mails ficam só na planilha.
 
 const CLIENTE_GOOGLE = '129979775868-s8hofjoin16lvroc5gdervjnk1dt1144.apps.googleusercontent.com';  // o mesmo de site/config.js
-const ABERTO = true;          // false fecha os pedidos: a lista continua, mas ninguém anota nem tira mais
-const ABA = 'Cor da camisa';
-const CAB = ['Anotado em', 'Atualizado em', 'Nome completo', 'Cor', 'E-mail (conta Google)', 'Nome da conta Google'];
-const ABA_TOTAL = 'Cor da camisa (total)';
+const ABERTO = true;          // false fecha os pedidos: a lista continua, mas ninguém envia nem cancela mais
+const ABA = 'Pedidos da camisa';
+const CAB = ['Anotado em', 'Atualizado em', 'Nome completo', 'Cor', 'Tamanho', 'Quantidade', 'E-mail (conta Google)',
+  'Nome da conta Google'];
+const ABA_TOTAL = 'Pedidos da camisa (total)';
 const CORES = { azul: 'Azul', preta: 'Preta' };
-const MAX_PEDIDOS = 500;      // um limite, para ninguém encher a planilha
+const TAMANHOS = ['P', 'M', 'G', 'GG'];   // a mesma lista de site/pedidos.js (Lucas: "O tamanho é P, M, G ou GG")
+const MAX_QTD = 10;           // por item
+const MAX_ITENS = 10;         // por pedido
+const MAX_LINHAS = 2000;      // um limite, para ninguém encher a planilha
 const MAX_NOME = 80;
 
 function doGet() {
-  return resposta_({ ok: true, app: 'camisa do PEI: a cor' });   // abrir a URL no navegador mostra se o app está no ar
+  return resposta_({ ok: true, app: 'camisa do PEI: pedidos' });   // abrir a URL no navegador mostra se o app está no ar
 }
 
 function doPost(e) {
@@ -41,12 +45,12 @@ function doPost(e) {
     const eu = login_(d.token);
     if (!eu) return resposta_({ ok: false, erro: 'login', mensagem: 'login do Google inválido ou expirado' });
     if (d.acao === 'pedidos') return resposta_(lista_(eu));
-    if (d.acao !== 'cor' && d.acao !== 'tirar') return resposta_({ ok: false, erro: 'ação desconhecida' });
+    if (d.acao !== 'pedido' && d.acao !== 'tirar') return resposta_({ ok: false, erro: 'ação desconhecida' });
     if (!ABERTO) return resposta_({ ok: false, erro: 'fechado', mensagem: 'os pedidos já foram fechados' });
     const trava = LockService.getScriptLock();
     trava.waitLock(30000);
     try {
-      const r = d.acao === 'cor' ? anotar_(d, eu) : tirar_(eu);
+      const r = d.acao === 'pedido' ? anotar_(d, eu) : (apagar_(eu.email), { ok: true });
       return resposta_(r.ok ? lista_(eu) : r);
     } finally {
       trava.releaseLock();
@@ -78,66 +82,79 @@ function login_(token) {
   return eu;
 }
 
-// as linhas da aba: [{ i (número da linha), nome, cor ("azul"/"preta"), email }]
+// as linhas da aba: [{ i (número da linha), anotado, nome, cor, tamanho, qtd, email }]
 function linhas_() {
   const aba = planilha_().getSheetByName(ABA);
   if (!aba || aba.getLastRow() < 2) return [];
   return aba.getRange(2, 1, aba.getLastRow() - 1, CAB.length).getValues().map(function (l, k) {
     const cor = String(l[3]).trim().toLowerCase();
-    return { i: k + 2, nome: String(l[2]).trim(), cor: cor === 'preta' ? 'preta' : cor === 'azul' ? 'azul' : '',
-      email: String(l[4]).trim().toLowerCase() };
-  }).filter(function (l) { return l.nome && l.cor; });
+    return { i: k + 2, anotado: l[0], nome: String(l[2]).trim(), cor: CORES[cor] ? cor : '',
+      tamanho: String(l[4]).trim().toUpperCase(), qtd: Math.floor(Number(l[5]) || 0),
+      email: String(l[6]).trim().toLowerCase() };
+  });
 }
 
-// a lista: em ordem alfabética, sem os e-mails; com login, o pedido da própria pessoa
+// a lista: uma entrada por pessoa (o e-mail só agrupa, não sai), em ordem alfabética
 function lista_(eu) {
-  const todas = linhas_();
-  const pedidos = todas.map(function (l) { return { nome: l.nome, cor: l.cor }; })
+  const porEmail = {};
+  linhas_().forEach(function (l) {
+    if (!l.nome || !l.cor || !(l.qtd > 0) || !l.email) return;
+    const p = porEmail[l.email] || (porEmail[l.email] = { nome: l.nome, itens: [] });
+    p.itens.push({ cor: l.cor, tamanho: l.tamanho, qtd: l.qtd });
+  });
+  const ordem = function (a, b) {
+    return a.cor !== b.cor ? (a.cor === 'azul' ? -1 : 1) : TAMANHOS.indexOf(a.tamanho) - TAMANHOS.indexOf(b.tamanho);
+  };
+  Object.keys(porEmail).forEach(function (k) { porEmail[k].itens.sort(ordem); });
+  const pedidos = Object.keys(porEmail).map(function (k) { return porEmail[k]; })
     .sort(function (a, b) { return a.nome.localeCompare(b.nome, 'pt-BR'); });
-  const total = { azul: 0, preta: 0 };
-  pedidos.forEach(function (p) { total[p.cor]++; });
-  const meu = eu ? todas.filter(function (l) { return l.email === eu.email; })[0] : null;
-  return { ok: true, aberto: ABERTO, eu: eu ? { nome: eu.nome } : null, meu: meu ? { nome: meu.nome, cor: meu.cor } : null,
-    pedidos: pedidos, total: total };
+  return { ok: true, aberto: ABERTO, eu: eu ? { nome: eu.nome } : null, meu: eu ? (porEmail[eu.email] || null) : null,
+    pedidos: pedidos };
 }
 
-// anota ou troca: uma linha por e-mail
+// anota ou troca o pedido inteiro: apaga as linhas da pessoa e escreve uma por item
 function anotar_(d, eu) {
-  const cor = String(d.cor || '');
-  if (!CORES[cor]) return { ok: false, erro: 'escolha a cor: azul ou preta' };
   const nome = texto_(d.nome, MAX_NOME);
   if (nome.length < 3) return { ok: false, erro: 'escreva o seu nome completo' };
-  const aba = aba_();
-  const agora = new Date();
-  const minha = linhas_().filter(function (l) { return l.email === eu.email; })[0]
-    || achar_(aba, eu.email);
-  if (minha) {
-    aba.getRange(minha.i, 2, 1, 3).setValues([[agora, seguro_(nome), CORES[cor]]]);
-    aba.getRange(minha.i, 6).setValue(seguro_(eu.nome));
-    return { ok: true };
+  if (!Array.isArray(d.itens)) return { ok: false, erro: 'o carrinho está vazio' };
+  const junta = {};
+  for (let k = 0; k < d.itens.length; k++) {
+    const it = d.itens[k] || {}, cor = String(it.cor || ''), tam = String(it.tamanho || '').toUpperCase();
+    const qtd = Math.floor(Number(it.qtd));
+    if (!CORES[cor]) return { ok: false, erro: 'cor inválida' };
+    if (TAMANHOS.indexOf(tam) < 0) return { ok: false, erro: 'tamanho inválido' };
+    if (!(qtd >= 1 && qtd <= MAX_QTD)) return { ok: false, erro: 'quantidade inválida (de 1 a ' + MAX_QTD + ')' };
+    const c = cor + '|' + tam;
+    junta[c] = Math.min(MAX_QTD, (junta[c] || 0) + qtd);
   }
-  if (aba.getLastRow() - 1 >= MAX_PEDIDOS) return { ok: false, erro: 'a lista está cheia' };
-  aba.appendRow([agora, agora, seguro_(nome), CORES[cor], eu.email, seguro_(eu.nome)]);
-  return { ok: true };
-}
-
-function tirar_(eu) {
+  const chaves = Object.keys(junta);
+  if (!chaves.length) return { ok: false, erro: 'o carrinho está vazio' };
+  if (chaves.length > MAX_ITENS) return { ok: false, erro: 'itens demais no carrinho' };
   const aba = aba_();
-  const minha = achar_(aba, eu.email);
-  if (minha) aba.deleteRow(minha.i);
+  const minhas = linhas_().filter(function (l) { return l.email === eu.email; }).length;
+  if (aba.getLastRow() - 1 - minhas + chaves.length > MAX_LINHAS) return { ok: false, erro: 'a lista está cheia' };
+  const antes = apagar_(eu.email);
+  const agora = new Date();
+  const linhas = chaves.map(function (c) {
+    const p = c.split('|');
+    return [antes || agora, agora, seguro_(nome), CORES[p[0]], p[1], junta[c], eu.email, seguro_(eu.nome)];
+  });
+  aba.getRange(aba.getLastRow() + 1, 1, linhas.length, CAB.length).setValues(linhas);
   return { ok: true };
 }
 
-// a linha do e-mail (coluna E), mesmo que o nome ou a cor estejam vazios
-function achar_(aba, email) {
-  const n = aba.getLastRow() - 1;
-  if (n < 1) return null;
-  const emails = aba.getRange(2, 5, n, 1).getValues();
-  for (let k = 0; k < emails.length; k++) if (String(emails[k][0]).trim().toLowerCase() === email) return { i: k + 2 };
-  return null;
+// apaga as linhas do e-mail; devolve a data da primeira anotação (para manter no pedido novo), ou null
+function apagar_(email) {
+  const aba = planilha_().getSheetByName(ABA);
+  if (!aba) return null;
+  let antes = null;
+  const ls = linhas_().filter(function (l) { return l.email === email; });
+  ls.forEach(function (l) { if (l.anotado instanceof Date && (!antes || l.anotado < antes)) antes = l.anotado; });
+  for (let k = ls.length - 1; k >= 0; k--) aba.deleteRow(ls[k].i);
+  return antes;
 }
 
-// a aba dos pedidos e a contagem (quantos de cada cor), criadas na primeira vez
+// a aba dos pedidos e a contagem (quantas camisas de cada cor e tamanho), criadas na primeira vez
 function aba_() {
   const planilha = planilha_();
   let aba = planilha.getSheetByName(ABA);
@@ -148,8 +165,7 @@ function aba_() {
   }
   if (!planilha.getSheetByName(ABA_TOTAL)) {
     const t = planilha.insertSheet(ABA_TOTAL, 1);
-    query_(t.getRange('A1'), '\'' + ABA + '\'!C:D', 'select D, count(C) where C is not null group by D ' +
-      'label D \'Cor\', count(C) \'Pedidos\'');
+    query_(t.getRange('A1'), '\'' + ABA + '\'!C:F', 'select D, sum(F) where C is not null group by D pivot E');
     t.setFrozenRows(1);
   }
   return aba;
@@ -189,10 +205,18 @@ function planilha_() {
   return nova;
 }
 
-// Rode uma vez no editor: cria as abas e mostra o link da planilha
+// Rode uma vez no editor: cria as abas e mostra o link da planilha. Apaga as abas da versão anterior ("Cor da
+// camisa", só a cor, sem tamanho e quantidade), se estiverem vazias.
 function configurar() {
+  const planilha = planilha_();
+  const velha = planilha.getSheetByName('Cor da camisa');
+  if (velha && velha.getLastRow() < 2) {
+    planilha.deleteSheet(velha);
+    const t = planilha.getSheetByName('Cor da camisa (total)');
+    if (t) planilha.deleteSheet(t);
+  }
   aba_();
-  Logger.log('Planilha: ' + planilha_().getUrl());
+  Logger.log('Planilha: ' + planilha.getUrl());
 }
 
 function resposta_(obj) {

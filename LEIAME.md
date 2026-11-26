@@ -20,33 +20,37 @@ estão em `../inspiracoes.html` e `../inspiracoes/`.
 | `logo.html` | **O logo oficial para baixar**: o kit em zip, o manual de identidade, cada arquivo do logo e a imagem das versões (`kit-logo.png`, de `../kit-oficial.typ`). Os arquivos estão em `oficial/` e saem do `../exportar-oficial.sh`. |
 | `resultado.html`, `formulario.html`, `completo.html`, `montar.html` | Só redirecionam os links antigos. `resultado.html#arquivos` vai para `logo.html`, e o resto vai para a página inicial. |
 
-## A página inicial (`index.html`): a cor da camisa
+## A página inicial (`index.html`): os pedidos da camisa
 
 Lucas, 25/11/2026: "manda a galera logar lá vc coloca quem quer azul ou preta para mandar para a gráfica, pode deixar
-aberto para todo mundo e bota para exportar para um PDF ou um csv", "Vc anota na planilha" e "o formulário vai na
-própria página".
+aberto para todo mundo e bota para exportar para um PDF ou um csv", "Vc anota na planilha", "o formulário vai na
+própria página" e, depois, "deveria ter a quantidade e o carrinho na verdade e a pessoa (Em uma lista em baixo para
+todo mundo ver)", "E o tamanho da camisa", "O tamanho é P, M, G ou GG", "Então a pessoa não precisa por o nome" e "Ao
+final vc deixa exportar para csv ou pdf".
 
-- **As duas cores.** Dois cartões, a Clássica na polo azul e na preta (frente e costas, de `grafica/modelos/`), que
-  são as opções do formulário. A preta leva "Inspirada no modelo do Doug, o segundo colocado" (Lucas: "Diz que a preta
-  é inspirada no modelo de Doug (Segundo colocado)"). Os textos ficam curtos: os ajustes finos do desenho não vão para
-  a página (Lucas: "Esse ajuste fino fica entre a gente").
-- **Login com o Google.** Para pôr o nome na lista, a pessoa entra com o Google. O nome completo vem preenchido com o
-  nome da conta e pode ser mudado. Uma linha por conta: escolher de novo troca a cor, e "Tirar o meu nome" apaga. O
-  login vale por uma hora, nesta aba; quem já entrou uma vez volta sem clicar, se o Google deixar.
-- **A lista dos pedidos** (`#pedidos`, "Quem já escolheu"): os totais (azul, preta e total) e o nome de cada um em
-  ordem alfabética, por cor, para todo mundo ver. Os botões "Baixar a lista (PDF)" e "Baixar a lista (CSV)" fazem os
-  arquivos no navegador (o PDF com o jsPDF 2.5.1, do cdnjs, carregado só ao clicar; o CSV com ponto e vírgula e BOM,
-  que abre direto no Excel em português). Funciona no celular. A lista vem na hora, direto da planilha.
+- **As duas cores.** Dois cartões, a Clássica na polo azul e na preta (frente e costas, de `grafica/modelos/`). A preta
+  leva "Inspirada no modelo do Doug, o segundo colocado". Em cada cartão: o tamanho (P, M, G ou GG), a quantidade (de 1
+  a 10) e "Adicionar ao carrinho". Os textos ficam curtos: os ajustes finos do desenho não vão para a página (Lucas:
+  "Esse ajuste fino fica entre a gente").
+- **O carrinho.** Os itens (cor e tamanho), com a quantidade e "Remover", e o total. Fica guardado na aba do navegador
+  até enviar. Para enviar, a pessoa entra com o Google: o nome do pedido é o nome da conta Google (não há campo de
+  nome). Um pedido por conta: enviar de novo troca o pedido inteiro, e "Cancelar o meu pedido" apaga. Quem já tem
+  pedido e volta encontra o pedido no carrinho, para mudar. O login vale por uma hora, nesta aba.
+- **A lista dos pedidos** (`#pedidos`, "Quem pediu o quê"), no fim da página, para todo mundo ver: os totais (azul,
+  preta, camisas e pessoas), a tabela por cor e tamanho e as pessoas, em ordem alfabética, com o pedido de cada uma.
+  No fim, "Baixar a lista (PDF)" (os totais por tamanho e as pessoas; jsPDF 2.5.1, do cdnjs, carregado só ao clicar)
+  e "Baixar a lista (CSV)" (uma linha por item: Nome;Cor;Tamanho;Quantidade, com ponto e vírgula e BOM, que abre direto
+  no Excel em português). Funciona no celular. A lista vem na hora, direto da planilha.
 - **Ampliar** (Lucas: "deixa ampliar para ver os detalhes também (Da camisa com o modelo 3D - em um modal)"): o
   botão em cima de cada cor abre um modal com a camisa em 3D (o avatar do montador, girando com o dedo ou o mouse, com
   as vistas de frente, dos lados e de costas) e em desenho (frente, costas e as duas mangas, grandes). Dá para trocar
-  a cor ali, e "Quero a polo ..." marca a cor no formulário. O 3D só carrega quando abre: o three.js (do jsDelivr) e
-  as peças da Clássica (`malhas-3d.js`, 0,5 MB), a Ufac 1,25× como nos desenhos.
-- Os e-mails ficam só na planilha: o site mostra só o nome e a cor.
+  a cor ali, e "Quero a polo ..." volta para o cartão da cor, no tamanho. O 3D só carrega quando abre: o three.js (do
+  jsDelivr) e as peças da Clássica (`malhas-3d.js`, 0,5 MB), a Ufac 1,25× como nos desenhos.
+- Os e-mails ficam só na planilha: o site mostra só o nome e o pedido.
 
 | Arquivo | O que é |
 |---|---|
-| `pedidos.js` | o login, o formulário da cor, a lista, o PDF e o CSV |
+| `pedidos.js` | os cartões (tamanho e quantidade), o carrinho, o login, a lista, o PDF e o CSV |
 | `ampliar.js` | o modal do "Ampliar" |
 | `camisa-3d.js` | o 3D do modal (módulo, com o three.js 0.160 pelo importmap da página) |
 | `malhas-3d.js` | as peças 3D da Clássica, feito por `../avatar/malhas-classica.py` (que o `../avatar/exportar-3d.sh` roda no fim) |
@@ -57,20 +61,23 @@ própria página".
 
 ## A planilha
 
-**Já está ligada** desde 25/11/2026: implantação "Camisa do PEI: a cor (azul ou preta)", com a URL em `config.js`.
+**Já está ligada** desde 25/11/2026: implantação "Camisa do PEI: pedidos (cor, tamanho e quantidade)" (a versão 4 da
+implantação de antes, "Camisa do PEI: a cor (azul ou preta)", com a mesma URL, em `config.js`).
 
-As cores vão para a mesma planilha da votação, "Votação do novo logo do PEI (respostas do site)", em duas abas novas,
-na frente das outras. O Apps Script é o mesmo projeto da votação, "Votação do logo do PEI (site)", que guarda o ID da
-planilha nas propriedades (`PLANILHA_ID`). As outras abas (a votação do logo, as camisas e os corações) não mudam.
+Os pedidos vão para a mesma planilha da votação, "Votação do novo logo do PEI (respostas do site)"
+(https://docs.google.com/spreadsheets/d/1EseeOfNeeZJ83Z94A7mXL52F72eXsf_KqQFEvt0Ft7o/edit), em duas abas, na frente das
+outras. O Apps Script é o mesmo projeto da votação, "Votação do logo do PEI (site)", que guarda o ID da planilha nas
+propriedades (`PLANILHA_ID`). As outras abas (a votação do logo, as camisas e os corações) não mudam. As abas da
+primeira versão ("Cor da camisa", só a cor) saíram vazias, pelo `configurar()`.
 
 | Aba | O que tem |
 |---|---|
-| **Cor da camisa** | uma linha por pessoa: quando anotou, quando mudou, o nome completo, a cor (Azul ou Preta), o e-mail da conta Google e o nome da conta |
-| **Cor da camisa (total)** | quantos pedidos de cada cor (uma fórmula QUERY, que se atualiza sozinha) |
+| **Pedidos da camisa** | uma linha por item: quando anotou, quando mudou, o nome (o da conta Google), a cor (Azul ou Preta), o tamanho, a quantidade, o e-mail da conta e o nome da conta |
+| **Pedidos da camisa (total)** | quantas camisas de cada cor e tamanho (uma fórmula QUERY com pivot; com a aba vazia, mostra erro até o primeiro pedido) |
 
 Para fechar os pedidos: no `Codigo.gs`, ponha `const ABERTO = false;`, salve e faça uma nova versão da implantação
-(abaixo). A lista continua no site, mas ninguém anota nem tira mais. O script aceita até 500 pedidos, com nomes de até
-80 letras.
+(abaixo). A lista continua no site, mas ninguém envia nem cancela mais. O script aceita até 10 itens por pedido, até
+10 de cada item e até 2000 linhas.
 
 Para refazer a ligação:
 
@@ -79,7 +86,7 @@ Para refazer a ligação:
 2. Se mudou só o código, use **Implantar → Gerenciar implantações → editar → Nova versão**, para a URL continuar a
    mesma. Para uma implantação nova: **Implantar → Nova implantação**, **App da Web**, Executar como: **Eu**, Quem pode
    acessar: **Qualquer pessoa**; copie a URL (termina em `/exec`) para `window.URL_PEDIDOS`, em `config.js`.
-3. Para conferir, abra a URL no navegador. Deve aparecer `{"ok":true,"app":"camisa do PEI: a cor"}`.
+3. Para conferir, abra a URL no navegador. Deve aparecer `{"ok":true,"app":"camisa do PEI: pedidos"}`.
 4. Publique o site (veja abaixo).
 
 O login usa o mesmo cliente OAuth da votação (projeto do Google Cloud `votacao-logo-pei`, o ID em `config.js` e em

@@ -1,7 +1,7 @@
 // O "Ampliar" da página inicial (Lucas, 25/11/2026: "deixa ampliar para ver os detalhes também (Da camisa com o
 // modelo 3D - em um modal)"): o botão em cima de cada cor abre um modal com a camisa em 3D (camisa-3d.js) e os
 // desenhos grandes (frente, costas e as duas mangas, de grafica/modelos/). Dá para trocar a cor ali mesmo, e "Quero a
-// polo ..." marca a cor no formulário.
+// polo ..." volta para o cartão da cor, no tamanho.
 (function () {
   "use strict";
   const dlg = document.getElementById("ampliar");
@@ -45,12 +45,13 @@
     const r = dlg.getBoundingClientRect();
     if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
   });
-  // "Quero a polo ...": marca a cor no formulário e volta para ele
+  // "Quero a polo ...": volta para o cartão da cor, no tamanho (para escolher o tamanho e a quantidade)
   document.getElementById("amp-quero").addEventListener("click", function () {
-    const r = document.querySelector('input[name="cor"][value="' + cor + '"]');
-    if (r) { r.checked = true; r.dispatchEvent(new Event("change", { bubbles: true })); }
     dlg.close();
-    const alvo = document.getElementById("cor-dentro").hidden ? document.getElementById("cor-fora") : document.getElementById("cor-dentro");
-    alvo.scrollIntoView({ behavior: "smooth", block: "center" });
+    const compra = document.querySelector('.opcao[data-cor="' + cor + '"] .compra');
+    if (!compra) return;
+    compra.scrollIntoView({ behavior: "smooth", block: "center" });
+    const b = compra.querySelector("[data-tam]");
+    if (b) setTimeout(function () { b.focus({ preventScroll: true }); }, 400);
   });
 })();
